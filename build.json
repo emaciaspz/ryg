@@ -1,0 +1,11 @@
+{
+    "android": {
+        "release": {
+            "keystore": "/Users/bitfarm/Documents/ProyectosSVN/kronos-mobileapps.keystore",
+            "storePassword": "2567kronosmobileapps2567",
+            "alias": "kronosmobileapps",
+            "password" : "2567kronosmobileapps2567",
+            "keystoreType": ""
+        }
+    }
+}
