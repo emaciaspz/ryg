@@ -1,0 +1,2325 @@
+{
+	"info": {
+		"_postman_id": "dc16de7e-3142-42be-a97b-1ef3523a5663",
+		"name": "Kronos produccion",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "login.php",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "62c82f5b-721f-42e7-85fd-143835478e62",
+						"exec": [
+							"const response = pm.response.json();",
+							"console.log(pm.environment);",
+							"pm.environment.set(\"authToken\", response.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "Nueva123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/login.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"login.php"
+					]
+				},
+				"description": "Inciar sesion"
+			},
+			"response": []
+		},
+		{
+			"name": "login.php sistemas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b995a045-63c6-4121-bb42-b7773b59c2f8",
+						"exec": [
+							"const response = pm.response.json();",
+							"console.log(pm.environment);",
+							"pm.environment.set(\"authToken\", response.token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "rut",
+							"value": "sistemas",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "Santa.mex1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/login.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"login.php"
+					]
+				},
+				"description": "Inciar sesion"
+			},
+			"response": []
+		},
+		{
+			"name": "archivos_gasto.php (xml)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "gasto_id",
+							"value": "5",
+							"type": "text"
+						},
+						{
+							"key": "filetype",
+							"value": "xml",
+							"type": "text"
+						},
+						{
+							"key": "up_documento",
+							"type": "file",
+							"src": "/Users/bitfarm/Documents/Kronos documentos para pruebas/documento1.xml"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/archivos_gasto.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"archivos_gasto.php"
+					]
+				},
+				"description": "Actualiza el archivo XML de un gasto dado"
+			},
+			"response": []
+		},
+		{
+			"name": "archivos_gasto.php (pdf)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "gasto_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "filetype",
+							"value": "pdf",
+							"type": "text"
+						},
+						{
+							"key": "up_documento",
+							"type": "file",
+							"src": "/Users/bitfarm/Documents/Kronos documentos para pruebas/dummy.pdf"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/archivos_gasto.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"archivos_gasto.php"
+					]
+				},
+				"description": "Actualiza el pdf de un gasto dado"
+			},
+			"response": []
+		},
+		{
+			"name": "archivos_gasto.php (imagen)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "gasto_id",
+							"value": "3843",
+							"type": "text"
+						},
+						{
+							"key": "filetype",
+							"value": "png",
+							"type": "text"
+						},
+						{
+							"key": "up_documento",
+							"type": "file",
+							"src": "/Users/bitfarm/Documents/Kronos documentos para pruebas/black.jpeg"
+						},
+						{
+							"key": "mimeType",
+							"value": "image/jpg",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/archivos_gasto.php?=1",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"archivos_gasto.php"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Actualiza el pdf de un gasto dado"
+			},
+			"response": []
+		},
+		{
+			"name": "catalogos.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text"
+						},
+						{
+							"key": "clave",
+							"value": "Nueva123",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/catalogos.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"catalogos.php"
+					]
+				},
+				"description": "Regresa los catalogos que se utilizan en la aplicacion"
+			},
+			"response": []
+		},
+		{
+			"name": "busqueda.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/busqueda.php?caso=1&pag=2&campo=caso_fech_creacion&order=DESC",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"busqueda.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1"
+						},
+						{
+							"key": "pag",
+							"value": "2"
+						},
+						{
+							"key": "campo",
+							"value": "caso_fech_creacion",
+							"description": "no tiene efecto"
+						},
+						{
+							"key": "order",
+							"value": "DESC",
+							"description": "no tiene efecto"
+						}
+					]
+				},
+				"description": "Obtiene el listado de siniestros, buscando por varios campos (asegurado, folio, número de siniestro, ajustador, corredor o aseguradora)."
+			},
+			"response": []
+		},
+		{
+			"name": "siniestro.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/siniestro.php?caso=1",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"siniestro.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Obtiene los datos de un siniestro"
+			},
+			"response": []
+		},
+		{
+			"name": "siniestro_full.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/siniestro_full.php?caso=1",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"siniestro_full.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Obtiene los datos de un siniestro incluyendo inspecciones, gastos y bitácoras."
+			},
+			"response": []
+		},
+		{
+			"name": "siniestro_gastos.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/siniestro_gastos.php?caso=1&pageNum=1",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"siniestro_gastos.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1"
+						},
+						{
+							"key": "pageNum",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Obtiene la lista de reportes de gasto de un siniestro."
+			},
+			"response": []
+		},
+		{
+			"name": "siniestro_inspecciones.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/siniestro_inspecciones.php?caso=1&pageNum_user=0",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"siniestro_inspecciones.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1",
+							"description": "Id del siniestro"
+						},
+						{
+							"key": "pageNum_user",
+							"value": "0",
+							"description": "Numero de pagina"
+						}
+					]
+				},
+				"description": "Obtiene la lista de inspecciones de siniestro."
+			},
+			"response": []
+		},
+		{
+			"name": "inspeccion_detalle.php (crear)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "correspon_caso",
+							"value": " 1",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_contacto",
+							"value": " quienAtiende",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_mail",
+							"value": " correQuienAtiende",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_daño_estr",
+							"value": " alcance",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_declaracion",
+							"value": " declaración",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_descrip",
+							"value": " descripción",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_comentario",
+							"value": " notas",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_almacen",
+							"value": " presupuesto",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_inspector",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/inspeccion_detalle.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"inspeccion_detalle.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "Id de la inspeccion",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Crea una nueva inspeccion"
+			},
+			"response": []
+		},
+		{
+			"name": "inspeccion_detalle.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/inspeccion_detalle.php?id=1",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"inspeccion_detalle.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "Id de la inspeccion"
+						}
+					]
+				},
+				"description": "Obtiene el detalle de una inspección de siniestro."
+			},
+			"response": []
+		},
+		{
+			"name": "inspeccion_detalle.php (editar)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "correspon_caso",
+							"value": " 1",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_contacto",
+							"value": " quienAtiende",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_mail",
+							"value": " correQuienAtiende",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_daño_estr",
+							"value": " alcance",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_declaracion",
+							"value": " declaración",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_descrip",
+							"value": " descripción",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_comentario",
+							"value": " notas",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_almacen",
+							"value": " presupuesto",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "anio",
+							"value": "2020",
+							"type": "text"
+						},
+						{
+							"key": "mes",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "inspeccion_estado",
+							"value": "Pendiente",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/inspeccion_detalle.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"inspeccion_detalle.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "Id de la inspeccion",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Edita una inspeccion existente"
+			},
+			"response": []
+		},
+		{
+			"name": "gastos_reporte.php (con id)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/gastos_reporte.php?id=1&pageNum_user=0",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"gastos_reporte.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"description": "Id del reporte de gasots"
+						},
+						{
+							"key": "caso",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "pageNum_user",
+							"value": "0"
+						}
+					]
+				},
+				"description": "Obtiene el detalle de un gasto."
+			},
+			"response": []
+		},
+		{
+			"name": "ajustador_gastos.php (listado)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "correspon_caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_moneda",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_anticipo",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/ajustador_gastos.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"ajustador_gastos.php"
+					]
+				},
+				"description": "Obtiene una lista de reportes de gastos del ajustador autenticado."
+			},
+			"response": []
+		},
+		{
+			"name": "ajustador_gastos.php (crear)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "correspon_caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_moneda",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_anticipo",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_ajustador",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/ajustador_gastos.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"ajustador_gastos.php"
+					]
+				},
+				"description": "Crear nuevo reporte de gasto"
+			},
+			"response": []
+		},
+		{
+			"name": "ajustador_gastos.php (actualizar)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "gastos_repor_anticipo",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_id",
+							"value": "1",
+							"type": "text"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{servidor}}/ajustador_gastos.php?gastos_repor_id=1",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"ajustador_gastos.php"
+					],
+					"query": [
+						{
+							"key": "gastos_repor_anticipo",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "gastos_repor_id",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Actualiza un reporte de gasto"
+			},
+			"response": []
+		},
+		{
+			"name": "gasto_detalle.php (consultar)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/gasto_detalle.php?id=3830",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"gasto_detalle.php"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "3830",
+							"description": "Id del gasto"
+						}
+					]
+				},
+				"description": "Obtiene el gasto por su gastos_id"
+			},
+			"response": []
+		},
+		{
+			"name": "gasto_detalle.php (crear)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "up_documento_2",
+							"type": "file",
+							"src": "/Users/bitfarm/Documents/Kronos documentos para pruebas/rabbit.jpg"
+						},
+						{
+							"key": "gastos_movil_caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "anio",
+							"value": "2020",
+							"type": "text"
+						},
+						{
+							"key": "mes",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_id",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_valor",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "gastos_cargar",
+							"value": "si",
+							"type": "text"
+						},
+						{
+							"key": "gastos_moneda",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_descripcion",
+							"value": "descripcion del gasto",
+							"type": "text"
+						},
+						{
+							"key": "gastos_concepto",
+							"value": "tipo de gasto",
+							"type": "text"
+						},
+						{
+							"key": "gastos_amex",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "gastos_emisor",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/gasto_detalle.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"gasto_detalle.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1",
+							"description": "Id del siniestro",
+							"disabled": true
+						},
+						{
+							"key": "pageNum_user",
+							"value": "0",
+							"description": "Numero de pagina",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Crea un nuevo gasto"
+			},
+			"response": []
+		},
+		{
+			"name": "gasto_detalle.php (actualizar)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "gastos_id",
+							"value": "430",
+							"type": "text"
+						},
+						{
+							"key": "gastos_caso",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_ajustador",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_visada",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_id_reporte",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_valor",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_cargar",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_moneda",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_fecha_real",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_emisor",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_descripcion",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_concepto",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_razon_social",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_viaje_ini",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_viaje_fin",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_amex",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_nulo",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_archivo",
+							"value": " ",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "gastos_archivo_xml",
+							"value": " ",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "gastos_archivo_3",
+							"value": " ",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "gastos_fecha",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "ajustador",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "fk_idGasto",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_id",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "gastos_movil_caso",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "anio",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "mes",
+							"value": " ",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "up_documento_2",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/gasto_detalle.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"gasto_detalle.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1",
+							"description": "Id del siniestro",
+							"disabled": true
+						},
+						{
+							"key": "pageNum_user",
+							"value": "0",
+							"description": "Numero de pagina",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Obtiene el detalle del reporte de gasto, incluyendo los gastos ligados al mismo."
+			},
+			"response": []
+		},
+		{
+			"name": "siniestro_bitacora.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/siniestro_bitacora.php?caso=1",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"siniestro_bitacora.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1",
+							"description": "Id del siniestro"
+						}
+					]
+				},
+				"description": "Obtiene la lista de registros en la bitácora de siniestro."
+			},
+			"response": []
+		},
+		{
+			"name": "fotos.php (obtener listado)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/fotos.php?caso=211751",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"fotos.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "211751"
+						}
+					]
+				},
+				"description": "Obtiene el listado fotos de un siniestro"
+			},
+			"response": []
+		},
+		{
+			"name": "foto.php (obtener foto)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pag",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "rut",
+							"value": "1ajustador",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/foto.php?fotos_id=8479",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"foto.php"
+					],
+					"query": [
+						{
+							"key": "fotos_id",
+							"value": "8479"
+						}
+					]
+				},
+				"description": "Descarga la foto de un siniestro dado su fotos_id"
+			},
+			"response": []
+		},
+		{
+			"name": "fotos.php (agregar foto)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "edita_dato",
+							"value": "1",
+							"description": "Id de la inspeccion",
+							"type": "text"
+						},
+						{
+							"key": "fotos_nombre",
+							"value": "1",
+							"description": "nombre del documento",
+							"type": "text"
+						},
+						{
+							"key": "fotos_observaciones",
+							"value": "Lugar de Siniestro",
+							"description": "Observaciones",
+							"type": "text"
+						},
+						{
+							"key": "up_documento",
+							"description": "Foto",
+							"type": "file",
+							"src": "/Users/bitfarm/Documents/Kronos documentos para pruebas/rabbit.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/fotos.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"fotos.php"
+					]
+				},
+				"description": "Agrega la foto a un siniestro"
+			},
+			"response": []
+		},
+		{
+			"name": "envio_reporte.php",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "anio",
+							"value": "2020",
+							"type": "text"
+						},
+						{
+							"key": "mes",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "anio_2",
+							"value": "2020",
+							"type": "text"
+						},
+						{
+							"key": "mes_2",
+							"value": "10",
+							"type": "text"
+						},
+						{
+							"key": "dia_2",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_nombre",
+							"value": "Reporte",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_mail",
+							"value": "alfredosv970@outlook.com",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_coment",
+							"value": "Comentario acerca del correo",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_id_anti",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "siniestro",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "fk_idGasto",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/envio_reporte.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"envio_reporte.php"
+					]
+				},
+				"description": "Envia un reporte de gastos por correo"
+			},
+			"response": []
+		},
+		{
+			"name": "envio_reporte.php 2",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "idMail",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "anio",
+							"value": "2020",
+							"type": "text"
+						},
+						{
+							"key": "mes",
+							"value": "09",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "24",
+							"type": "text"
+						},
+						{
+							"key": "anio_2",
+							"value": "2020",
+							"type": "text"
+						},
+						{
+							"key": "mes_2",
+							"value": "09",
+							"type": "text"
+						},
+						{
+							"key": "dia_2",
+							"value": "24",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_nombre",
+							"value": "AT-001",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_mail",
+							"value": "asoto@bitfarm.com.mx",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_coment",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "gastos_repor_id_anti",
+							"value": "116",
+							"type": "text"
+						},
+						{
+							"key": "siniestro",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "fk_idGasto",
+							"value": "10",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/envio_reporte.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"envio_reporte.php"
+					]
+				},
+				"description": "Envia un reporte de gastos por correo"
+			},
+			"response": []
+		},
+		{
+			"name": "siniestro_bitacora.php (listado)",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "bitacora_caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "bitacora_observacion",
+							"value": "...",
+							"description": "descripcion",
+							"type": "text"
+						},
+						{
+							"key": "anio",
+							"value": "2020",
+							"description": "año",
+							"type": "text"
+						},
+						{
+							"key": "mes",
+							"value": "10",
+							"description": "mes",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "1",
+							"description": "dia",
+							"type": "text"
+						},
+						{
+							"key": "bitacora_accion",
+							"value": "algo",
+							"description": "tarea",
+							"type": "text"
+						},
+						{
+							"key": "objetivo",
+							"value": "1",
+							"description": "subtarea",
+							"type": "text"
+						},
+						{
+							"key": "bitacora_tiempo",
+							"value": "1",
+							"description": "duracion",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/siniestro_bitacora.php?caso=1",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"siniestro_bitacora.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Obtiene el detalle del reporte de gasto, incluyendo los gastos ligados al mismo."
+			},
+			"response": []
+		},
+		{
+			"name": "siniestro_bitacora.php (crear)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "bitacora_caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "bitacora_observacion",
+							"value": "...",
+							"description": "descripcion",
+							"type": "text"
+						},
+						{
+							"key": "anio",
+							"value": "2020",
+							"description": "año",
+							"type": "text"
+						},
+						{
+							"key": "mes",
+							"value": "10",
+							"description": "mes",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "1",
+							"description": "dia",
+							"type": "text"
+						},
+						{
+							"key": "bitacora_accion",
+							"value": "algo",
+							"description": "tarea",
+							"type": "text"
+						},
+						{
+							"key": "objetivo",
+							"value": "1",
+							"description": "subtarea",
+							"type": "text"
+						},
+						{
+							"key": "bitacora_tiempo",
+							"value": "1",
+							"description": "duracion",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/siniestro_bitacora.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"siniestro_bitacora.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				},
+				"description": "Obtiene el detalle del reporte de gasto, incluyendo los gastos ligados al mismo."
+			},
+			"response": []
+		},
+		{
+			"name": "siniestro_bitacora.php (modificar)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "bitacora_caso",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "bitacora_observacion",
+							"value": "...",
+							"description": "descripcion",
+							"type": "text"
+						},
+						{
+							"key": "anio",
+							"value": "2020",
+							"description": "año",
+							"type": "text"
+						},
+						{
+							"key": "mes",
+							"value": "10",
+							"description": "mes",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "1",
+							"description": "dia",
+							"type": "text"
+						},
+						{
+							"key": "bitacora_accion",
+							"value": "algo",
+							"description": "tarea",
+							"type": "text"
+						},
+						{
+							"key": "objetivo",
+							"value": "1",
+							"description": "subtarea",
+							"type": "text"
+						},
+						{
+							"key": "bitacora_tiempo",
+							"value": "1",
+							"description": "duracion",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/siniestro_bitacora.php?caso=1",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"siniestro_bitacora.php"
+					],
+					"query": [
+						{
+							"key": "caso",
+							"value": "1"
+						}
+					]
+				},
+				"description": "Obtiene el detalle del reporte de gasto, incluyendo los gastos ligados al mismo."
+			},
+			"response": []
+		},
+		{
+			"name": "anexos.php",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "anio",
+							"value": "2021",
+							"description": "año",
+							"type": "text"
+						},
+						{
+							"key": "mes",
+							"value": "10",
+							"description": "mes",
+							"type": "text"
+						},
+						{
+							"key": "dia",
+							"value": "1",
+							"description": "dia",
+							"type": "text"
+						},
+						{
+							"key": "selecsecundario",
+							"value": "63",
+							"description": "subtarea",
+							"type": "text"
+						},
+						{
+							"key": "anexos_observaciones",
+							"value": "1",
+							"description": "duracion",
+							"type": "text"
+						},
+						{
+							"key": "edita_dato",
+							"value": "2",
+							"type": "text"
+						},
+						{
+							"key": "up_documento",
+							"type": "file",
+							"src": "/Users/bitfarm/Documents/Kronos documentos para pruebas/pdf-test.pdf"
+						},
+						{
+							"key": "mimetype",
+							"value": "pdf",
+							"type": "text"
+						},
+						{
+							"key": "grupo",
+							"value": "8",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/anexos.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"anexos.php"
+					]
+				},
+				"description": "Obtiene el detalle del reporte de gasto, incluyendo los gastos ligados al mismo."
+			},
+			"response": []
+		},
+		{
+			"name": "envio_inspeccion.php",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "contacto_mail",
+							"value": "alfredosv970@outlook.com",
+							"description": "lista de correos separados por coma",
+							"type": "text"
+						},
+						{
+							"key": "casos",
+							"value": "1",
+							"description": "id de siniestro",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{servidor}}/envio_inspeccion.php",
+					"host": [
+						"{{servidor}}"
+					],
+					"path": [
+						"envio_inspeccion.php"
+					]
+				},
+				"description": "Obtiene el detalle del reporte de gasto, incluyendo los gastos ligados al mismo."
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "d84f3778-1cc0-475c-9304-b43d4224cc2f",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "e8e4bdfd-8941-4bb0-ab36-56790d04d300",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "a186cf85-ac07-4394-b6a2-e0151a7dd207",
+			"key": "servidor",
+			"value": "https://kronos.rygespinosa.com.mx/api/v1/"
+		},
+		{
+			"id": "6367ea5c-e0e7-404a-bae6-b29d4bbe6ba4",
+			"key": "token",
+			"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyIjp7InVzZXJfaWQiOiIxODUiLCJ1c2VyX3J1dCI6IjFhanVzdGFkb3IiLCJ1c2VyX25vbWJyZSI6IkFqdXN0YWRvciBUZXN0IiwidXNlcl9pbmljaWFsZXMiOiJBVCIsInVzZXJfZm9ubyI6bnVsbCwidXNlcl9jZWx1bGFyIjpudWxsLCJ1c2VyX21haWwiOiJhY2FudGVyb18yNUBvdXRsb29rLmNvbSIsInRpcG9fdXNlcl9ub21icmUiOiJBanVzdGFkb3IifSwiZXhwIjoxNjAxNTkxMDY0fQ.6k3a-qWntl3FRnbrqBnjyfE7egkKnqfRG-2Ctru2Vqg"
+		}
+	],
+	"protocolProfileBehavior": {}
+}

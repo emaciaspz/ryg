@@ -1,0 +1,25 @@
+const DialogoNuevoUsuario = {
+    mostrar() {
+        createAlertDialog('deleteLastUserData', 'deleteLastUserData.html');
+    },
+
+    regresar() {
+        hideAlertDialog('deleteLastUserData');
+    },
+    
+    borrarDatosYContinuar() {
+        showLoading();
+        return dropDatabasePromise()
+            .then(createDatabase)
+            .then(() => {
+                window.localStorage.clear();
+                window.localStorage.setItem("synced", true);
+                console.error('DATOS LIMPIADOS')
+            })
+            .then(iniciarSesion)
+            .finally(() => {
+                hideLoading();
+                hideAlertDialog('deleteLastUserData');
+            })
+    }    
+};

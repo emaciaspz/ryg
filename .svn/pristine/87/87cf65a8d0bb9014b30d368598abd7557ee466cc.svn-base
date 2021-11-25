@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <meta name="format-detection" content="telephone=no">
+        <meta name="msapplication-tap-highlight" content="no">
+        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
+        <link rel="stylesheet" type="text/css" href="css/onsen-css-components.min.css"/>
+        <link rel="stylesheet" type="text/css" href="css/onsenui-core.min.css"/>
+        <link rel="stylesheet" type="text/css" href="css/onsenui.min.css"/>
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile.flatui.css"/>
+        <link rel="stylesheet" type="text/css" href="css/style.css"/>
+        <title>Kronos Móvil</title>
+    </head>
+    <body>
+        <ons-navigator swipeable id="myNavigator" page="index.html"></ons-navigator>
+        <ons-template id="index.html">
+            <ons-page id="index-page">
+                <ons-button class="btnAccess" id="btnIndex">
+                    <ons-icon icon="md-power"></ons-icon>
+                    Iniciar Sesión
+                </ons-button>
+            </ons-page>
+        </ons-template>
+
+        <ons-template id="login.html">
+            <ons-page id="login-page">
+                <ons-toolbar>
+                    <div class="left"></div>
+                    <div class="center">Inicio de Sesión</div>
+                    <div class="right">
+                        <ons-toolbar-button>
+                        <ons-icon icon="ion-navicon, material:md-menu"></ons-icon>
+                        </ons-toolbar-button>
+                    </div>
+                </ons-toolbar>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <p>
+                        <ons-input id="username" modifier="underbar" placeholder="Username" float></ons-input>
+                    </p>
+                    <p>
+                        <ons-input id="password" modifier="underbar" type="password" placeholder="Password" float></ons-input>
+                    </p>
+                    <p>
+                        <ons-button class="btnLogin" onclick="login()">
+                            <ons-icon icon="md-power"></ons-icon>
+                            Entrar
+                        </ons-button>
+                    </p>
+                </div>
+            </ons-page>
+        </ons-template>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/onsenui.min.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/utils.js"></script>
+    </body>
+</html>
+

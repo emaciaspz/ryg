@@ -1,0 +1,410 @@
+#index-page .page__background {
+    background-image: url('../img/fondo_1050.jpg') !important;
+    background-repeat: no-repeat;
+    width:100%;
+    height: 100%;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
+    background-size:cover;
+    background-position:center;
+}
+
+.btnAccess{
+    background-color:rgb(10, 80, 161);
+    color:white;
+    border-color: white;
+    border: 1px solid;
+    border-radius: 8px;
+    align-items: center;
+    text-align: center;
+    vertical-align: center;
+    width: 60%;
+    height: 50px;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 45%;
+    padding:5px;
+    font-size: 20px;
+}
+
+.btnLogin{
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #f4511e;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 200px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+#btnLogin span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+#btnLogin span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+#btnLogin:hover span {
+  padding-right: 25px;
+}
+
+#btnLogin:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+.tableKronos{
+    font-size: 1rem;
+    border-collapse: collapse;
+    text-align: center !important;
+}
+
+.tableKronos thead{
+    background-color:rgb(216, 218, 219);
+}
+
+.tituloKronos{
+    color: white;
+    width: 80%;
+    margin-left: 10%;
+    text-align: center !important;
+    text-shadow: none;
+}
+
+.paginationDiv{
+  width:80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.paginationDiv ul li a{
+  color:black !important;
+  width: 100%;
+}
+
+.btnTitleKronos{
+  width: 60%;
+  margin-left: 20%;
+  margin-right: 20%;
+  margin-top:5px;
+}
+
+#container {
+  margin: 100px auto;
+  width: 500px;
+  text-align: center;
+}
+
+#myProgress {
+  height: 18px;
+  border-radius: 4px; 
+  transition: 0.4s linear;  
+  transition-property: width, background-color;  
+}
+
+#myBar {
+  background-color: #FCBC51;
+  width: 100%; 
+  background-image: linear-gradient(
+  45deg, rgb(252,163,17) 25%, 
+  transparent 25%, transparent 50%, 
+  rgb(252,163,17) 50%, rgb(252,163,17) 75%,
+  transparent 75%, transparent); 
+}
+
+#myProgressFotografias {
+  height: 18px;
+  border-radius: 4px;
+  transition: 0.4s linear;
+  transition-property: width, background-color;
+}
+
+#myBarFotografias {
+  background-color: #FCBC51;
+  width: 100%;
+  background-image: linear-gradient(
+  45deg, rgb(252,163,17) 25%,
+  transparent 25%, transparent 50%,
+  rgb(252,163,17) 50%, rgb(252,163,17) 75%,
+  transparent 75%, transparent);
+}
+
+#cardCenter {
+  position: absolute;
+  left: 0;
+  top: 65%;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
+}
+
+#carga_page .page__background {
+    background-image: url('../img/fondo_1050.jpg') !important;
+    background-repeat: no-repeat;
+    width:100%;
+    height: 100%;
+    -webkit-background-size:cover;
+    -moz-background-size:cover;
+    -o-background-size:cover;
+    background-size:cover;
+    background-position:center;
+}
+
+#cargaFotografias_page .page__background {
+  background-image: url('../img/fondo_1050.jpg') !important;
+  background-repeat: no-repeat;
+  width:100%;
+  height: 100%;
+  -webkit-background-size:cover;
+  -moz-background-size:cover;
+  -o-background-size:cover;
+  background-size:cover;
+  background-position:center;
+}
+
+.btnUploadFile{
+  background-color:white;
+  color:#FE8416;
+}
+
+.center{
+  margin:auto;
+}
+
+.focus-none{
+  box-shadow: none !important;
+}
+
+.icon-login{
+  margin-top: -80px;
+  margin-bottom: 30px;
+}
+
+.card-op{
+  opacity:0.8;
+}
+
+.menu{
+  color: #0081BD;
+}
+
+.diamond{
+  background-image: url("../img/fondo_1050.jpg");
+}
+
+.diamond-sm{
+  background-image: url("../img/fondo.png");
+}
+
+.sh-none{
+  text-shadow: none;
+}
+
+.table-card {
+  padding: 0;
+  text-align: center;
+}
+
+.table-card-top {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.table-card > hr {
+  margin: 0;
+  text-align: center;
+}
+
+.table-card-item {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.table-card-item-small {
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+  text-align: center;
+}
+
+/** Quitar el espacio encima del menu y pagina*/
+.toolbar {
+  padding-top: 0 !important;
+}
+.page__content {
+  padding-top: 1rem !important;
+  top: 40px !important;
+}
+
+#login-page .page__content {
+  padding-top: 0px !important;
+  top: 0px !important;
+}
+
+/*********************************/
+/*     TABLA DETALLE GASTOS      */
+/*********************************/
+.tabla-detalle-gasto {
+  width: 100%;
+}
+
+.tabla-detalle-gasto td:first-child {
+  width: 30%;
+}
+
+.tabla-detalle-gasto td:last-child {
+  width: 70%;
+  max-width: 0;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tabla-detalle-gasto .btn-previo {
+  max-width: 100%;
+  font-size: 14px;
+  display: none; /* por defecto el boton previo esta oculto */
+}
+
+.tabla-detalle-gasto .btn-archivo {
+  background-color: #FE8416;
+  color:#fff; 
+  display: inline-block; 
+  position: relative; 
+}
+
+.tabla-detalle-gasto .btn-archivo span{
+  font-weight: 500;
+}
+
+.tabla-detalle-gasto .input-oculto {
+  z-index: 0; 
+  overflow: hidden; 
+  position: absolute; 
+  width: 100%; 
+  left: 0;
+  opacity: 0; /* Es transparente y cuando se selecciona el label se abre el input*/
+}
+
+/*******************************************************************************************************
+/* ANIMACION DE ALERTAS TOAST
+/*******************************************************************************************************/
+
+#toast {
+    visibility: hidden;
+    max-width: 50px;
+    height: 50px;
+    /*margin-left: -125px;*/
+    margin: auto;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 2px;
+
+    position: fixed;
+    z-index: 1;
+    left: 0;right:0;
+    bottom: 30px;
+    font-size: 17px;
+    white-space: nowrap;
+}
+#toast #img{
+  width: 50px;
+  height: 50px;
+    
+    float: left;
+    
+    padding-top: 3px;
+    padding-bottom: 16px;
+    
+    box-sizing: border-box;
+
+    
+    background-color: #FFFFFF;
+}
+#toast #desc{
+
+    
+    color: #fff;
+   
+    padding: 16px;
+    
+    overflow: hidden;
+  white-space: nowrap;
+}
+
+#toast.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, expand 0.5s 0.5s,stay 3s 1s, shrink 0.5s 2s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, expand 0.5s 0.5s,stay 3s 1s, shrink 0.5s 4s, fadeout 0.5s 4.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes expand {
+    from {min-width: 50px} 
+    to {min-width: 350px}
+}
+
+@keyframes expand {
+    from {min-width: 50px}
+    to {min-width: 350px}
+}
+@-webkit-keyframes stay {
+    from {min-width: 350px} 
+    to {min-width: 350px}
+}
+
+@keyframes stay {
+    from {min-width: 350px}
+    to {min-width: 350px}
+}
+@-webkit-keyframes shrink {
+    from {min-width: 350px;} 
+    to {min-width: 50px;}
+}
+
+@keyframes shrink {
+    from {min-width: 350px;} 
+    to {min-width: 50px;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 60px; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 60px; opacity: 0;}
+}
+
+.errorForm{
+  color:red;
+}
+
+.validForm{
+  color:green;
+}

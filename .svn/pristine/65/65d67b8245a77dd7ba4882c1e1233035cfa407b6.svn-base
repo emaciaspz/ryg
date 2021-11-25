@@ -1,0 +1,57 @@
+{
+  "name": "com.bitfarm.kronos",
+  "displayName": "KronosApp",
+  "version": "1.0.0",
+  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "ecosystem:cordova"
+  ],
+  "author": "Apache Cordova Team",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "cordova-android": "^8.0.0",
+    "cordova-documentpicker": "git+https://github.com/iampossible/Cordova-DocPicker.git",
+    "cordova-ios": "^5.0.1",
+    "cordova-pdf-generator": "^2.0.8",
+    "cordova-plugin-add-swift-support": "^2.0.2",
+    "cordova-plugin-device": "git+https://github.com/apache/cordova-plugin-device.git",
+    "cordova-plugin-dialogs": "^2.0.2",
+    "cordova-plugin-file-opener2": "^2.2.1",
+    "cordova-plugin-filepath": "^1.5.6",
+    "cordova-plugin-filepicker": "^1.1.6",
+    "cordova-plugin-photo-library": "2.2.1",
+    "cordova-plugin-wkwebview-engine": "^1.2.1",
+    "cordova-plugin-wkwebview-file-xhr": "^2.1.4",
+    "cordova-sqlite-storage": "^4.0.0",
+    "maurodx-cordova-plugin-file-selector": "^1.0.0"
+  },
+  "devDependencies": {
+    "cordova-plugin-whitelist": "^1.3.3"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-filepicker": {},
+      "maurodx-cordova-plugin-file-selector": {},
+      "cordova-plugin-file-opener2": {
+        "ANDROID_SUPPORT_V4_VERSION": "27.+"
+      },
+      "cordova-pdf-generator": {},
+      "cordova-plugin-dialogs": {},
+      "cordova-plugin-filepath": {},
+      "cordova-documentpicker": {},
+      "cordova-plugin-device": {},
+      "cordova-sqlite-storage": {},
+      "cordova-plugin-wkwebview-engine": {},
+      "cordova-plugin-wkwebview-file-xhr": {}
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "_from": "cordova-documentpicker",
+  "_id": "cordova-documentpicker@1.2.2",
+  "_inBundle": false,
+  "_integrity": "sha512-hr1/kPgJrJGoqB4QAu+q2atRYzw9jrZa2DCk2HROY5VdUrLtFLQ/H7cVdNmHze4zezVfyF5km1it579e3mT26g==",
+  "_location": "/cordova-documentpicker",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-documentpicker",
+    "name": "cordova-documentpicker",
+    "escapedName": "cordova-documentpicker",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-documentpicker/-/cordova-documentpicker-1.2.2.tgz",
+  "_shasum": "4b6e359e02a3ab11fed6b25c4c4a95b6c435a1e8",
+  "_spec": "cordova-documentpicker",
+  "_where": "/Users/bitfarm/Documents/ProyectosSVN/R&G_Espinosa",
+  "author": {
+    "name": "Impossible"
+  },
+  "bugs": {
+    "url": "https://github.com/iampossible/Cordova-DocPicker/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "iOS plugin for Cordova writting in Swift.",
+  "homepage": "https://github.com/iampossible/Cordova-DocPicker#readme",
+  "keywords": [
+    "cordova",
+    "plugin",
+    "documentpicker",
+    "icloud",
+    "filebrowser"
+  ],
+  "license": "ISC",
+  "main": "index.js",
+  "name": "cordova-documentpicker",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iampossible/Cordova-DocPicker.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.2.2"
+}

@@ -1,0 +1,70 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-pdf-generator": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-camera": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-email": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-file-opener2": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-filepath": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-wkwebview-engine": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-wkwebview-file-xhr": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-sqlite-storage": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova.plugins.diagnostic": {
+      "ANDROID_SUPPORT_VERSION": "27.+",
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-documentpicker": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-filepicker": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    },
+    "cordova-plugin-chooser": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    }
+  },
+  "dependent_plugins": {
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.bitfarm.kronos"
+    }
+  }
+}

@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: peticiones/peticiones.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: peticiones/peticiones.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Función para guardar como pendiente de sincronizar una entidad
+ * @param {string} url 
+ * @param {string} metodo 
+ * @param {string} nombreTabla 
+ * @param {string} idEntidad 
+ * @param {function=} callback
+ */
+function guardarPeticion(url, metodo, nombreTabla, nombreIdentificador, idEntidad, callback) {
+    var idSiniestro = window.localStorage.getItem("idSiniestroServidor");
+    idSiniestro = idSiniestro != null &amp;&amp; idSiniestro != undefined ? idSiniestro : window.localStorage.getItem("idSiniestroLocal");
+    peticionesLog.debug(`guardando ${metodo.toUpperCase()} ${url}`, { nombreTabla, nombreIdentificador, metodo, idEntidad });
+    sqlQuery('INSERT INTO Peticiones (url, metodo, entidad, identificadorEntidad, identificador, estatus, caso) VALUES (?,?,?,?,?,?,?)',
+        [url, metodo, nombreTabla, nombreIdentificador, idEntidad, 'PEND', idSiniestro], function (last_id) {
+            if (last_id) {
+                window.localStorage.setItem("synced", false);
+                if (callback) {
+                    callback(last_id);
+                    syncLoadDataEntry = 0;
+                }
+            }
+        }, true);
+}
+
+/**
+ * Función para guardar como pendiente de sincronizar una entidad
+ * @param {string} url 
+ * @param {string} metodo 
+ * @param {string} nombreTabla 
+ * @param {string} idEntidad 
+ * @returns {Promise&lt;>}
+ */
+function guardarPeticionPromise(url, metodo, nombreTabla, nombreIdentificador, idEntidad) {
+    var idSiniestro = window.localStorage.getItem("idSiniestroServidor");
+    idSiniestro = idSiniestro != null &amp;&amp; idSiniestro != undefined ? idSiniestro : window.localStorage.getItem("idSiniestroLocal");
+    peticionesLog.debug(`guardando ${metodo.toUpperCase()} ${url}`, { nombreTabla, nombreIdentificador, metodo, idEntidad });
+    return sqlPromise(`INSERT INTO Peticiones (url, metodo, entidad, identificadorEntidad, identificador, estatus, caso) VALUES (?,?,?,?,?,?,?)`,
+        [url, metodo, nombreTabla, nombreIdentificador, idEntidad, 'PEND', idSiniestro])
+        .then(() => {
+            window.localStorage.setItem("synced", false);
+            syncLoadDataEntry = 0;
+        })
+}
+
+/** 
+ * Borra una peticion
+ */
+function deletePeticion(nombreTabla, nombreIdentificador, idEntidad, estatus, callback) {
+    peticionesLog.debug('eliminando peticion', { nombreTabla, nombreIdentificador, idEntidad, status })
+    sqlQuery('DELETE FROM Peticiones WHERE entidad = ? AND identificadorEntidad = ? AND identificador = ? AND estatus = ?',
+        [nombreTabla, nombreIdentificador, idEntidad, estatus], function (success) {
+            callback();
+        });
+}
+
+/**
+ * Se encarga de obtener los parámetros y enviar las peticiones al servidor
+ * @param {Peticion} peticion 
+ */
+function sendPeticiones(peticion, callback) {
+
+    var enviarDocumento = (peticion, registro, params, fileKey, mimeType) => {
+        console.error('PARAMS', params, registro)
+        return new Promise((resolve, reject) => {
+            if (params.dataUri.includes('Library')) {
+                let nuevaDireccion = Directorios.obtenerRaiz() + params.dataUri.split('/NoCloud').pop();
+                params.up_documento = nuevaDireccion;
+                params.dataUri = nuevaDireccion;
+            }
+            saveRequest(params, peticion.idPeticion);
+            uploadFile(peticion.url, params, fileKey, 'POST', mimeType, function (response) {
+                saveResponse(response, peticion.idPeticion);
+                actualizarEstatusPeticion(peticion.idPeticion, 'OK', updateLocalData(peticion, registro, response, resolve, reject));
+            }, function (error) {
+                reject(error)
+            })
+        }).catch(guardarErrorPeticion);
+    }
+
+    var enviarDocumentoFoto = (peticion, datosEntidad, registro) => {
+        let informacionFoto = docFotoToJson(datosEntidad[0]);
+        if (informacionFoto.up_documento.includes('Library')) {
+            let nuevaDireccion = Directorios.obtenerRaiz() + informacionFoto.up_documento.split('/NoCloud').pop();
+            informacionFoto.up_documento = nuevaDireccion;
+            informacionFoto.dataUri = nuevaDireccion;
+        }
+        return new Promise((resolve, reject) => {
+            saveRequest(informacionFoto, peticion.idPeticion);
+            uploadFile(peticion.url, informacionFoto, 'up_documento', 'POST', datosEntidad[0].mimetype, function (response) {
+                saveResponse(response, peticion.idPeticion);
+                actualizarEstatusPeticion(peticion.idPeticion, 'OK', updateLocalData(peticion, registro, response, resolve, reject));
+            }, function (error) {
+                reject(error)
+            });
+        }).catch(guardarErrorPeticion);
+    }
+
+    var enviarPostGeneral = (peticion, registro) => {
+        return new Promise((resolve, reject) => {
+            saveRequest(registro, peticion.idPeticion);
+            sendRequest(peticion.metodo, peticion.url, registro, function (response) {
+                saveResponse(response, peticion.idPeticion);
+                actualizarEstatusPeticion(peticion.idPeticion, 'OK', updateLocalData(peticion, registro, response, resolve, reject));
+            }, function (error) {
+                reject(error)
+            });
+        }).catch(guardarErrorPeticion);
+    }
+
+    var enviarCorreoInspeccion = (peticion, registro) => {
+        let numSin = registro.casos;
+        let data = new FormData();
+        data.append('rut', localStorage['username']);
+        data.append('clave', localStorage['password']);
+        data.append('tipo', '1')
+        return fetch(SERVIDOR_WEB, {
+            method: 'POST',
+            body: data
+        }).then(response => {
+            if (response.url != `${SERVIDOR_WEB}/inicio/inicio.php`) {
+                return Promise.reject('Al iniciar sesion la pagina no es inicio.php');
+            }
+            return fetch(`${SERVIDOR_WEB}/mail_inspeccion/inspeccion_envia.php?doc=${numSin}`, {
+                credentials: 'include'
+            })
+        }).then(response => {
+            return response.text();
+        }).then(html => {
+            let info = document.createElement('div');
+            info.innerHTML = html;
+            let formData = new FormData();
+            formData.append('contacto_mail', registro.contacto_mail);
+            formData.append('casos', numSin);
+            formData.append('documento', info.querySelector('[name="documento"]').value);
+            formData.append('siniestro', info.querySelector('[name="siniestro"]').value);
+            formData.append('ruta', info.querySelector('[name="ruta"]').value);
+            formData.append('ruta_control', info.querySelector('[name="ruta_control"]').value);
+            formData.append('ruta_ver', info.querySelector('[name="ruta_ver"]').value);
+            formData.append('e_mail', info.querySelector('[name="e_mail"]').value);
+            formData.append('asegurado', info.querySelector('[name="asegurado"]').value);
+            formData.append('contacto', info.querySelector('[name="contacto"]').value);
+            formData.append('documento_mail', info.querySelector('[name="documento_mail"]').value);
+            formData.append('MM_update', info.querySelector('[name="MM_update"]').value);
+            return fetch(`${SERVIDOR_WEB}/mail_inspeccion/inspeccion_envia.php?doc=${numSin}`, {
+                credentials: 'include',
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (!response.ok) {
+                    return Promise.reject('La respuesta es invalida')
+                }
+                saveResponse(response, peticion.idPeticion);
+                return new Promise((resolve, reject) => {
+                    actualizarEstatusPeticion(peticion.idPeticion, 'OK', updateLocalData(peticion, registro, response, resolve, reject));
+                })
+            })
+        })
+        .catch(error => {
+            peticionesLog.error('error inspeccion', error);
+            guardarErrorPeticion(error);
+        });
+    };
+
+    /**
+     * Implementacion temporal usando la pagina en vez del webservice
+     * @param {*} peticion 
+     * @param {DetalleGasto} registro 
+     */
+    var eliminarDetalleGasto = (peticion, registro) => {
+        console.error('detalle a eliminar', registro);
+        let estaSincronizado = registro.gastos_id != null &amp;&amp; String(registro.gastos_id).trim() != '';
+        if (!estaSincronizado) { // eliminar localmente
+            console.error('eliminando definitivamente local')
+            GastosService.eliminarDetalleGasto(registro.idDetalleGasto);
+        }
+        // eliminar en el servidor
+        return GastosService.obtenerDetalleGasto(registro.idDetalleGasto).then(detalleGasto => {
+            console.log('detalle gasto', detalleGasto);
+            let data = new FormData();
+            data.append('rut', localStorage['username']);
+            data.append('clave', localStorage['password']);
+            data.append('tipo', '1')
+            return fetch(`${SERVIDOR_WEB}/login/login_onn.php`, {
+                method: 'POST',
+                body: data             
+            }).then(response => {
+                if (response.url != `${SERVIDOR_WEB}/inicio/inicio.php`) {
+                    return Promise.reject('Al iniciar sesion la pagina no es inicio.php');
+                }
+                let parametros = `fotos_id=${registro.gastos_id}&amp;id=${detalleGasto.gastos_caso}`
+                return fetch(`${SERVIDOR_WEB}/gastos/gastos_edit.php?${parametros}`, {
+                    credentials: 'include'
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    return Promise.reject('La respuesta es invalida')
+                }
+                saveResponse(response, peticion.idPeticion);
+                return new Promise((resolve, reject) => {
+                    actualizarEstatusPeticion(peticion.idPeticion, 'OK', 
+                    updateLocalData(peticion, registro, response, resolve, reject));
+                })
+            })
+        }).catch(error => {
+            peticionesLog.error('error inspeccion', error)
+            guardarErrorPeticion(error);
+        });
+    };
+
+    var enviarPDF = (peticion, datosEntidad, registro) => {
+        let paramsPdf = pdfToJson(datosEntidad[0]);
+        if (paramsPdf.up_documento.includes('Library')) {
+            let nuevaDireccion = Directorios.obtenerRaiz() + paramsPdf.up_documento.split('/NoCloud').pop();
+            paramsPdf.up_documento = nuevaDireccion;
+            paramsPdf.dataUri = nuevaDireccion;
+        }
+        return new Promise((resolve, reject) => {
+            paramsPdf.up_documento
+            saveRequest(paramsPdf, peticion.idPeticion);
+            uploadFile(peticion.url, paramsPdf, 'up_documento', 'POST', datosEntidad[0].mimetype, function (response) {
+                saveResponse(response, peticion.idPeticion);
+                actualizarEstatusPeticion(peticion.idPeticion, 'OK', updateLocalData(peticion, registro, response, resolve, reject));
+            }, function (error) {
+                reject(error)
+            });
+        }).catch(guardarErrorPeticion);
+    };
+
+    var guardarErrorPeticion = error => {
+        saveResponse(error, peticion.idPeticion);
+        enviando = false;
+        if (error.status == 401 &amp;&amp; error.statusText === 'Invalid token') {
+            actualizarEstatusPeticion(peticion.idPeticion, 'PEND');
+        } else {
+            actualizarEstatusPeticion(peticion.idPeticion, 'ERROR', callback);
+        }
+        return Promise.resolve()
+    };
+
+    var obtenerDetalleEntidad = (peticion) => {
+        if (peticion.entidad == 'FotoInspeccion') {
+            return sqlPromise(`SELECT idFoto, fotos_id, fotos_nombre, fotos_observaciones, up_documento, 
+                    edita_dato, fecha_ingreso, cantidadFotosPlus, nombre_foto, tipo_foto_nombre FROM FotoInspeccion 
+                    WHERE ${peticion.identificadorEntidad} = ?`, [peticion.identificador])
+                .then(rowsAsList)
+        } else if (peticion.entidad == 'EliminarDetalleGasto') {
+            return sqlPromise(`SELECT * FROM DetalleGasto WHERE idDetalleGasto = ?`, [peticion.identificador])
+                .then(rowsAsList)
+        } else {
+            return sqlPromise(`SELECT * FROM ${peticion.entidad} WHERE ${peticion.identificadorEntidad} = ?`, 
+                    [peticion.identificador])
+                .then(rowsAsList)
+        }   
+    };
+
+    if (verificarConexion() == true) {
+        peticionesLog.debug('enviando peticiones')
+
+        return new Promise((resolve, reject) => {
+            obtenerDetalleEntidad(peticion)
+                .then(datosEntidad => {
+                    var promesas = []
+                    for (var i = 0; i &lt; datosEntidad.length; i++) {
+                        var registro = datosEntidad[i];
+                        console.error('detalle gasto enviado', registro);
+                        var promesa = Promise.resolve()
+                        peticionesLog.debug(`enviando peticion ${peticion.metodo.toUpperCase()} ${peticion.url}`, peticion, registro);
+                        // Se envian los documentos
+                        if (peticion.metodo == 'DOCUMENT' &amp;&amp; peticion.entidad == 'DocumentoGasto') { // Documentos del gasto
+                            promesa = PeticionesDao.sePuedeSincronizarDocumentoGasto(registro.fk_idDetalleGasto)
+                                .then(esValido => {
+                                    if (esValido)
+                                        return enviarDocumento(peticion, registro, documentoGastoToJson(registro), 'up_documento', registro.mimeType);
+                                    peticionesLog.debug('Omitiendo peticion')
+                                })
+                        } else if (peticion.metodo == 'DOCUMENT' &amp;&amp; peticion.entidad == 'DetalleGasto') { // Detalle de gasto
+                            promesa = PeticionesDao.sePuedeSincronizarDetalleGasto(registro.fk_idGasto)
+                                .then(esValido => {
+                                    if (esValido) {
+                                        return PeticionesDao.agregarGastoReportId(registro)
+                                            .then(detalleGasto => enviarDocumento(peticion, detalleGasto, detalleGastoToJson(detalleGasto), 'up_documento_2', 'image/jpeg'))
+                                    }
+                                    peticionesLog.debug('Omitiendo peticion')
+                                }).catch(error => {
+                                    if (error === 'gasto_repor_id') {
+                                        peticionesLog.error('Error con el gasto_repor_id del gasto es nulo')
+                                        return guardarErrorPeticion('Error con el gasto_repor_id del gasto es nulo')
+                                    } else {
+                                        throw error;
+                                    }
+                                })
+                        } else if (peticion.metodo == 'DOCUMENT' &amp;&amp; peticion.entidad == 'FotoInspeccion') { //Fotos de la inspeccion
+                            /** @type {FotoInspeccion} */
+                            let foto = registro;
+                            // la direccion de la aplicacion puede cambiar en ios por lo que solo se guarda el fullpath
+                            if (device.platform == 'iOS') {
+                                foto.up_documento = Directorios.obtenerRaiz() + foto.up_documento;
+                            }
+                            promesa = enviarDocumento(peticion, foto, fotoInspeccionToJson(foto), 'up_documento', 'image/jpeg');
+                        } else if (peticion.metodo == 'DOCUMENT_FOTO') { //Se envia el documento de la inspeccion
+                            promesa = enviarDocumentoFoto(peticion, datosEntidad, registro);
+                        } else if (peticion.metodo == 'UPLOAD_PDF') { //Se envia el pdf firmado
+                            promesa = enviarPDF(peticion, datosEntidad, registro);
+                        } else if (peticion.entidad == 'SendMailGasto') { // Se envia el correo de gasto
+                            promesa = PeticionesDao.sePuedeSincronizarCorreoGasto(registro.fk_idGasto)
+                                .then(esValido => {
+                                    if (esValido)
+                                        return enviarPostGeneral(peticion, registro)
+                                    peticionesLog.debug('Omitiendo peticion');
+                                });
+                        } else if (peticion.entidad == 'DetalleInspeccion' &amp;&amp; peticion.metodo == 'PUT') {
+                            registro['inspeccion_daño_estr'] = registro.inspeccion_dano_estr;
+                            promesa = PeticionesDao.agregarInspeccion_id(registro)
+                                .then(inspeccion => enviarPostGeneral(peticion, inspeccion));
+                        } else if (peticion.entidad == 'DetalleInspeccion') {
+                            registro['inspeccion_daño_estr'] = registro.inspeccion_dano_estr;
+                            promesa = enviarPostGeneral(peticion, registro);
+                        } else if (peticion.entidad == 'EliminarDetalleGasto') {
+                            promesa = eliminarDetalleGasto(peticion, registro);
+                        } else if (peticion.entidad == 'CambioBitacora') {
+                            // hay que agregarle un 0 al dia y al anio de ser necesario
+                            registro.dia = registro.dia.toString().padStart(2,0);
+                            registro.mes = registro.mes.toString().padStart(2,0);
+                            promesa = enviarPostGeneral(peticion, registro);
+                        } else {
+                            promesa = enviarPostGeneral(peticion, registro);
+                        }
+                        promesas.push(promesa)
+                    }
+                    resolve(Promise.all(promesas))
+                })
+        });
+    } else {
+        peticionesLog.debug('No se envio')
+    }
+}
+
+
+/**
+ * Funcion que actualiza la peticion
+ * @param {*} peticion 
+ */
+function actualizarEstatusPeticion(idPeticion, estatus, callback) {
+    peticionesLog.debug(`actualizando peticion ${idPeticion} a ${estatus}`)
+    sqlQuery('UPDATE Peticiones SET estatus = ? WHERE idPeticion = ?',
+        [estatus, idPeticion], callback ? callback : null);
+}
+
+/**
+ * Funcion que actualiza la BD despues de enviar una peticion exitosa
+ * @param {Peticion} peticion 
+ * @param {Object} entidad 
+ * @param {Object} response 
+ * @param {function} callback 
+ * @param {function} errorCallback callback para error
+ */
+function updateLocalData(peticion, entidad, response, callback, errorCallback) {
+    peticionesLog.debug(`actualizando informacion local`, peticion, entidad, response);
+    console.error('response', response)
+    if (peticion == null) { // Sin datos que actualizar
+        hideLoading();
+        enviando = false;
+        if (callback) {
+            callback();
+        } 
+        return;
+    }
+    //Bitacora
+    if (peticion.entidad == 'Bitacora') {
+        if (response.resultados.length != 0) {
+            response.resultados.forEach(function (bitacora) {
+                sqlQuery('UPDATE Bitacora SET id=?, fecha_orden = ?, usuario = ? WHERE idBitacora = ?',
+                    [bitacora.id, bitacora.fecha_orden, bitacora.usuario, entidad.idBitacora], function (success) {
+                        sqlQuery('UPDATE CambioBitacora SET bitacora_id = ? WHERE fk_idBitacora = ?', [bitacora.id, entidad.idBitacora]);
+                        if (callback) {
+                            callback();
+                        }
+                    });
+
+                if (currentPage === 'bitFacturable') { // Actualiza el id bitacora del servidor, si se esta actualizando dicha bitácora
+                    var idBitacoraInView = $('#idBitacora').val();
+                    if (idBitacoraInView == entidad.idBitacora) {
+                        $('#bitacora_id').val(bitacora.id);
+                    }
+                }
+                enviando = false;
+            });
+        } else {
+            enviando = false;
+            if (callback) {
+                callback();
+            }
+        }
+    //Gasto
+    } else if (peticion.entidad == 'Gasto') {
+        var repor_nombre_actualizado = "";
+        if (entidad.gastos_repor_caso != null || entidad.gastos_repor_caso != "") {
+            repor_nombre_actualizado = entidad.gastos_repor_caso + '-' + entidad.ajustador + '-' + numeral(response.gastos_repor_consecu).format('000');
+        } else {
+            repor_nombre_actualizado = entidad.ajustador + '-' + numeral(response.gastos_repor_consecu).format('000');
+        }
+        peticionesLog.debug('nuevo nombre gastos_repor_nombre', repor_nombre_actualizado);
+        if (response.gastos_repor_id) {
+            var idReporte = response.gastos_repor_id;
+            console.error('Guardando gasto', entidad.idGasto)
+            sqlPromise(`UPDATE Gasto SET gastos_repor_id = ?, gastos_repor_consecu = ?, gastos_repor_nombre = ? 
+                        WHERE idGasto = ?`,
+                [response.gastos_repor_id, response.gastos_repor_consecu, repor_nombre_actualizado, entidad.idGasto])
+                // actualizando el detalle para que apunte al reporte de gasto real
+                .then(() => sqlPromise(`UPDATE DetalleGasto SET gastos_repor_id = ?, gastos_id_reporte = ? 
+                                        WHERE fk_idGasto = ?`,
+                    [idReporte, idReporte, entidad.idGasto]))
+                // actualizando el correo para que apunte al reporte de gasto real
+                .then(() => sqlPromise(`UPDATE SendMailGasto SET gastos_repor_nombre = ?, gastos_repor_id_anti = ? 
+                                        WHERE fk_idGasto = ?`,
+                    [repor_nombre_actualizado, idReporte, entidad.idGasto]))
+                .then(() => {
+                    console.error('Se actulizo el detalle y el gasto');
+                    showSuccess('Se ha sincronizado el reporte de gasto ' + idReporte);
+                    // actualizar el detalle en el formulario de nuevo
+                    if (currentPage === 'detalleReporteGasto') {
+                        window.localStorage.removeItem("numeroReporte");
+                        window.localStorage.setItem("numeroReporte", idReporte);
+                    }
+                    enviando = false;
+                    peticionesLog.debug('entidad', entidad);
+                })
+                .then(callback)
+                .catch(err => {
+                    console.error(err);
+                    errorCallback(err);
+                });
+        } else {
+            enviando = false;
+            errorCallback();
+        }
+    //Detalle Gasto 
+    } else if (peticion.entidad == 'DetalleGasto') {
+        var object = null;
+        try {
+            object = JSON.parse(response.response);
+        } catch(err) {
+            errorCallback(response.response);
+            return;
+        } 
+        if (object == null || response == null || object.gastos_id == null || String(object.gastos_id).trim() == '') {
+            peticionesLog.error('Detalle creado sin id')
+            errorCallback('Detalle sin id');
+            return;
+        }
+        if (currentPage === 'detalleReporteGasto') {
+            $('#gasto_id').val(object.gastos_id);
+        }
+        delete object['user_nombre']; // esto evita que se modifique el ajustador
+        object.idDetalleGasto = entidad.idDetalleGasto;
+        sqlPromise('UPDATE DetalleGasto SET gastos_id=? WHERE idDetalleGasto=?', [object.gastos_id, entidad.idDetalleGasto])
+            .then(() => sqlPromise('UPDATE DocumentoGasto SET gasto_id = ? WHERE fk_idDetalleGasto = ?', [object.gastos_id, entidad.idDetalleGasto]))
+            .then(() => {
+                enviando = false;
+                if (callback != null) {
+                    callback();
+                }
+            })
+            .then(() => {
+                showSuccess('Se ha sincronizado el gasto ' + object.gastos_id)
+                let idDetalleGasto = document.getElementById('idDetalleGasto');
+                let pendienteSubirAdverencia = document.querySelector('[data-pendiente-subir]');
+                if (pendienteSubirAdverencia != null &amp;&amp; idDetalleGasto != null &amp;&amp; 
+                    idDetalleGasto.value == entidad.idDetalleGasto) {
+                        pendienteSubirAdverencia.parentElement.removeChild(pendienteSubirAdverencia);
+                }
+            })
+            .catch(err => {
+                console.error('fallo', err);
+                errorCallback(err);
+            });
+    }
+    // Documento gasto 
+    else if (peticion.entidad == 'DocumentoGasto') {
+        console.error('documento entidad', entidad)
+        GastosService.tieneDocumentosPendientes(entidad.idDetalleGasto).then(tieneDocumentosPendientes => {
+            let documentoPendientesAdvertencia = document.querySelector('[data-documentos-pendientes]');
+            if (!tieneDocumentosPendientes &amp;&amp; documentoPendientesAdvertencia) {
+                documentoPendientesAdvertencia.parentElement.removeChild(documentoPendientesAdvertencia)
+            }
+        }).finally(() => {
+            callback();
+        })
+    } 
+    // DetalleInspeccion / Inspeccion
+    else if (peticion.entidad == 'DetalleInspeccion') { //Se crea una nueva inspeccion
+        if (peticion.metodo == 'POST' &amp;&amp; response.inspeccion_id == null) {
+            peticionesLog.error('No se pudo obtener el inspeccion_id', response.inspeccion_id)
+            errorCallback('No se pudo obtener el inspeccion_id')
+        }
+        else if (peticion.metodo == 'POST') {
+            sqlPromise('UPDATE Inspeccion SET fecha = ?, inspeccion_tipo = ?, caso_id = ?, inspeccion_id = ? WHERE tableInspeccionID = ?', [response.inspeccion_fecha_crea, response.inspeccion_tipo, response.inspeccion_caso, response.inspeccion_id, entidad.idInspeccion])
+                .then(() => sqlPromise('UPDATE DetalleInspeccion SET inspeccion_id = ? WHERE idDetalleInspeccion = ?', [response.inspeccion_id, entidad.idDetalleInspeccion]))
+                .then(callback)
+                .catch(errorCallback);
+        }
+        else {
+            sqlPromise(`UPDATE DetalleInspeccion SET caso_id = ?,
+                    dateInspeccion = ?,
+                    inspeccion_estado = ?,
+                    inspeccion_contacto = ?,
+                    inspeccion_mail = ?,
+                    inspeccion_declaracion = ?,
+                    inspeccion_descrip = ?,
+                    inspeccion_dano_estr = ?,
+                    inspeccion_almacen = ?,
+                    correspon_caso = ?,
+                    inspeccion_tipo = ?,
+                    inspeccion_comentario = ? WHERE idDetalleInspeccion = ?`,
+                [response.caso_detalle.caso_id, response.inspeccion_fecha_crea.split(" ")[0], response.inspeccion_estado, response.inspeccion_contacto, response.inspeccion_mail,
+                response.inspeccion_declaracion, response.inspeccion_descrip, response.inspeccion_daño_estr, response.inspeccion_almacen,
+                response.inspeccion_caso, 4, response.inspeccion_comentario, entidad.idDetalleInspeccion])
+                .then(callback)
+                .catch(errorCallback);
+        }
+        //Fotografías Inspeccion
+    } else if (peticion.entidad == 'FotoInspeccion') { //Se actualiza el id de las fotografías locales
+        var objectFoto;
+        if (response.response) {
+            objectFoto = JSON.parse(response.response);
+        } else {
+            objectFoto = response;
+        }
+        var fotos_id = objectFoto.fotos_id;
+        sqlQuery('UPDATE FotoInspeccion SET fotos_id = ? WHERE idFoto = ?',
+            [fotos_id, entidad.idFoto], function (success) {
+                enviando = false;
+                if (callback) {
+                    callback();
+                }
+            });
+    } else if (peticion.entidad == 'EliminarDetalleGasto') {
+        GastosService.eliminarDetalleGasto(entidad.idDetalleGasto).finally(() => {
+            showSuccess('Se ha eliminado el detalle de gasto');
+            let formularioDetalleGasto = document.getElementById('nuevoDetalleGasto');
+            let detalleGastoInput = document.getElementById('idDetalleGasto');
+            console.log(formularioDetalleGasto, detalleGastoInput);
+            if (formularioDetalleGasto &amp;&amp; detalleGastoInput) {
+                if (detalleGastoInput.value == entidad.idDetalleGasto) {
+                    verReporteGasto(null, entidad.fk_idGasto);
+                }
+            }
+        }).finally(() => {
+            if (callback) {
+                callback();
+            }
+        });
+    } else {
+        hideLoading();
+        enviando = false;
+        if (callback) {
+            callback();
+        }
+    }
+}
+
+/**
+ * Limpia las peticiones que ya estan correctas
+ */
+function clearPeticiones() {
+    sqlQuery('DELETE FROM Peticiones WHERE estatus = ?', ['OK'], function (success) {
+        showSuccess('Se ha limpiado la lista correctamente');
+        ListadoPeticiones.mostrarPeticiones();
+        syncLocalData();
+    });
+}
+
+/**
+ * Función para resetear las peticiones 
+ * marcadas con error
+ * @returns {Promise}
+ */
+function resetAllError() {
+    return sqlPromise('UPDATE Peticiones SET estatus = ?, request = ?, response = ? WHERE estatus = ?',
+        ['PEND', null, null, 'ERROR'])
+        .then(() => {
+            ListadoPeticiones.actualizarListado();
+            return syncLocalData();
+        });
+}
+
+/**
+ * Guarda el request de la peticion
+ * @param {Object} requestParams 
+ * @param {string} idPeticion 
+ */
+function saveRequest(requestParams, idPeticion) {
+    sqlQuery('UPDATE Peticiones SET request = ? WHERE idPeticion = ?', [JSON.stringify(requestParams), idPeticion])
+}
+
+/**
+ * Guarda el response de la peticion
+ * @param {Object} responseParams 
+ * @param {string} idPeticion 
+ */
+function saveResponse(responseParams, idPeticion) {
+    if(responseParams != null &amp;&amp; responseParams.response) {
+        try {
+            responseParams = JSON.parse(responseParams.response);
+        } catch(err) {
+            responseParams = responseParams.response
+        }
+    }
+    sqlQuery('UPDATE Peticiones SET response = ? WHERE idPeticion = ?', [JSON.stringify(responseParams), idPeticion])
+}
+
+function verDetallePeticion(idPeticion) {
+    sqlQuery('SELECT * FROM Peticiones WHERE idPeticion = ?', [idPeticion], function (peticionData) {
+        if (peticionData != true) {
+            var peticion = peticionData[0];
+            alert("request: " + peticion.request);
+            alert("response: " + peticion.response);
+        }
+    });
+}
+
+var syncLoadDataEntry = 0;
+/**
+ * Funcion para sincroniza la aplicacion con el servidor
+ * @param {string=} action 
+ * @returns {Promise}
+ */
+function syncLocalData(action) {
+
+    var iniciarSincronizacion = (pendiente) => {
+        hideLoading();
+        if (pendiente.length > 0) {
+            showLoading();
+            window.localStorage.setItem("synced", false);
+            if (syncLoadDataEntry == 0) {
+                //showNotice("Sincronizando datos");
+                syncLoadDataEntry = 1;
+            }
+            // limpiar el intervalo
+            clearInterval(intervaloPeticiones);
+            return Promise.resolve(pendiente)
+        } else {
+            syncLoadDataEntry = 0;
+            enviando = false;
+            hideLoading();
+            if (isSynced() == false || isSynced() == "false") { //Actualizar los datos solo si las peticiones ya han sido enviadas
+                window.localStorage.setItem("synced", true);
+                descargarInfoCaso();
+            }
+            return Promise.reject('No hay peticiones pendientes')
+        }
+    }
+
+    var finalizarSincronizacion = () => {
+        sincronizando = false;
+        syncLoadDataEntry = 0;
+        enviando = false;
+        hideLoading();
+        if (isSynced() == false || isSynced() == "false") { //Actualizar los datos solo si las peticiones ya han sido enviadas
+            window.localStorage.setItem("synced", true);
+            descargarInfoCaso();
+        }
+        //crear intervalo para sincronizar en segundo plano
+        intervaloPeticiones = crearIntervaloPeticiones();
+    }
+
+    if (action == "logout") {
+        hideAlertDialog('logoutConfirm');
+    }
+
+    if (verificarConexion() &amp;&amp; !sincronizando) {
+        sincronizando = true;
+        return PeticionesDao.obtenerPeticionesPendientes()
+            .then(iniciarSincronizacion)
+            .then(enviarPeticionesPendientes)
+            .then(finalizarSincronizacion)
+            .catch(error => {
+                if (error !== 'No hay peticiones pendientes')
+                    peticionesLog.error('Error en sincronizacion', error)
+            })
+            .finally(() => sincronizando = false)
+    }
+    return Promise.resolve();
+}
+
+/**
+ * Envia una conjunto de peticiones pendientes de forma ordenada
+ * @param {Array&lt;Peticion>} siguiente 
+ */
+function enviarPeticionesPendientes(siguiente) {
+    var peticionesPendientes = Promise.resolve(siguiente)
+    return peticionesPendientes.then(function (peticiones) {
+        if (peticiones.length > 0) {
+            var peticion = peticiones.shift();
+            return sendPeticiones(peticion)
+                .catch(error => peticionesLog.error('Error no atrapado en peticion', error, peticion))
+                .finally(() => {
+                    console.error('actualizando listado');
+                    ListadoPeticiones.actualizarListado();
+                    return enviarPeticionesPendientes(peticiones);
+                });
+        } else {
+            return Promise.resolve()
+        }
+    })
+}
+
+/**
+ * Funcion para saber si se encuentra sincronizado, puede fallar la primera y regresar nulo
+ */
+function isSynced() {
+    let sincronizado = window.localStorage.getItem("synced");
+    if (sincronizado == null)
+        setSynced();
+    return sincronizado;
+}
+
+function setSynced() {
+    sqlQuery('SELECT * FROM Peticiones WHERE estatus = ? AND request IS NULL AND response IS NULL', ['PEND'], function (lstPeticiones) {
+        if (lstPeticiones != true) {
+            window.localStorage.setItem("synced", false);
+        } else {
+            window.localStorage.setItem("synced", true);
+        }
+    });
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-GestureDetector.html">GestureDetector</a></li><li><a href="module-gestures.html">gestures</a></li></ul><h3>Classes</h3><ul><li><a href="-_anonymous_-GestureDetector.Instance.html">Instance</a></li><li><a href="CatalogoService.html">CatalogoService</a></li><li><a href="DialogoCerrarSesion.html">DialogoCerrarSesion</a></li><li><a href="DialogoNuevoUsuario.html">DialogoNuevoUsuario</a></li><li><a href="DialogoRestablecer.html">DialogoRestablecer</a></li><li><a href="GastosService.html">GastosService</a></li><li><a href="InspeccionFotografia.html">InspeccionFotografia</a></li><li><a href="InspeccionSubirDocumento.html">InspeccionSubirDocumento</a></li><li><a href="InspeccionTablaFotografias.html">InspeccionTablaFotografias</a></li><li><a href="ListadoPeticiones.html">ListadoPeticiones</a></li><li><a href="module-GestureDetector.Detection.html">Detection</a></li><li><a href="module-GestureDetector.Event.html">Event</a></li><li><a href="module-GestureDetector.PointerEvent.html">PointerEvent</a></li><li><a href="module-gestures.Drag.html">Drag</a></li><li><a href="module-gestures.Gesture.html">Gesture</a></li><li><a href="module-gestures.Hold.html">Hold</a></li><li><a href="module-gestures.Release.html">Release</a></li><li><a href="module-gestures.Swipe.html">Swipe</a></li><li><a href="module-gestures.Tap.html">Tap</a></li><li><a href="module-gestures.Touch.html">Touch</a></li><li><a href="module-gestures.Transform.html">Transform</a></li><li><a href="PeticionesDao.html">PeticionesDao</a></li><li><a href="TablaDetalleGasto.html">TablaDetalleGasto</a></li><li><a href="Utils.html">Utils</a></li></ul><h3>Events</h3><ul><li><a href="module-gestures.html#~event:change">change</a></li><li><a href="module-gestures.html#~event:changestate">changestate</a></li><li><a href="module-gestures.html#~event:close">close</a></li><li><a href="module-gestures.html#~event:destroy">destroy</a></li><li><a href="module-gestures.html#~event:doubletap">doubletap</a></li><li><a href="module-gestures.html#~event:drag">drag</a></li><li><a href="module-gestures.html#~event:dragdown">dragdown</a></li><li><a href="module-gestures.html#~event:dragend">dragend</a></li><li><a href="module-gestures.html#~event:dragright">dragright</a></li><li><a href="module-gestures.html#~event:dragstart">dragstart</a></li><li><a href="module-gestures.html#~event:dragup">dragup</a></li><li><a href="module-gestures.html#~event:drapleft">drapleft</a></li><li><a href="module-gestures.html#~event:gesture">gesture</a></li><li><a href="module-gestures.html#~event:hide">hide</a></li><li><a href="module-gestures.html#~event:hold">hold</a></li><li><a href="module-gestures.html#~event:init">init</a></li><li><a href="module-gestures.html#~event:modechange">modechange</a></li><li><a href="module-gestures.html#~event:open">open</a></li><li><a href="module-gestures.html#~event:overscroll">overscroll</a></li><li><a href="module-gestures.html#~event:pinchin">pinchin</a></li><li><a href="module-gestures.html#~event:pinchout">pinchout</a></li><li><a href="module-gestures.html#~event:postchange">postchange</a></li><li><a href="module-gestures.html#~event:postclose">postclose</a></li><li><a href="module-gestures.html#~event:posthide">posthide</a></li><li><a href="module-gestures.html#~event:postopen">postopen</a></li><li><a href="module-gestures.html#~event:postpop">postpop</a></li><li><a href="module-gestures.html#~event:postpush">postpush</a></li><li><a href="module-gestures.html#~event:postshow">postshow</a></li><li><a href="module-gestures.html#~event:prechange">prechange</a></li><li><a href="module-gestures.html#~event:preclose">preclose</a></li><li><a href="module-gestures.html#~event:prehide">prehide</a></li><li><a href="module-gestures.html#~event:preopen">preopen</a></li><li><a href="module-gestures.html#~event:prepop">prepop</a></li><li><a href="module-gestures.html#~event:prepush">prepush</a></li><li><a href="module-gestures.html#~event:preshow">preshow</a></li><li><a href="module-gestures.html#~event:reactive">reactive</a></li><li><a href="module-gestures.html#~event:refresh">refresh</a></li><li><a href="module-gestures.html#~event:release">release</a></li><li><a href="module-gestures.html#~event:rotate">rotate</a></li><li><a href="module-gestures.html#~event:show">show</a></li><li><a href="module-gestures.html#~event:swipe">swipe</a></li><li><a href="module-gestures.html#~event:swipedown">swipedown</a></li><li><a href="module-gestures.html#~event:swipeleft">swipeleft</a></li><li><a href="module-gestures.html#~event:swiperight">swiperight</a></li><li><a href="module-gestures.html#~event:swipeup">swipeup</a></li><li><a href="module-gestures.html#~event:tap">tap</a></li><li><a href="module-gestures.html#~event:touch">touch</a></li><li><a href="module-gestures.html#~event:transform">transform</a></li><li><a href="module-gestures.html#~event:transformend">transformend</a></li><li><a href="module-gestures.html#~event:transformstart">transformstart</a></li></ul><h3>Global</h3><ul><li><a href="global.html#abrirDocumentoConAplicacionDeTerceros">abrirDocumentoConAplicacionDeTerceros</a></li><li><a href="global.html#abrirNuevaInspeccion">abrirNuevaInspeccion</a></li><li><a href="global.html#actualizarEstatusPeticion">actualizarEstatusPeticion</a></li><li><a href="global.html#actualizarListadoGasto">actualizarListadoGasto</a></li><li><a href="global.html#appLog">appLog</a></li><li><a href="global.html#b64toBlob">b64toBlob</a></li><li><a href="global.html#backReporteGasto">backReporteGasto</a></li><li><a href="global.html#backVerInspeccion">backVerInspeccion</a></li><li><a href="global.html#baseDatosLog">baseDatosLog</a></li><li><a href="global.html#bitacora">bitacora</a></li><li><a href="global.html#buscarInspeccionSinSiniestro">buscarInspeccionSinSiniestro</a></li><li><a href="global.html#buscarReferencia">buscarReferencia</a></li><li><a href="global.html#buscarSiniestro">buscarSiniestro</a></li><li><a href="global.html#cambiarSiniestro">cambiarSiniestro</a></li><li><a href="global.html#cambiarTareaNoFact">cambiarTareaNoFact</a></li><li><a href="global.html#cargarSelect">cargarSelect</a></li><li><a href="global.html#clearPeticiones">clearPeticiones</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#CONFIGURACION_LOGGER">CONFIGURACION_LOGGER</a></li><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#consultarGastos">consultarGastos</a></li><li><a href="global.html#contentLoadedFotografias">contentLoadedFotografias</a></li><li><a href="global.html#crearDocumento">crearDocumento</a></li><li><a href="global.html#crearInspeccion">crearInspeccion</a></li><li><a href="global.html#createDatabase">createDatabase</a></li><li><a href="global.html#datos">datos</a></li><li><a href="global.html#deleteBitacora">deleteBitacora</a></li><li><a href="global.html#deleteDatabase">deleteDatabase</a></li><li><a href="global.html#deletePeticion">deletePeticion</a></li><li><a href="global.html#DescripcionPeticion">DescripcionPeticion</a></li><li><a href="global.html#dialogoComfirmarCambiosInspeccion">dialogoComfirmarCambiosInspeccion</a></li><li><a href="global.html#dialogoEditarInspeccion">dialogoEditarInspeccion</a></li><li><a href="global.html#docFotoToJson">docFotoToJson</a></li><li><a href="global.html#documento">documento</a></li><li><a href="global.html#downloadLogFile">downloadLogFile</a></li><li><a href="global.html#downloadPDF">downloadPDF</a></li><li><a href="global.html#downloadPhoto">downloadPhoto</a></li><li><a href="global.html#downloadPhotos">downloadPhotos</a></li><li><a href="global.html#dropDatabasePromise">dropDatabasePromise</a></li><li><a href="global.html#enviarPeticionesPendientes">enviarPeticionesPendientes</a></li><li><a href="global.html#faltanDatosSiniestro">faltanDatosSiniestro</a></li><li><a href="global.html#FormatearPeticion">FormatearPeticion</a></li><li><a href="global.html#FormularioInspeccion">FormularioInspeccion</a></li><li><a href="global.html#fotoInspeccionToJson">fotoInspeccionToJson</a></li><li><a href="global.html#getBitacoraData">getBitacoraData</a></li><li><a href="global.html#getBitacoraParams">getBitacoraParams</a></li><li><a href="global.html#getDataReporteGasto">getDataReporteGasto</a></li><li><a href="global.html#getGastoData">getGastoData</a></li><li><a href="global.html#getGastoParams">getGastoParams</a></li><li><a href="global.html#getLogger">getLogger</a></li><li><a href="global.html#getUUID">getUUID</a></li><li><a href="global.html#guardarBitacora">guardarBitacora</a></li><li><a href="global.html#guardarBitacoraFacturableYNueva">guardarBitacoraFacturableYNueva</a></li><li><a href="global.html#guardarBitacoraFacturableYSalir">guardarBitacoraFacturableYSalir</a></li><li><a href="global.html#guardarBitacoraNoFacturableYNueva">guardarBitacoraNoFacturableYNueva</a></li><li><a href="global.html#guardarBitacoraNoFacturableYSalir">guardarBitacoraNoFacturableYSalir</a></li><li><a href="global.html#guardarBitacoras">guardarBitacoras</a></li><li><a href="global.html#guardarCambioBitacora">guardarCambioBitacora</a></li><li><a href="global.html#guardarCambios">guardarCambios</a></li><li><a href="global.html#guardarConceptos">guardarConceptos</a></li><li><a href="global.html#guardarEstadoInspeccion">guardarEstadoInspeccion</a></li><li><a href="global.html#guardarGrupoDocumento">guardarGrupoDocumento</a></li><li><a href="global.html#guardarMonedas">guardarMonedas</a></li><li><a href="global.html#guardarNuevoGasto">guardarNuevoGasto</a></li><li><a href="global.html#guardarPeticion">guardarPeticion</a></li><li><a href="global.html#guardarPeticionPromise">guardarPeticionPromise</a></li><li><a href="global.html#guardarSiniestro">guardarSiniestro</a></li><li><a href="global.html#guardarSubtarea">guardarSubtarea</a></li><li><a href="global.html#guardarTarea">guardarTarea</a></li><li><a href="global.html#guardarTipoAnexo">guardarTipoAnexo</a></li><li><a href="global.html#guardarTipoFoto">guardarTipoFoto</a></li><li><a href="global.html#initBitacora">initBitacora</a></li><li><a href="global.html#initNuevoDetalle">initNuevoDetalle</a></li><li><a href="global.html#initNuevoGasto">initNuevoGasto</a></li><li><a href="global.html#initRefSin">initRefSin</a></li><li><a href="global.html#initResultadosSiniestro">initResultadosSiniestro</a></li><li><a href="global.html#initSendGastos">initSendGastos</a></li><li><a href="global.html#inspeccion">inspeccion</a></li><li><a href="global.html#inspeccionBuscarSin">inspeccionBuscarSin</a></li><li><a href="global.html#inspeccionCambioRegistrado">inspeccionCambioRegistrado</a></li><li><a href="global.html#inspeccionHabilitarEditarSiniestro">inspeccionHabilitarEditarSiniestro</a></li><li><a href="global.html#InspeccionService">InspeccionService</a></li><li><a href="global.html#isSynced">isSynced</a></li><li><a href="global.html#lastUserAct">lastUserAct</a></li><li><a href="global.html#limpiarCampos">limpiarCampos</a></li><li><a href="global.html#loadBitacora">loadBitacora</a></li><li><a href="global.html#loadSubtareas">loadSubtareas</a></li><li><a href="global.html#Migraciones">Migraciones</a></li><li><a href="global.html#mostrarGastos">mostrarGastos</a></li><li><a href="global.html#mostrarInspeccion">mostrarInspeccion</a></li><li><a href="global.html#mostrarNuevaInspeccion">mostrarNuevaInspeccion</a></li><li><a href="global.html#mostrarReporteGasto">mostrarReporteGasto</a></li><li><a href="global.html#nuevaBitacoraNoFacturable">nuevaBitacoraNoFacturable</a></li><li><a href="global.html#obtenerFecha">obtenerFecha</a></li><li><a href="global.html#obtenerFechaHHMMSS">obtenerFechaHHMMSS</a></li><li><a href="global.html#openEnviarIns">openEnviarIns</a></li><li><a href="global.html#openFotografiasCargadas">openFotografiasCargadas</a></li><li><a href="global.html#openPhotoCamera">openPhotoCamera</a></li><li><a href="global.html#openPhotoLibrary">openPhotoLibrary</a></li><li><a href="global.html#optionBitaFact">optionBitaFact</a></li><li><a href="global.html#paginasTotales">paginasTotales</a></li><li><a href="global.html#panelUsuario">panelUsuario</a></li><li><a href="global.html#progressBar">progressBar</a></li><li><a href="global.html#reducePictureSize">reducePictureSize</a></li><li><a href="global.html#refLog">refLog</a></li><li><a href="global.html#resetAllError">resetAllError</a></li><li><a href="global.html#resolveLocalDevicePath">resolveLocalDevicePath</a></li><li><a href="global.html#resultadosBitacora">resultadosBitacora</a></li><li><a href="global.html#resultadosDatos">resultadosDatos</a></li><li><a href="global.html#resultadosInspeccion">resultadosInspeccion</a></li><li><a href="global.html#resultadosInspeccionSin">resultadosInspeccionSin</a></li><li><a href="global.html#rowsAsList">rowsAsList</a></li><li><a href="global.html#savebase64AsPDF">savebase64AsPDF</a></li><li><a href="global.html#saveDataUser">saveDataUser</a></li><li><a href="global.html#saveEmail">saveEmail</a></li><li><a href="global.html#savePhotoFile">savePhotoFile</a></li><li><a href="global.html#saveRequest">saveRequest</a></li><li><a href="global.html#saveResponse">saveResponse</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#sendCambiosBitacora">sendCambiosBitacora</a></li><li><a href="global.html#sendMail">sendMail</a></li><li><a href="global.html#sendPeticiones">sendPeticiones</a></li><li><a href="global.html#setDataSiniestro">setDataSiniestro</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#showFotosCargadas">showFotosCargadas</a></li><li><a href="global.html#showModal">showModal</a></li><li><a href="global.html#sqlError">sqlError</a></li><li><a href="global.html#sqlPromise">sqlPromise</a></li><li><a href="global.html#sqlQuery">sqlQuery</a></li><li><a href="global.html#stringToBlob">stringToBlob</a></li><li><a href="global.html#submitDocumentoCargado">submitDocumentoCargado</a></li><li><a href="global.html#submitInspeccionSeleccionada">submitInspeccionSeleccionada</a></li><li><a href="global.html#submitNuevasFotografias">submitNuevasFotografias</a></li><li><a href="global.html#submitRepoGasto">submitRepoGasto</a></li><li><a href="global.html#submitValidateGastosReport">submitValidateGastosReport</a></li><li><a href="global.html#syncLocalData">syncLocalData</a></li><li><a href="global.html#takePhoto">takePhoto</a></li><li><a href="global.html#updateAnticipo">updateAnticipo</a></li><li><a href="global.html#updateBitacora">updateBitacora</a></li><li><a href="global.html#updateBitaNoFact">updateBitaNoFact</a></li><li><a href="global.html#updateEstado">updateEstado</a></li><li><a href="global.html#updateLocalData">updateLocalData</a></li><li><a href="global.html#updateNombreFoto">updateNombreFoto</a></li><li><a href="global.html#updatePagesGasto">updatePagesGasto</a></li><li><a href="global.html#uploadFile">uploadFile</a></li><li><a href="global.html#validacionNuevaBitacora">validacionNuevaBitacora</a></li><li><a href="global.html#validarInspeccionSinSiniestro">validarInspeccionSinSiniestro</a></li><li><a href="global.html#validateDocumentoCargado">validateDocumentoCargado</a></li><li><a href="global.html#validateEnviarIns">validateEnviarIns</a></li><li><a href="global.html#validateGastosReport">validateGastosReport</a></li><li><a href="global.html#validateNuevasFotografias">validateNuevasFotografias</a></li><li><a href="global.html#validateNuevoDetalleGasto">validateNuevoDetalleGasto</a></li><li><a href="global.html#validateNuevoRepGasto">validateNuevoRepGasto</a></li><li><a href="global.html#value">value</a></li><li><a href="global.html#verBitacora">verBitacora</a></li><li><a href="global.html#verInspeccion">verInspeccion</a></li><li><a href="global.html#verInspeccionSin">verInspeccionSin</a></li><li><a href="global.html#verReporteGasto">verReporteGasto</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Fri Oct 16 2020 08:31:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

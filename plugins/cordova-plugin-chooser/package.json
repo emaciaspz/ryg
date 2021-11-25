@@ -1,0 +1,64 @@
+{
+  "_from": "cordova-plugin-chooser",
+  "_id": "cordova-plugin-chooser@1.3.1",
+  "_inBundle": false,
+  "_integrity": "sha512-xyTgu7T1WSk4XeHVwrez1ZB+iPDThae79OYuuPTJkgHm4fVeD5QzzgJVxo2AETztAOM20OQU6txedfBYB6RHhQ==",
+  "_location": "/cordova-plugin-chooser",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-chooser",
+    "name": "cordova-plugin-chooser",
+    "escapedName": "cordova-plugin-chooser",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-chooser/-/cordova-plugin-chooser-1.3.1.tgz",
+  "_shasum": "0801bf0c937686ef531a5282aa0abd713e4dccc5",
+  "_spec": "cordova-plugin-chooser",
+  "_where": "/Users/bitfarm/Documents/ProyectosSVN/R&G_Espinosa",
+  "author": {
+    "name": "Cyph, Inc.",
+    "email": "cordova-plugin-chooser@cyph.com",
+    "url": "https://github.com/cyph"
+  },
+  "bugs": {
+    "url": "https://github.com/cyph/cordova-plugin-chooser/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-chooser",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Cordova file chooser plugin",
+  "homepage": "https://github.com/cyph/cordova-plugin-chooser#readme",
+  "keywords": [
+    "file",
+    "chooser",
+    "picker",
+    "file-chooser",
+    "android",
+    "ios"
+  ],
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "name": "cordova-plugin-chooser",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cyph/cordova-plugin-chooser.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.3.1"
+}

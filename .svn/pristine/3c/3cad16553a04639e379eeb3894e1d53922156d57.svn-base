@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ref.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ref.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/** @type {Logger} */
+var refLog = getLogger('ref');
+
+/**
+ * Funcion que guarda todos los datos del siniestro
+ */
+function initRefSin(idSin){
+	var idSiniestro = $('#buscarInput').val();
+	if(idSin != null &amp;&amp; idSin != undefined){
+		buscarReferencia(idSin);
+	}else if($.trim(idSiniestro) != ''){
+		buscarReferencia(idSiniestro);
+	}else{
+		showError("Debe ingresar un numero de búsqueda o referencia");
+	}
+}
+
+/**
+ * Funcion que busca el siniestro por medio de su referencia
+ * @param {*} numSin 
+ */
+/**
+ * Funcion que busca el siniestro por medio de su referencia
+ * @param {*} numSin 
+ */
+function buscarReferencia(numSin) {
+	refLog.debug('consultando ref ' + numSin);
+	if (verificarConexion() == true) {
+		refLog.debug(`buscando referencia con interner ${numSin}`);
+		//Validar si el siniestro ya existe
+		sendGetRequest('siniestro_full.php?caso=' + numSin, function (siniestro) {
+			showNotice("Consultando información del siniestro, espere un momento...");
+			fn.load('carga.html');
+			if (siniestro) {
+				var caso_n_siniestro = siniestro.caso_n_siniestro;
+				caso_n_siniestro = caso_n_siniestro != null &amp;&amp; caso_n_siniestro != undefined ?
+					caso_n_siniestro : siniestro.caso_id;
+				setDataSiniestro(siniestro.caso_id, caso_n_siniestro, siniestro.estado_real);
+				guardarSiniestro(siniestro);
+			} else {
+				refLog.debug(`no se encuentra en el sistema ${numSin}`);
+				showNotice('N° Registro R&amp;G o N° de Siniestro " ' + numSin + ' " no se encuentra en el sistema');
+			}
+		}, function (error) {
+			if (error.status == 404) {
+				refLog.debug(`no se encuentra en el sistema ${numSin}`);
+				showNotice('N° Registro R&amp;G o N° de Siniestro " ' + numSin + ' " no se encuentra en el sistema');
+			}
+		});
+	} else {
+		refLog.debug(`buscando referencia sin internet ${numSin}`);
+		showNotice("Consultando información del siniestro, espere un momento...");
+		sqlQuery("SELECT * FROM Siniestro WHERE caso_id = ?", [numSin], function (noExisteSin) {
+			if (noExisteSin == true) {
+				sqlQuery('SELECT * FROM Siniestro WHERE caso_n_siniestro = ?', [numSin], function (noExisteNumSin) {
+					if (noExisteNumSin == true) {
+						sqlQuery('SELECT * FROM DatosUsuario', null, function (dataUser) {
+							if (dataUser != true) {
+								if (isNaN(parseInt(numSin))) {
+									showError('El numero de siniestro debe ser un numero')
+									return;
+								}
+								sqlQuery(`INSERT INTO Siniestro (caso_id, caso_n_siniestro, estado, 
+									estado_real, ajustador, caso_fech_ocurren, 
+									causas, perdidaEstimada, caso_n_poliza) VALUES (?,?,?,?,?,?,?,?,?)`, [
+									numSin, '', '',
+									'', dataUser[0].user_nombre, '',
+									'', 'N/A', ''
+								], function (last_id) {
+									if (last_id) {
+										refLog.debug('cargando datos sin conexion')
+										fn.load('ref.html');
+										window.localStorage.setItem("siniestroLoaded", false);
+										setDataSiniestro(numSin, numSin, 'Sin Conexión');
+									} else {
+										refLog.error('error al ingresar un siniestro sin conexion')
+										showError('Ocurrió un error al ingresar un siniestro sin conexión');
+									}
+								}, true);
+							} else {
+								refLog.debug('no se encontraron los datos del ajustador');
+								showNotice("No se encontraron los datos del ajustador");
+							}
+						});
+					} else {
+						fn.load('ref.html');
+						var caso_id = noExisteNumSin[0].caso_id;
+						var caso_n_siniestro = noExisteNumSin[0].caso_n_siniestro;
+						var estado = noExisteNumSin[0].estado_real;
+						setDataSiniestro(caso_id, caso_n_siniestro, estado);
+					}
+				});
+			} else {
+				fn.load('ref.html');
+				var caso_id = noExisteSin[0].caso_id;
+				var caso_n_siniestro = noExisteSin[0].caso_n_siniestro;
+				var estado = noExisteSin[0].estado_real;
+				estado = estado ? estado : "Sin Conexión";
+				setDataSiniestro(caso_id, caso_n_siniestro, estado);
+			}
+		});
+	}
+}
+
+/**
+ * Función para setear los titulos e información del siniestro actual
+ * @param {* Id_del_siniestro} caso_id 
+ * @param {* Numero_de_siniestro} n_siniestro 
+ * @param {* estado_del_siniestro} estadoSin 
+ */
+function setDataSiniestro(caso_id, n_siniestro, estadoSin) {
+	//Id del siniestro
+	if (caso_id != null &amp;&amp; caso_id != undefined) {
+		var titleApp = '&lt;ons-icon icon="md-edit">&lt;/ons-icon>Ref. R&amp;G N° ' + caso_id;
+		$('#titleApp').html(titleApp);
+		window.localStorage.setItem("titleApp", titleApp);
+		window.localStorage.setItem("idSiniestroServidor", caso_id);
+	}
+	//Numero del siniestro
+	if (n_siniestro != null &amp;&amp; n_siniestro != undefined) {
+		var numeroSiniestro = 'Siniestro N° ' + n_siniestro;
+		$('#numeroSiniestro').html(numeroSiniestro);
+		window.localStorage.setItem("numeroSiniestro", numeroSiniestro);
+	}
+	//Estado del siniestro
+	if (estadoSin != null &amp;&amp; estadoSin != undefined) {
+		var estatusSiniestro = 'Sit. Actual: ' + estadoSin;
+		$('#estatusSiniestro').html(estatusSiniestro);
+		window.localStorage.setItem("estatusSiniestro", estatusSiniestro);
+	}
+}
+
+/**
+ * Función que guarda toda la 
+ * información de un siniestro
+ * @param {*} data 
+ */
+function guardarSiniestro(data) {
+	refLog.debug('guardando siniestro', data);
+	if (data != null) {
+		refLog.debug('guardando siniestro', data);
+		//Datos del siniestro
+		sqlPromise('SELECT COUNT(*) AS conteo FROM Siniestro WHERE caso_id = ?', [data.caso_id]).then(row => {
+			if (row.rows.item(0).conteo != 0) {
+				return Promise.reject('Ya existe')
+			}
+		}).then(() => {
+			if (data.caso_perdida_bruta > 100) {
+				data.caso_perdida_bruta = 100;
+			}
+			var perdidaEstimada = getPerdidaEstimada(data);
+			//perdidaEstimada = JSON.stringify(perdidaEstimada);
+			return sqlPromise(`INSERT INTO Siniestro (caso_id, caso_n_siniestro, caso_n_poliza, 
+				estado, regiones, caso_direccion,
+				corredores, caso_fech_ini_poliza, caso_fech_fin_poliza,
+				beneficiarios, comunas, perdidaEstimada,
+				estado_real, caso_fech_ocurren, cia_seg, 
+				asegurados, ajustador, causas, 
+				perdidaEstimada) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`, [
+				data.caso_id, data.caso_n_siniestro, data.caso_n_poliza,
+				data.estado_real, data.regiones, data.caso_direccion,
+				data.corredores, data.caso_fech_ini_poliza, data.caso_fech_fin_poliza,
+				data.beneficiarios, data.comunas, perdidaEstimada,
+				data.estatus_real != null ? data.estatus_real.valor : null, data.caso_fech_ocurren, data.cia_seg, 
+				data.asegurados, data.ajustador, data.causas, 
+				perdidaEstimada
+			])
+		}).then(result => {
+			contentLoaded = contentLoaded + 25;
+			let last_id = result.insertId;
+			console.error('INSERT ID', last_id);
+			if (last_id) {
+				window.localStorage.setItem('idSiniestroLocal', last_id);
+			}
+			//Bitácora del siniestro
+			if (data.bitacora != null &amp;&amp; data.bitacora != undefined &amp;&amp; data.bitacora.length != 0) {
+				data.bitacora.forEach(function (bitacora, i) {
+					sqlQuery("SELECT * FROM Bitacora WHERE id = ?", [bitacora.id], function (results) {
+						var params = fn.JsonToArray(bitacora);
+						if (results == true) {
+							params.push(data.caso_id);
+							params.push(last_id ? last_id : null);
+							sqlQuery('INSERT INTO Bitacora (id, fecha_orden, fecha, gestion, tiempo, comentario, usuario, subtarea, bitacora_caso, fk_idSiniestro) VALUES (?,?,?,?,?,?,?,?,?,?)',
+								params, null);
+						}
+						if (data.bitacora.length == (i + 1)) {
+							contentLoaded = contentLoaded + 25;
+						}
+					});
+				});
+			} else {
+				contentLoaded = contentLoaded + 25;
+			}
+		}).catch(error => {
+			if (error == 'Ya existe') {
+				sqlPromise(`UPDATE Siniestro SET caso_n_siniestro = ?, caso_fech_ocurren = ?, cia_seg = ?, 
+						asegurados = ?, ajustador = ?, causas = ?,
+						corredores = ?, caso_n_poliza = ?, comunas = ?,
+						caso_fech_ini_poliza = ?, caso_fech_fin_poliza = ?, estado = ?,
+						estado_real = ?, caso_direccion = ?, regiones = ?,
+						beneficiarios = ?
+					WHERE caso_id = ?`, [
+						data.caso_n_siniestro, data.caso_fech_ocurren, data.cia_seg, 
+						data.asegurados, data.ajustador, data.causas,
+						data.corredores, data.caso_n_poliza, data.comunas,
+						data.caso_fech_ini_poliza, data.caso_fech_fin_poliza, data.estado,
+						data.estatus_real != null ? data.estatus_real.valor : null, data.caso_direccion, data.regiones,
+						data.beneficiarios,
+						data.caso_id
+				]);
+				contentLoaded = contentLoaded + 50;
+			}
+		});
+
+		//Gastos del siniestro
+		if (data.gastos != null &amp;&amp; data.gastos != undefined &amp;&amp; data.gastos.length != 0) {
+			var pageCount = 0;
+			var query = 'INSERT INTO Gasto (gastos_repor_id, '
+				+ 'gastos_repor_caso, '
+				+ 'gastos_repor_consecu, '
+				+ 'gastos_repor_user, '
+				+ 'gastos_repor_ajustador, '
+				+ 'gastos_repor_moneda, '
+				+ 'gastos_repor_anticipo, '
+				+ 'gastos_repor_nombre, '
+				+ 'gastos_repor_f_ini, '
+				+ 'gastos_repor_f_fin, '
+				+ 'gastos_repor_mail, '
+				+ 'gastos_repor_coment, '
+				+ 'gastos_repor_fecha_envi, '
+				+ 'gastos_repor_fecha, '
+				+ 'ajustador, '
+				+ 'correspon_caso, '
+				+ 'page) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+
+			data.gastos.forEach(function (gasto, i) {
+				sqlQuery("SELECT * FROM Gasto WHERE gastos_repor_id = ?", [gasto.gastos_repor_id], function (results) {
+					var numRegistro = i;
+					var mod = numRegistro % 20;
+					if (mod == 0) {
+						pageCount++;
+					}
+					var params = fn.JsonToArray(gasto);
+					params.push(data.caso_id);
+					params.push(pageCount);
+					if (results == true) {
+						sqlQuery(query, params, null);
+					}
+					if (data.gastos.length == (i + 1)) {
+						window.localStorage.setItem("lastPageGasto", pageCount);
+						sqlQuery('SELECT * FROM Gasto WHERE gastos_repor_caso = ? AND gastos_repor_id IS NULL', [data.caso_id], function (gastosLocales) {
+							if (gastosLocales != true) {
+								gastosLocales.forEach(function (gastoLocal, countGastLocal) {
+									var numRegistro = data.gastos.length + (countGastLocal + 1);
+									var mod = numRegistro % 20;
+									if (mod == 0) {
+										pageCount++;
+									}
+									var consecu = data.gastos.length + (countGastLocal + 1);
+									sqlQuery('UPDATE Gasto SET page = ?, gastos_repor_consecu = ? WHERE idGasto = ?', [pageCount, consecu, gastoLocal.idGasto]);
+									if (gastosLocales.length == (countGastLocal + 1)) {
+										window.localStorage.setItem("totalRegGastos", numRegistro);
+										contentLoaded = contentLoaded + 25;
+									}
+								});
+							} else {
+								contentLoaded = contentLoaded + 25;
+							}
+						});
+					}
+				});
+			});
+		} else {
+			contentLoaded = contentLoaded + 25;
+		}
+
+		//Inspección del siniestro
+		if (data.inspeccion != null &amp;&amp; data.inspeccion != undefined &amp;&amp; data.inspeccion.length != 0) {
+			var pageCountIns = 0;
+			data.inspeccion.forEach(function (inspeccion, i) {
+				sqlQuery("SELECT * FROM Inspeccion WHERE inspeccion_id = ?", [inspeccion.inspeccion_id], function (results) {
+					var numRegistro = i;
+					var mod = numRegistro % 20;
+					if (mod == 0) {
+						pageCountIns++;
+					}
+					var params = fn.JsonToArray(inspeccion);
+					params.push(data.caso_id);
+					params.push(pageCountIns);
+					if (results == true) {
+						sqlQuery('INSERT INTO Inspeccion (inspector, inspeccion_id, fecha, estado, inspeccion_tipo, caso_id, page) VALUES (?,?,?,?,?,?,?)',
+							params, null);
+					}
+					if (data.inspeccion.length == (i + 1)) {
+						contentLoaded = contentLoaded + 25;
+						window.localStorage.removeItem("lastPageIns");
+						window.localStorage.setItem("lastPageIns", pageCountIns);
+						window.localStorage.setItem("totalRegIns", data.inspeccion.length);
+					}
+				});
+			});
+		} else {
+			contentLoaded = contentLoaded + 25;
+		}
+
+		// Descargar fotos de inspeccion
+		descargarFotografias();
+	}
+}
+
+function descargarFotografias() {
+	var numSin = window.localStorage.getItem("idSiniestroServidor");
+	if (verificarConexion() == true) {
+		Directorios.obtenerDirectorioEspinosaPhotos(numSin).then(directorio => {
+			sendGetRequest('fotos.php?caso=' + numSin, function (lstFotos) {
+				if (lstFotos) {
+					if (lstFotos.length != 0) {
+						savePhotoFile(directorio, lstFotos, 0);
+					}
+				}
+			});
+		});
+	}
+}
+
+/**
+ * Almacena las fotografías de
+ * la inspección del siniestro actual
+ * @param {*} photosDir
+ * @param {*} lstFotos
+ * @param {*} index
+ */
+function savePhotoFile(photosDir, lstFotos, index) {
+	var foto = lstFotos[index];
+	// Se calcula el porcentaje de fotos cargadas
+	var porcentaje = 100 / lstFotos.length;
+	contentLoadedFotografias = contentLoadedFotografias + porcentaje;
+	var numSin = window.localStorage.getItem("idSiniestroServidor");
+	if (foto != null) {
+		sqlQuery('SELECT * FROM FotoInspeccion WHERE fotos_id = ?', [foto.fotos_id], function (noExiste) {
+			if (noExiste == true) { //Si no existe la foto, se guarda
+				var fileName = 'IMG_' + foto.fotos_id + '.jpg';
+				photosDir.getFile(fileName, {
+					create: true
+				}, function (fileEntry) {
+					//Normaliza el formato de fecha
+					var fecha_ingreso = foto.fotos_fecha.split(" ")[0];
+					fecha_ingreso = moment(fecha_ingreso, "YYYY-MM-DD").format("DD/MM/YYYY");
+					if (fecha_ingreso === "Invalid date") {
+						fecha_ingreso = moment(fecha_ingreso, "YYYY-DD-MM").format("DD/MM/YYYY");
+					}
+					// Descargar foto y guardar en archivo
+
+					downloadPhoto(fileEntry, foto.fotos_id, function (imagen) { // {fullpath: string, base64: string}
+						if (foto != null &amp;&amp; imagen != null) {
+							sqlQuery('INSERT INTO FotoInspeccion (fotos_id, fotos_observaciones, fecha_ingreso, tipo_foto_nombre, up_documento, base64, edita_dato) VALUES (?,?,?,?,?,?,?)',
+								[foto.fotos_id, foto.fotos_observaciones, fecha_ingreso, foto.tipo_foto_nombre, imagen.up_documento, imagen.base64, numSin],
+								function (results) {
+									if (lstFotos.length > index) {
+										index++;
+										savePhotoFile(photosDir, lstFotos, index);
+									}
+								}, true);
+						} else {
+							// Si la fotografia no existe por parte del servidor, se busca la siguiente
+							if (lstFotos.length > index) {
+								index++;
+								savePhotoFile(photosDir, lstFotos, index);
+							}
+						}
+					});
+				});
+			} else { // Si ya existe la foto, se busca la siguiente
+				if (lstFotos.length > index) {
+					index++;
+					savePhotoFile(photosDir, lstFotos, index);
+				}
+			}
+		});
+	}
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-GestureDetector.html">GestureDetector</a></li><li><a href="module-gestures.html">gestures</a></li></ul><h3>Classes</h3><ul><li><a href="-_anonymous_-GestureDetector.Instance.html">Instance</a></li><li><a href="CatalogoService.html">CatalogoService</a></li><li><a href="DialogoCerrarSesion.html">DialogoCerrarSesion</a></li><li><a href="DialogoNuevoUsuario.html">DialogoNuevoUsuario</a></li><li><a href="DialogoRestablecer.html">DialogoRestablecer</a></li><li><a href="GastosService.html">GastosService</a></li><li><a href="InspeccionFotografia.html">InspeccionFotografia</a></li><li><a href="InspeccionSubirDocumento.html">InspeccionSubirDocumento</a></li><li><a href="InspeccionTablaFotografias.html">InspeccionTablaFotografias</a></li><li><a href="ListadoPeticiones.html">ListadoPeticiones</a></li><li><a href="module-GestureDetector.Detection.html">Detection</a></li><li><a href="module-GestureDetector.Event.html">Event</a></li><li><a href="module-GestureDetector.PointerEvent.html">PointerEvent</a></li><li><a href="module-gestures.Drag.html">Drag</a></li><li><a href="module-gestures.Gesture.html">Gesture</a></li><li><a href="module-gestures.Hold.html">Hold</a></li><li><a href="module-gestures.Release.html">Release</a></li><li><a href="module-gestures.Swipe.html">Swipe</a></li><li><a href="module-gestures.Tap.html">Tap</a></li><li><a href="module-gestures.Touch.html">Touch</a></li><li><a href="module-gestures.Transform.html">Transform</a></li><li><a href="PeticionesDao.html">PeticionesDao</a></li><li><a href="TablaDetalleGasto.html">TablaDetalleGasto</a></li><li><a href="Utils.html">Utils</a></li></ul><h3>Events</h3><ul><li><a href="module-gestures.html#~event:change">change</a></li><li><a href="module-gestures.html#~event:changestate">changestate</a></li><li><a href="module-gestures.html#~event:close">close</a></li><li><a href="module-gestures.html#~event:destroy">destroy</a></li><li><a href="module-gestures.html#~event:doubletap">doubletap</a></li><li><a href="module-gestures.html#~event:drag">drag</a></li><li><a href="module-gestures.html#~event:dragdown">dragdown</a></li><li><a href="module-gestures.html#~event:dragend">dragend</a></li><li><a href="module-gestures.html#~event:dragright">dragright</a></li><li><a href="module-gestures.html#~event:dragstart">dragstart</a></li><li><a href="module-gestures.html#~event:dragup">dragup</a></li><li><a href="module-gestures.html#~event:drapleft">drapleft</a></li><li><a href="module-gestures.html#~event:gesture">gesture</a></li><li><a href="module-gestures.html#~event:hide">hide</a></li><li><a href="module-gestures.html#~event:hold">hold</a></li><li><a href="module-gestures.html#~event:init">init</a></li><li><a href="module-gestures.html#~event:modechange">modechange</a></li><li><a href="module-gestures.html#~event:open">open</a></li><li><a href="module-gestures.html#~event:overscroll">overscroll</a></li><li><a href="module-gestures.html#~event:pinchin">pinchin</a></li><li><a href="module-gestures.html#~event:pinchout">pinchout</a></li><li><a href="module-gestures.html#~event:postchange">postchange</a></li><li><a href="module-gestures.html#~event:postclose">postclose</a></li><li><a href="module-gestures.html#~event:posthide">posthide</a></li><li><a href="module-gestures.html#~event:postopen">postopen</a></li><li><a href="module-gestures.html#~event:postpop">postpop</a></li><li><a href="module-gestures.html#~event:postpush">postpush</a></li><li><a href="module-gestures.html#~event:postshow">postshow</a></li><li><a href="module-gestures.html#~event:prechange">prechange</a></li><li><a href="module-gestures.html#~event:preclose">preclose</a></li><li><a href="module-gestures.html#~event:prehide">prehide</a></li><li><a href="module-gestures.html#~event:preopen">preopen</a></li><li><a href="module-gestures.html#~event:prepop">prepop</a></li><li><a href="module-gestures.html#~event:prepush">prepush</a></li><li><a href="module-gestures.html#~event:preshow">preshow</a></li><li><a href="module-gestures.html#~event:reactive">reactive</a></li><li><a href="module-gestures.html#~event:refresh">refresh</a></li><li><a href="module-gestures.html#~event:release">release</a></li><li><a href="module-gestures.html#~event:rotate">rotate</a></li><li><a href="module-gestures.html#~event:show">show</a></li><li><a href="module-gestures.html#~event:swipe">swipe</a></li><li><a href="module-gestures.html#~event:swipedown">swipedown</a></li><li><a href="module-gestures.html#~event:swipeleft">swipeleft</a></li><li><a href="module-gestures.html#~event:swiperight">swiperight</a></li><li><a href="module-gestures.html#~event:swipeup">swipeup</a></li><li><a href="module-gestures.html#~event:tap">tap</a></li><li><a href="module-gestures.html#~event:touch">touch</a></li><li><a href="module-gestures.html#~event:transform">transform</a></li><li><a href="module-gestures.html#~event:transformend">transformend</a></li><li><a href="module-gestures.html#~event:transformstart">transformstart</a></li></ul><h3>Global</h3><ul><li><a href="global.html#abrirDocumentoConAplicacionDeTerceros">abrirDocumentoConAplicacionDeTerceros</a></li><li><a href="global.html#abrirNuevaInspeccion">abrirNuevaInspeccion</a></li><li><a href="global.html#actualizarEstatusPeticion">actualizarEstatusPeticion</a></li><li><a href="global.html#actualizarListadoGasto">actualizarListadoGasto</a></li><li><a href="global.html#appLog">appLog</a></li><li><a href="global.html#b64toBlob">b64toBlob</a></li><li><a href="global.html#backReporteGasto">backReporteGasto</a></li><li><a href="global.html#backVerInspeccion">backVerInspeccion</a></li><li><a href="global.html#baseDatosLog">baseDatosLog</a></li><li><a href="global.html#bitacora">bitacora</a></li><li><a href="global.html#buscarInspeccionSinSiniestro">buscarInspeccionSinSiniestro</a></li><li><a href="global.html#buscarReferencia">buscarReferencia</a></li><li><a href="global.html#buscarSiniestro">buscarSiniestro</a></li><li><a href="global.html#cambiarSiniestro">cambiarSiniestro</a></li><li><a href="global.html#cambiarTareaNoFact">cambiarTareaNoFact</a></li><li><a href="global.html#cargarSelect">cargarSelect</a></li><li><a href="global.html#clearPeticiones">clearPeticiones</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#CONFIGURACION_LOGGER">CONFIGURACION_LOGGER</a></li><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#consultarGastos">consultarGastos</a></li><li><a href="global.html#contentLoadedFotografias">contentLoadedFotografias</a></li><li><a href="global.html#crearDocumento">crearDocumento</a></li><li><a href="global.html#crearInspeccion">crearInspeccion</a></li><li><a href="global.html#createDatabase">createDatabase</a></li><li><a href="global.html#datos">datos</a></li><li><a href="global.html#deleteBitacora">deleteBitacora</a></li><li><a href="global.html#deleteDatabase">deleteDatabase</a></li><li><a href="global.html#deletePeticion">deletePeticion</a></li><li><a href="global.html#DescripcionPeticion">DescripcionPeticion</a></li><li><a href="global.html#dialogoComfirmarCambiosInspeccion">dialogoComfirmarCambiosInspeccion</a></li><li><a href="global.html#dialogoEditarInspeccion">dialogoEditarInspeccion</a></li><li><a href="global.html#docFotoToJson">docFotoToJson</a></li><li><a href="global.html#documento">documento</a></li><li><a href="global.html#downloadLogFile">downloadLogFile</a></li><li><a href="global.html#downloadPDF">downloadPDF</a></li><li><a href="global.html#downloadPhoto">downloadPhoto</a></li><li><a href="global.html#downloadPhotos">downloadPhotos</a></li><li><a href="global.html#dropDatabasePromise">dropDatabasePromise</a></li><li><a href="global.html#enviarPeticionesPendientes">enviarPeticionesPendientes</a></li><li><a href="global.html#faltanDatosSiniestro">faltanDatosSiniestro</a></li><li><a href="global.html#FormatearPeticion">FormatearPeticion</a></li><li><a href="global.html#FormularioInspeccion">FormularioInspeccion</a></li><li><a href="global.html#fotoInspeccionToJson">fotoInspeccionToJson</a></li><li><a href="global.html#getBitacoraData">getBitacoraData</a></li><li><a href="global.html#getBitacoraParams">getBitacoraParams</a></li><li><a href="global.html#getDataReporteGasto">getDataReporteGasto</a></li><li><a href="global.html#getGastoData">getGastoData</a></li><li><a href="global.html#getGastoParams">getGastoParams</a></li><li><a href="global.html#getLogger">getLogger</a></li><li><a href="global.html#getUUID">getUUID</a></li><li><a href="global.html#guardarBitacora">guardarBitacora</a></li><li><a href="global.html#guardarBitacoraFacturableYNueva">guardarBitacoraFacturableYNueva</a></li><li><a href="global.html#guardarBitacoraFacturableYSalir">guardarBitacoraFacturableYSalir</a></li><li><a href="global.html#guardarBitacoraNoFacturableYNueva">guardarBitacoraNoFacturableYNueva</a></li><li><a href="global.html#guardarBitacoraNoFacturableYSalir">guardarBitacoraNoFacturableYSalir</a></li><li><a href="global.html#guardarBitacoras">guardarBitacoras</a></li><li><a href="global.html#guardarCambioBitacora">guardarCambioBitacora</a></li><li><a href="global.html#guardarCambios">guardarCambios</a></li><li><a href="global.html#guardarConceptos">guardarConceptos</a></li><li><a href="global.html#guardarEstadoInspeccion">guardarEstadoInspeccion</a></li><li><a href="global.html#guardarGrupoDocumento">guardarGrupoDocumento</a></li><li><a href="global.html#guardarMonedas">guardarMonedas</a></li><li><a href="global.html#guardarNuevoGasto">guardarNuevoGasto</a></li><li><a href="global.html#guardarPeticion">guardarPeticion</a></li><li><a href="global.html#guardarPeticionPromise">guardarPeticionPromise</a></li><li><a href="global.html#guardarSiniestro">guardarSiniestro</a></li><li><a href="global.html#guardarSubtarea">guardarSubtarea</a></li><li><a href="global.html#guardarTarea">guardarTarea</a></li><li><a href="global.html#guardarTipoAnexo">guardarTipoAnexo</a></li><li><a href="global.html#guardarTipoFoto">guardarTipoFoto</a></li><li><a href="global.html#initBitacora">initBitacora</a></li><li><a href="global.html#initNuevoDetalle">initNuevoDetalle</a></li><li><a href="global.html#initNuevoGasto">initNuevoGasto</a></li><li><a href="global.html#initRefSin">initRefSin</a></li><li><a href="global.html#initResultadosSiniestro">initResultadosSiniestro</a></li><li><a href="global.html#initSendGastos">initSendGastos</a></li><li><a href="global.html#inspeccion">inspeccion</a></li><li><a href="global.html#inspeccionBuscarSin">inspeccionBuscarSin</a></li><li><a href="global.html#inspeccionCambioRegistrado">inspeccionCambioRegistrado</a></li><li><a href="global.html#inspeccionHabilitarEditarSiniestro">inspeccionHabilitarEditarSiniestro</a></li><li><a href="global.html#InspeccionService">InspeccionService</a></li><li><a href="global.html#isSynced">isSynced</a></li><li><a href="global.html#lastUserAct">lastUserAct</a></li><li><a href="global.html#limpiarCampos">limpiarCampos</a></li><li><a href="global.html#loadBitacora">loadBitacora</a></li><li><a href="global.html#loadSubtareas">loadSubtareas</a></li><li><a href="global.html#Migraciones">Migraciones</a></li><li><a href="global.html#mostrarGastos">mostrarGastos</a></li><li><a href="global.html#mostrarInspeccion">mostrarInspeccion</a></li><li><a href="global.html#mostrarNuevaInspeccion">mostrarNuevaInspeccion</a></li><li><a href="global.html#mostrarReporteGasto">mostrarReporteGasto</a></li><li><a href="global.html#nuevaBitacoraNoFacturable">nuevaBitacoraNoFacturable</a></li><li><a href="global.html#obtenerFecha">obtenerFecha</a></li><li><a href="global.html#obtenerFechaHHMMSS">obtenerFechaHHMMSS</a></li><li><a href="global.html#openEnviarIns">openEnviarIns</a></li><li><a href="global.html#openFotografiasCargadas">openFotografiasCargadas</a></li><li><a href="global.html#openPhotoCamera">openPhotoCamera</a></li><li><a href="global.html#openPhotoLibrary">openPhotoLibrary</a></li><li><a href="global.html#optionBitaFact">optionBitaFact</a></li><li><a href="global.html#paginasTotales">paginasTotales</a></li><li><a href="global.html#panelUsuario">panelUsuario</a></li><li><a href="global.html#progressBar">progressBar</a></li><li><a href="global.html#reducePictureSize">reducePictureSize</a></li><li><a href="global.html#refLog">refLog</a></li><li><a href="global.html#resetAllError">resetAllError</a></li><li><a href="global.html#resolveLocalDevicePath">resolveLocalDevicePath</a></li><li><a href="global.html#resultadosBitacora">resultadosBitacora</a></li><li><a href="global.html#resultadosDatos">resultadosDatos</a></li><li><a href="global.html#resultadosInspeccion">resultadosInspeccion</a></li><li><a href="global.html#resultadosInspeccionSin">resultadosInspeccionSin</a></li><li><a href="global.html#rowsAsList">rowsAsList</a></li><li><a href="global.html#savebase64AsPDF">savebase64AsPDF</a></li><li><a href="global.html#saveDataUser">saveDataUser</a></li><li><a href="global.html#saveEmail">saveEmail</a></li><li><a href="global.html#savePhotoFile">savePhotoFile</a></li><li><a href="global.html#saveRequest">saveRequest</a></li><li><a href="global.html#saveResponse">saveResponse</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#sendCambiosBitacora">sendCambiosBitacora</a></li><li><a href="global.html#sendMail">sendMail</a></li><li><a href="global.html#sendPeticiones">sendPeticiones</a></li><li><a href="global.html#setDataSiniestro">setDataSiniestro</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#showFotosCargadas">showFotosCargadas</a></li><li><a href="global.html#showModal">showModal</a></li><li><a href="global.html#sqlError">sqlError</a></li><li><a href="global.html#sqlPromise">sqlPromise</a></li><li><a href="global.html#sqlQuery">sqlQuery</a></li><li><a href="global.html#stringToBlob">stringToBlob</a></li><li><a href="global.html#submitDocumentoCargado">submitDocumentoCargado</a></li><li><a href="global.html#submitInspeccionSeleccionada">submitInspeccionSeleccionada</a></li><li><a href="global.html#submitNuevasFotografias">submitNuevasFotografias</a></li><li><a href="global.html#submitRepoGasto">submitRepoGasto</a></li><li><a href="global.html#submitValidateGastosReport">submitValidateGastosReport</a></li><li><a href="global.html#syncLocalData">syncLocalData</a></li><li><a href="global.html#takePhoto">takePhoto</a></li><li><a href="global.html#updateAnticipo">updateAnticipo</a></li><li><a href="global.html#updateBitacora">updateBitacora</a></li><li><a href="global.html#updateBitaNoFact">updateBitaNoFact</a></li><li><a href="global.html#updateEstado">updateEstado</a></li><li><a href="global.html#updateLocalData">updateLocalData</a></li><li><a href="global.html#updateNombreFoto">updateNombreFoto</a></li><li><a href="global.html#updatePagesGasto">updatePagesGasto</a></li><li><a href="global.html#uploadFile">uploadFile</a></li><li><a href="global.html#validacionNuevaBitacora">validacionNuevaBitacora</a></li><li><a href="global.html#validarInspeccionSinSiniestro">validarInspeccionSinSiniestro</a></li><li><a href="global.html#validateDocumentoCargado">validateDocumentoCargado</a></li><li><a href="global.html#validateEnviarIns">validateEnviarIns</a></li><li><a href="global.html#validateGastosReport">validateGastosReport</a></li><li><a href="global.html#validateNuevasFotografias">validateNuevasFotografias</a></li><li><a href="global.html#validateNuevoDetalleGasto">validateNuevoDetalleGasto</a></li><li><a href="global.html#validateNuevoRepGasto">validateNuevoRepGasto</a></li><li><a href="global.html#value">value</a></li><li><a href="global.html#verBitacora">verBitacora</a></li><li><a href="global.html#verInspeccion">verInspeccion</a></li><li><a href="global.html#verInspeccionSin">verInspeccionSin</a></li><li><a href="global.html#verReporteGasto">verReporteGasto</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Fri Oct 16 2020 08:31:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

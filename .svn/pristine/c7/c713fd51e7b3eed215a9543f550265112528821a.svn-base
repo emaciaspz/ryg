@@ -1,0 +1,4683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: GastosService</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: GastosService</h1>
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2><span class="attribs"><span class="type-signature"></span></span>GastosService<span class="signature">()</span><span class="type-signature"></span></h2>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+
+    
+    <h4 class="name" id="GastosService"><span class="type-signature"></span>new GastosService<span class="signature">()</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Servicio para gastos
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line5">line 5</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".actualizarDetalleGasto"><span class="type-signature">(static) </span>actualizarDetalleGasto<span class="signature">(d)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Actualiza el detalle de gasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>d</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#DetalleGasto">DetalleGasto</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line504">line 504</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".actualizarDetalleGastoSinDocumentos"><span class="type-signature">(static) </span>actualizarDetalleGastoSinDocumentos<span class="signature">(d)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Actualiza el detalle de gasto pero no sus documentos asociados
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>d</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#DetalleGasto">DetalleGasto</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line531">line 531</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".actualizarDetallesDeGasto"><span class="type-signature">(static) </span>actualizarDetallesDeGasto<span class="signature">(gastosReporId, idGasto)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Actualiza los detalles de gasto con la informacion del servidor
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gastosReporId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>idGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line39">line 39</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".actualizarFoto"><span class="type-signature">(static) </span>actualizarFoto<span class="signature">(idGasto, idDetalleGasto, fotoUri)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Actualiza la foto de un detalle de gasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>idDetalleGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>fotoUri</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line558">line 558</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".actualizarGasto"><span class="type-signature">(static) </span>actualizarGasto<span class="signature">(g)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Actualiza un gasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>g</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Gasto">Gasto</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line455">line 455</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".actualizarPDF"><span class="type-signature">(static) </span>actualizarPDF<span class="signature">(idGasto, idDetalleGasto, pdfUri)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Actualiza el pdf de un detalle de gasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>idDetalleGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pdfUri</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line586">line 586</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".actualizarXML"><span class="type-signature">(static) </span>actualizarXML<span class="signature">(idGasto, idDetalleGasto, xmlUri)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Actualiza el xml(comprobante 2) de un detalle de gasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>idDetalleGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>xmlUri</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line572">line 572</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".cargarImagenConPlugin"><span class="type-signature">(static) </span>cargarImagenConPlugin<span class="signature">(fuente)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Funcion para obtener imagen de camara o galeria usada en Android
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fuente</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line210">line 210</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".cargarImagenDesdeInput"><span class="type-signature">(static) </span>cargarImagenDesdeInput<span class="signature">(input)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Opcion para cargar una imagen desde el input
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLInputElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line243">line 243</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".descargarDocumenetoServidor"><span class="type-signature">(static) </span>descargarDocumenetoServidor<span class="signature">(comprobante)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Dado una ruta con el formato ../documents/* descarga y regresa la direccion del archivo.
+Si ya se ha descargado no lo vuelve a descargar
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>comprobante</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line151">line 151</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".detalleGastoTienePeticionesPendiente"><span class="type-signature">(static) </span>detalleGastoTienePeticionesPendiente<span class="signature">(gastosId)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    El detalle de gasto tiene peticiones pendiente?
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gastosId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line129">line 129</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;boolean></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".gastoTienePeticionesPendiente"><span class="type-signature">(static) </span>gastoTienePeticionesPendiente<span class="signature">(idGasto)</span><span class="type-signature"> &rarr; {Promise.&lt;boolean>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    El gasto tiene peticiones pendientes?
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line118">line 118</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;boolean></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".guardarDetalleGasto"><span class="type-signature">(static) </span>guardarDetalleGasto<span class="signature">(d)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Inserta un detalle de gasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>d</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#DetalleGasto">DetalleGasto</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line478">line 478</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".guardarDocumentoGasto"><span class="type-signature">(static) </span>guardarDocumentoGasto<span class="signature">(fileURL, newName)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Funcion para guardar un documento de gasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>fileURL</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">direccion completa del archivo</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>newName</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">nuevo nombre para el archivo</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line272">line 272</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".guardarDocumentoGastoDesdeInput"><span class="type-signature">(static) </span>guardarDocumentoGastoDesdeInput<span class="signature">(input)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Funcion para guardar un documento de gasto directamente desde un input
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>input</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLInputElement</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line285">line 285</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".insertarGasto"><span class="type-signature">(static) </span>insertarGasto<span class="signature">(g)</span><span class="type-signature"> &rarr; {Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Funcion para insertar un nuevo gasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>g</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="global.html#Gasto">Gasto</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line433">line 433</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;<a href="global.html#SQLResultSet">SQLResultSet</a>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerDetalleGasto"><span class="type-signature">(static) </span>obtenerDetalleGasto<span class="signature">(idDetalleGasto)</span><span class="type-signature"> &rarr; {Promise.&lt;(<a href="global.html#DetalleGasto">DetalleGasto</a>|null)>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Obtiene documento de gasot
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idDetalleGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line393">line 393</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;(<a href="global.html#DetalleGasto">DetalleGasto</a>|null)></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerDetalleGastoPorGastosId"><span class="type-signature">(static) </span>obtenerDetalleGastoPorGastosId<span class="signature">(gastosId)</span><span class="type-signature"> &rarr; {Promise.&lt;(<a href="global.html#DetalleGasto">DetalleGasto</a>|null)>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Obtiene un detalle de gasto por su gastos_id
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gastosId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line141">line 141</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;(<a href="global.html#DetalleGasto">DetalleGasto</a>|null)></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerDetallesDeGasto"><span class="type-signature">(static) </span>obtenerDetallesDeGasto<span class="signature">(idGasto)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="global.html#DetalleGasto">DetalleGasto</a>>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Obtiene los detalles de gasto dado su idGasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line329">line 329</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Array.&lt;<a href="global.html#DetalleGasto">DetalleGasto</a>>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerDetallesDeGastoServidor"><span class="type-signature">(static) </span>obtenerDetallesDeGastoServidor<span class="signature">(gastosReporId)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="global.html#DetalleGasto">DetalleGasto</a>>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Retorna un listado de detalles de gasto asociados a un gastosReporId
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gastosReporId</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line14">line 14</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Array.&lt;<a href="global.html#DetalleGasto">DetalleGasto</a>>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerDocumentoGasto"><span class="type-signature">(static) </span>obtenerDocumentoGasto<span class="signature">(idDocumentoGasto)</span><span class="type-signature"> &rarr; {Promise.&lt;(<a href="global.html#DocumentoGasto">DocumentoGasto</a>|null)>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Obtiene el detalle de gasto en la bd
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idDocumentoGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line413">line 413</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;(<a href="global.html#DocumentoGasto">DocumentoGasto</a>|null)></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerGasto"><span class="type-signature">(static) </span>obtenerGasto<span class="signature">(idGasto)</span><span class="type-signature"> &rarr; {Promise.&lt;(<a href="global.html#Gasto">Gasto</a>|null)>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Regresa un gasto por su idGasto
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idGasto</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line383">line 383</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;(<a href="global.html#Gasto">Gasto</a>|null)></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerGastoPorGastosReporId"><span class="type-signature">(static) </span>obtenerGastoPorGastosReporId<span class="signature">(gastos_repor_id)</span><span class="type-signature"> &rarr; {Promise.&lt;(<a href="global.html#Gasto">Gasto</a>|null)>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Busca un gasto por su gasto_repor_id, regresa null si no lo encuentra
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gastos_repor_id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line423">line 423</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;(<a href="global.html#Gasto">Gasto</a>|null)></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerGastosConteo"><span class="type-signature">(static) </span>obtenerGastosConteo<span class="signature">(numeroSiniestro)</span><span class="type-signature"> &rarr; {Promise.&lt;number>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Obtiene la cantidad de gastos para un siniestro dado
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>numeroSiniestro</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line339">line 339</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;number></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerGastosPorPagina"><span class="type-signature">(static) </span>obtenerGastosPorPagina<span class="signature">(numeroSiniestro, pagina)</span><span class="type-signature"> &rarr; {Promise.&lt;Array.&lt;<a href="global.html#Gasto">Gasto</a>>>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Obtiene un listado de gastos por pagina
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>numeroSiniestro</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pagina</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line314">line 314</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;Array.&lt;<a href="global.html#Gasto">Gasto</a>>></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerListaGastoServidor"><span class="type-signature">(static) </span>obtenerListaGastoServidor<span class="signature">(idSiniestro)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Obtiene un listado de todos los gastos por siniestro del servidor
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idSiniestro</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line349">line 349</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerSendMailGasto"><span class="type-signature">(static) </span>obtenerSendMailGasto<span class="signature">(idMail)</span><span class="type-signature"> &rarr; {Promise.&lt;(<a href="global.html#SendMailGasto">SendMailGasto</a>|null)>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Obtiene los detalles de un correo dado su id
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>idMail</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line403">line 403</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;(<a href="global.html#SendMailGasto">SendMailGasto</a>|null)></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id=".obtenerSiguienteConsecutivo"><span class="type-signature">(static) </span>obtenerSiguienteConsecutivo<span class="signature">(gastos_repor_caso)</span><span class="type-signature"> &rarr; {Promise.&lt;number>}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Regresa el siguiente consecutivo del gasto dado el numero del siniestro
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>gastos_repor_caso</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="gasto_GastosService.js.html">gasto/GastosService.js</a>, <a href="gasto_GastosService.js.html#line189">line 189</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise.&lt;number></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-GestureDetector.html">GestureDetector</a></li><li><a href="module-gestures.html">gestures</a></li></ul><h3>Classes</h3><ul><li><a href="-_anonymous_-GestureDetector.Instance.html">Instance</a></li><li><a href="CatalogoService.html">CatalogoService</a></li><li><a href="DialogoCerrarSesion.html">DialogoCerrarSesion</a></li><li><a href="DialogoNuevoUsuario.html">DialogoNuevoUsuario</a></li><li><a href="DialogoRestablecer.html">DialogoRestablecer</a></li><li><a href="GastosService.html">GastosService</a></li><li><a href="InspeccionFotografia.html">InspeccionFotografia</a></li><li><a href="InspeccionSubirDocumento.html">InspeccionSubirDocumento</a></li><li><a href="InspeccionTablaFotografias.html">InspeccionTablaFotografias</a></li><li><a href="ListadoPeticiones.html">ListadoPeticiones</a></li><li><a href="module-GestureDetector.Detection.html">Detection</a></li><li><a href="module-GestureDetector.Event.html">Event</a></li><li><a href="module-GestureDetector.PointerEvent.html">PointerEvent</a></li><li><a href="module-gestures.Drag.html">Drag</a></li><li><a href="module-gestures.Gesture.html">Gesture</a></li><li><a href="module-gestures.Hold.html">Hold</a></li><li><a href="module-gestures.Release.html">Release</a></li><li><a href="module-gestures.Swipe.html">Swipe</a></li><li><a href="module-gestures.Tap.html">Tap</a></li><li><a href="module-gestures.Touch.html">Touch</a></li><li><a href="module-gestures.Transform.html">Transform</a></li><li><a href="PeticionesDao.html">PeticionesDao</a></li><li><a href="TablaDetalleGasto.html">TablaDetalleGasto</a></li><li><a href="Utils.html">Utils</a></li></ul><h3>Events</h3><ul><li><a href="module-gestures.html#~event:change">change</a></li><li><a href="module-gestures.html#~event:changestate">changestate</a></li><li><a href="module-gestures.html#~event:close">close</a></li><li><a href="module-gestures.html#~event:destroy">destroy</a></li><li><a href="module-gestures.html#~event:doubletap">doubletap</a></li><li><a href="module-gestures.html#~event:drag">drag</a></li><li><a href="module-gestures.html#~event:dragdown">dragdown</a></li><li><a href="module-gestures.html#~event:dragend">dragend</a></li><li><a href="module-gestures.html#~event:dragright">dragright</a></li><li><a href="module-gestures.html#~event:dragstart">dragstart</a></li><li><a href="module-gestures.html#~event:dragup">dragup</a></li><li><a href="module-gestures.html#~event:drapleft">drapleft</a></li><li><a href="module-gestures.html#~event:gesture">gesture</a></li><li><a href="module-gestures.html#~event:hide">hide</a></li><li><a href="module-gestures.html#~event:hold">hold</a></li><li><a href="module-gestures.html#~event:init">init</a></li><li><a href="module-gestures.html#~event:modechange">modechange</a></li><li><a href="module-gestures.html#~event:open">open</a></li><li><a href="module-gestures.html#~event:overscroll">overscroll</a></li><li><a href="module-gestures.html#~event:pinchin">pinchin</a></li><li><a href="module-gestures.html#~event:pinchout">pinchout</a></li><li><a href="module-gestures.html#~event:postchange">postchange</a></li><li><a href="module-gestures.html#~event:postclose">postclose</a></li><li><a href="module-gestures.html#~event:posthide">posthide</a></li><li><a href="module-gestures.html#~event:postopen">postopen</a></li><li><a href="module-gestures.html#~event:postpop">postpop</a></li><li><a href="module-gestures.html#~event:postpush">postpush</a></li><li><a href="module-gestures.html#~event:postshow">postshow</a></li><li><a href="module-gestures.html#~event:prechange">prechange</a></li><li><a href="module-gestures.html#~event:preclose">preclose</a></li><li><a href="module-gestures.html#~event:prehide">prehide</a></li><li><a href="module-gestures.html#~event:preopen">preopen</a></li><li><a href="module-gestures.html#~event:prepop">prepop</a></li><li><a href="module-gestures.html#~event:prepush">prepush</a></li><li><a href="module-gestures.html#~event:preshow">preshow</a></li><li><a href="module-gestures.html#~event:reactive">reactive</a></li><li><a href="module-gestures.html#~event:refresh">refresh</a></li><li><a href="module-gestures.html#~event:release">release</a></li><li><a href="module-gestures.html#~event:rotate">rotate</a></li><li><a href="module-gestures.html#~event:show">show</a></li><li><a href="module-gestures.html#~event:swipe">swipe</a></li><li><a href="module-gestures.html#~event:swipedown">swipedown</a></li><li><a href="module-gestures.html#~event:swipeleft">swipeleft</a></li><li><a href="module-gestures.html#~event:swiperight">swiperight</a></li><li><a href="module-gestures.html#~event:swipeup">swipeup</a></li><li><a href="module-gestures.html#~event:tap">tap</a></li><li><a href="module-gestures.html#~event:touch">touch</a></li><li><a href="module-gestures.html#~event:transform">transform</a></li><li><a href="module-gestures.html#~event:transformend">transformend</a></li><li><a href="module-gestures.html#~event:transformstart">transformstart</a></li></ul><h3>Global</h3><ul><li><a href="global.html#abrirDocumentoConAplicacionDeTerceros">abrirDocumentoConAplicacionDeTerceros</a></li><li><a href="global.html#abrirNuevaInspeccion">abrirNuevaInspeccion</a></li><li><a href="global.html#actualizarEstatusPeticion">actualizarEstatusPeticion</a></li><li><a href="global.html#actualizarListadoGasto">actualizarListadoGasto</a></li><li><a href="global.html#appLog">appLog</a></li><li><a href="global.html#b64toBlob">b64toBlob</a></li><li><a href="global.html#backReporteGasto">backReporteGasto</a></li><li><a href="global.html#backVerInspeccion">backVerInspeccion</a></li><li><a href="global.html#baseDatosLog">baseDatosLog</a></li><li><a href="global.html#bitacora">bitacora</a></li><li><a href="global.html#buscarInspeccionSinSiniestro">buscarInspeccionSinSiniestro</a></li><li><a href="global.html#buscarReferencia">buscarReferencia</a></li><li><a href="global.html#buscarSiniestro">buscarSiniestro</a></li><li><a href="global.html#cambiarSiniestro">cambiarSiniestro</a></li><li><a href="global.html#cambiarTareaNoFact">cambiarTareaNoFact</a></li><li><a href="global.html#cargarSelect">cargarSelect</a></li><li><a href="global.html#clearPeticiones">clearPeticiones</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#CONFIGURACION_LOGGER">CONFIGURACION_LOGGER</a></li><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#consultarGastos">consultarGastos</a></li><li><a href="global.html#contentLoadedFotografias">contentLoadedFotografias</a></li><li><a href="global.html#crearDocumento">crearDocumento</a></li><li><a href="global.html#crearInspeccion">crearInspeccion</a></li><li><a href="global.html#createDatabase">createDatabase</a></li><li><a href="global.html#datos">datos</a></li><li><a href="global.html#deleteBitacora">deleteBitacora</a></li><li><a href="global.html#deleteDatabase">deleteDatabase</a></li><li><a href="global.html#deletePeticion">deletePeticion</a></li><li><a href="global.html#DescripcionPeticion">DescripcionPeticion</a></li><li><a href="global.html#dialogoComfirmarCambiosInspeccion">dialogoComfirmarCambiosInspeccion</a></li><li><a href="global.html#dialogoEditarInspeccion">dialogoEditarInspeccion</a></li><li><a href="global.html#docFotoToJson">docFotoToJson</a></li><li><a href="global.html#documento">documento</a></li><li><a href="global.html#downloadLogFile">downloadLogFile</a></li><li><a href="global.html#downloadPDF">downloadPDF</a></li><li><a href="global.html#downloadPhoto">downloadPhoto</a></li><li><a href="global.html#downloadPhotos">downloadPhotos</a></li><li><a href="global.html#dropDatabasePromise">dropDatabasePromise</a></li><li><a href="global.html#enviarPeticionesPendientes">enviarPeticionesPendientes</a></li><li><a href="global.html#faltanDatosSiniestro">faltanDatosSiniestro</a></li><li><a href="global.html#FormatearPeticion">FormatearPeticion</a></li><li><a href="global.html#FormularioInspeccion">FormularioInspeccion</a></li><li><a href="global.html#fotoInspeccionToJson">fotoInspeccionToJson</a></li><li><a href="global.html#getBitacoraData">getBitacoraData</a></li><li><a href="global.html#getBitacoraParams">getBitacoraParams</a></li><li><a href="global.html#getDataReporteGasto">getDataReporteGasto</a></li><li><a href="global.html#getGastoData">getGastoData</a></li><li><a href="global.html#getGastoParams">getGastoParams</a></li><li><a href="global.html#getLogger">getLogger</a></li><li><a href="global.html#getUUID">getUUID</a></li><li><a href="global.html#guardarBitacora">guardarBitacora</a></li><li><a href="global.html#guardarBitacoraFacturableYNueva">guardarBitacoraFacturableYNueva</a></li><li><a href="global.html#guardarBitacoraFacturableYSalir">guardarBitacoraFacturableYSalir</a></li><li><a href="global.html#guardarBitacoraNoFacturableYNueva">guardarBitacoraNoFacturableYNueva</a></li><li><a href="global.html#guardarBitacoraNoFacturableYSalir">guardarBitacoraNoFacturableYSalir</a></li><li><a href="global.html#guardarBitacoras">guardarBitacoras</a></li><li><a href="global.html#guardarCambioBitacora">guardarCambioBitacora</a></li><li><a href="global.html#guardarCambios">guardarCambios</a></li><li><a href="global.html#guardarConceptos">guardarConceptos</a></li><li><a href="global.html#guardarEstadoInspeccion">guardarEstadoInspeccion</a></li><li><a href="global.html#guardarGrupoDocumento">guardarGrupoDocumento</a></li><li><a href="global.html#guardarMonedas">guardarMonedas</a></li><li><a href="global.html#guardarNuevoGasto">guardarNuevoGasto</a></li><li><a href="global.html#guardarPeticion">guardarPeticion</a></li><li><a href="global.html#guardarPeticionPromise">guardarPeticionPromise</a></li><li><a href="global.html#guardarSiniestro">guardarSiniestro</a></li><li><a href="global.html#guardarSubtarea">guardarSubtarea</a></li><li><a href="global.html#guardarTarea">guardarTarea</a></li><li><a href="global.html#guardarTipoAnexo">guardarTipoAnexo</a></li><li><a href="global.html#guardarTipoFoto">guardarTipoFoto</a></li><li><a href="global.html#initBitacora">initBitacora</a></li><li><a href="global.html#initNuevoDetalle">initNuevoDetalle</a></li><li><a href="global.html#initNuevoGasto">initNuevoGasto</a></li><li><a href="global.html#initRefSin">initRefSin</a></li><li><a href="global.html#initResultadosSiniestro">initResultadosSiniestro</a></li><li><a href="global.html#initSendGastos">initSendGastos</a></li><li><a href="global.html#inspeccion">inspeccion</a></li><li><a href="global.html#inspeccionBuscarSin">inspeccionBuscarSin</a></li><li><a href="global.html#inspeccionCambioRegistrado">inspeccionCambioRegistrado</a></li><li><a href="global.html#inspeccionHabilitarEditarSiniestro">inspeccionHabilitarEditarSiniestro</a></li><li><a href="global.html#InspeccionService">InspeccionService</a></li><li><a href="global.html#isSynced">isSynced</a></li><li><a href="global.html#lastUserAct">lastUserAct</a></li><li><a href="global.html#limpiarCampos">limpiarCampos</a></li><li><a href="global.html#loadBitacora">loadBitacora</a></li><li><a href="global.html#loadSubtareas">loadSubtareas</a></li><li><a href="global.html#Migraciones">Migraciones</a></li><li><a href="global.html#mostrarGastos">mostrarGastos</a></li><li><a href="global.html#mostrarInspeccion">mostrarInspeccion</a></li><li><a href="global.html#mostrarNuevaInspeccion">mostrarNuevaInspeccion</a></li><li><a href="global.html#mostrarReporteGasto">mostrarReporteGasto</a></li><li><a href="global.html#nuevaBitacoraNoFacturable">nuevaBitacoraNoFacturable</a></li><li><a href="global.html#obtenerFecha">obtenerFecha</a></li><li><a href="global.html#obtenerFechaHHMMSS">obtenerFechaHHMMSS</a></li><li><a href="global.html#openEnviarIns">openEnviarIns</a></li><li><a href="global.html#openFotografiasCargadas">openFotografiasCargadas</a></li><li><a href="global.html#openPhotoCamera">openPhotoCamera</a></li><li><a href="global.html#openPhotoLibrary">openPhotoLibrary</a></li><li><a href="global.html#optionBitaFact">optionBitaFact</a></li><li><a href="global.html#paginasTotales">paginasTotales</a></li><li><a href="global.html#panelUsuario">panelUsuario</a></li><li><a href="global.html#progressBar">progressBar</a></li><li><a href="global.html#reducePictureSize">reducePictureSize</a></li><li><a href="global.html#refLog">refLog</a></li><li><a href="global.html#resetAllError">resetAllError</a></li><li><a href="global.html#resolveLocalDevicePath">resolveLocalDevicePath</a></li><li><a href="global.html#resultadosBitacora">resultadosBitacora</a></li><li><a href="global.html#resultadosDatos">resultadosDatos</a></li><li><a href="global.html#resultadosInspeccion">resultadosInspeccion</a></li><li><a href="global.html#resultadosInspeccionSin">resultadosInspeccionSin</a></li><li><a href="global.html#rowsAsList">rowsAsList</a></li><li><a href="global.html#savebase64AsPDF">savebase64AsPDF</a></li><li><a href="global.html#saveDataUser">saveDataUser</a></li><li><a href="global.html#saveEmail">saveEmail</a></li><li><a href="global.html#savePhotoFile">savePhotoFile</a></li><li><a href="global.html#saveRequest">saveRequest</a></li><li><a href="global.html#saveResponse">saveResponse</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#sendCambiosBitacora">sendCambiosBitacora</a></li><li><a href="global.html#sendMail">sendMail</a></li><li><a href="global.html#sendPeticiones">sendPeticiones</a></li><li><a href="global.html#setDataSiniestro">setDataSiniestro</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#showFotosCargadas">showFotosCargadas</a></li><li><a href="global.html#showModal">showModal</a></li><li><a href="global.html#sqlError">sqlError</a></li><li><a href="global.html#sqlPromise">sqlPromise</a></li><li><a href="global.html#sqlQuery">sqlQuery</a></li><li><a href="global.html#stringToBlob">stringToBlob</a></li><li><a href="global.html#submitDocumentoCargado">submitDocumentoCargado</a></li><li><a href="global.html#submitInspeccionSeleccionada">submitInspeccionSeleccionada</a></li><li><a href="global.html#submitNuevasFotografias">submitNuevasFotografias</a></li><li><a href="global.html#submitRepoGasto">submitRepoGasto</a></li><li><a href="global.html#submitValidateGastosReport">submitValidateGastosReport</a></li><li><a href="global.html#syncLocalData">syncLocalData</a></li><li><a href="global.html#takePhoto">takePhoto</a></li><li><a href="global.html#updateAnticipo">updateAnticipo</a></li><li><a href="global.html#updateBitacora">updateBitacora</a></li><li><a href="global.html#updateBitaNoFact">updateBitaNoFact</a></li><li><a href="global.html#updateEstado">updateEstado</a></li><li><a href="global.html#updateLocalData">updateLocalData</a></li><li><a href="global.html#updateNombreFoto">updateNombreFoto</a></li><li><a href="global.html#updatePagesGasto">updatePagesGasto</a></li><li><a href="global.html#uploadFile">uploadFile</a></li><li><a href="global.html#validacionNuevaBitacora">validacionNuevaBitacora</a></li><li><a href="global.html#validarInspeccionSinSiniestro">validarInspeccionSinSiniestro</a></li><li><a href="global.html#validateDocumentoCargado">validateDocumentoCargado</a></li><li><a href="global.html#validateEnviarIns">validateEnviarIns</a></li><li><a href="global.html#validateGastosReport">validateGastosReport</a></li><li><a href="global.html#validateNuevasFotografias">validateNuevasFotografias</a></li><li><a href="global.html#validateNuevoDetalleGasto">validateNuevoDetalleGasto</a></li><li><a href="global.html#validateNuevoRepGasto">validateNuevoRepGasto</a></li><li><a href="global.html#value">value</a></li><li><a href="global.html#verBitacora">verBitacora</a></li><li><a href="global.html#verInspeccion">verInspeccion</a></li><li><a href="global.html#verInspeccionSin">verInspeccionSin</a></li><li><a href="global.html#verReporteGasto">verReporteGasto</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Fri Oct 16 2020 08:31:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

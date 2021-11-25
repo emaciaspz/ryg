@@ -1,0 +1,10 @@
+const BitacoraService = {
+    /**
+     * @param {number} idBitacora
+     * @returns {Promise<Bitacora>}
+     */
+    obtenerBitacora(idBitacora) {
+        return sqlPromise('SELECT * FROM Bitacora')
+            .then(r => r.rows.length > 0 ? r.rows.item(0) : null);
+    }
+}

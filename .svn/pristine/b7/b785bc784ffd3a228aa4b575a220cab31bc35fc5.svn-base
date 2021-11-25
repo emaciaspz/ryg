@@ -1,0 +1,387 @@
+/**********************************************
+ * VARIABLE SERVER GUARDA LA URL DEL SERVIDOR *
+ **********************************************/
+//var server = "https://www.bitfarm.mx/kronos_dev/api/v1/"; //Servidor de Pruebas
+//var server = "https://www.bitfarm.mx/kronos_qa/api/v1/"; //Servidor QA
+var mainLog = getLogger('main');
+/**
+ * @type {string}
+ * Direccion del servidor
+ */
+var server = "https://kronos.rygespinosa.com.mx/api/v1/"; // Servidor Produccion
+mainLog.info('Apuntando al servidor:' + server);
+var db = null;
+var internetStatus;
+var currentPage;
+var syncData = false;
+var intervaloPeticiones;
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+/**
+ * Funcion al momento de que el dispositvo este listo
+ * - conecta la base de datos
+ * - lanza el evento databaseready
+ * - configura cors
+ * - crea el intervalo para enviar peticiones
+ */
+function onDeviceReady() {
+    db = window.sqlitePlugin.openDatabase({
+        name: 'kronos.db',
+        location: 'default',
+        androidDatabaseProvider: 'system'
+    });
+    document.dispatchEvent(new Event("databaseready"));
+    setSynced();
+    createDatabase();
+    $.support.cors = true;
+    $.mobile.allowCrossDomainPages = true;
+    $.mobile.ignoreContentEnabled = true;
+    intervaloPeticiones = crearIntervaloPeticiones();
+    // pedir permisos
+    cordova.plugins.diagnostic.requestCameraRollAuthorization(
+        function(status) {
+            let estado = status == cordova.plugins.diagnostic.permissionStatus.GRANTED ? "granted" : "denied";
+            mainLog.debug('Estado camera ', estado);    
+            if (estado == 'denied') {
+                showError('No se pudo obtener acceso a la camara');    
+            }
+        }, function(error) {
+            showError('No se pudo obtener acceso a la camara')
+            mainLog.debug('Estado camera ', error);
+        }
+    );
+    cordova.plugins.diagnostic.requestCameraAuthorization(
+        function(status) {
+            let estado = status == cordova.plugins.diagnostic.permissionStatus.GRANTED ? "granted" : "denied";
+            mainLog.debug("Authorization request for camera use was " + estado);
+            if (status == 'denied') {
+                showError('No se pudo obtener acceso a la camara');    
+            }
+        }, function(error){
+            showError('No se pudo obtener acceso a la camara');
+            mainLog.error("The following error occurred: "+ error);
+        }, false
+    );   
+}
+
+/**
+ * Crea el intervalo de peticiones el cual revisa la conexion y envia peticiones cada cierta
+ * cantidad de segundos
+ */
+function crearIntervaloPeticiones() {
+    return window.setInterval(function () {
+        //Se revisa si tiene conexión a internet
+        if (verificarConexion()) {
+            //Se obtiene el token
+            var tokenSaved = window.localStorage.getItem("tokenLogin");
+            //Revisa que exista un token almacenado
+            if (tokenSaved != null && tokenSaved != undefined) {
+                //Envía las peticiones
+                if (!sincronizando) {
+                    syncLocalData('sync');
+                }
+            }
+        }
+    }, 12000);
+}
+
+/**
+ * Funcion para enviar peticiones get
+ * @param {string} url 
+ * @param {function} successHandler 
+ * @param {function=} errorHandler 
+ * @param {boolean=} async 
+ * @param {string=} dataType 
+ */
+function sendGetRequest(url, successHandler, errorHandler, async, dataType) {
+    sendRequest('get', url, null, successHandler, errorHandler, async, dataType);
+}
+
+/**
+ * Funcion para enviar peticiones post
+ * @param {string} url
+ * @param {Object} dataParam
+ * @param {function} successHandler
+ * @param {function=} errorHandler
+ * @param {boolean=} async 
+ */
+function sendPostRequest(url, dataParam, successHandler, errorHandler, async) {
+    sendRequest('post', url, dataParam, successHandler, errorHandler, async);
+}
+
+/**
+ * Funcion para enviar peticiones, para la autenticacion utiliza
+ * localStorage["tokenLogin"];
+ * @param {string} type 
+ * @param {string} url 
+ * @param {Object} dataParam 
+ * @param {function} successHandler 
+ * @param {function=} errorHandler 
+ * @param {boolean=} async 
+ * @param {string=} dataType 
+ */
+function sendRequest(type, url, dataParam, successHandler, errorHandler, async, dataType) {
+    $.support.cors = true;
+    if (!dataType) {
+        dataType = 'json';
+    }
+    if (async === undefined) {
+        async = true;
+    }
+
+    var tokenSaved = window.localStorage.getItem("tokenLogin");
+    mainLog.trace(`${type.toString().toUpperCase()} ${server + url} type:${dataType} body:`, dataParam);
+    if (tokenSaved == undefined || tokenSaved == null) {
+        showLoading();
+        $.ajax({
+            type: type,
+            url: server + url,
+            dataType: dataType,
+            data: dataParam,
+            async: async,
+            crossDomain: true,
+            isLocal: false,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
+            },
+            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+            success: function (data) {
+                mainLog.trace(`${type.toString().toUpperCase()} ${server + url} response:`, data);
+                successHandler(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                mainLog.error(`${type.toString().toUpperCase()} ${server + url} response:`, { jqXHR, textStatus, errorThrown });
+                /* alert(JSON.stringify(jqXHR) + " " + textStatus + " " + errorThrown); */
+                httpErrorHandler(jqXHR, textStatus, errorThrown);
+                if (errorHandler != null) {
+                    errorHandler(jqXHR, textStatus, errorThrown);
+                }
+            }
+        }).always(function () {
+            hideLoading();
+        });
+    } else {
+        showLoading();
+        var token = window.localStorage.getItem("tokenLogin");
+        $.ajax({
+            type: type,
+            url: server + url,
+            dataType: dataType,
+            data: dataParam,
+            async: async,
+            crossDomain: true,
+            isLocal: false,
+            headers: {
+                Authorization: "Bearer " +
+                    window.localStorage.getItem("tokenLogin")
+            },
+            contentType: 'application/x-www-form-urlencoded; charset=utf-8',
+            success: function (data) {
+                mainLog.trace(`${type.toUpperCase()} ${server + url} response:`, data)
+                if (data.errorCause && data.errorCause == 'JWT Token expired') {
+                    showNotice('Datos de acceso no válidos');
+                    fn.load('login.html');
+                } else {
+                    successHandler(data);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                mainLog.error(`${type.toUpperCase()} ${server + url} response:`, { jqXHR, textStatus, errorThrown });
+                if (jqXHR) {
+                    if (jqXHR.status === 401) {
+                        if (currentPage != 'index-page' && currentPage != 'carga_page' && currentPage != 'login-page' && currentPage != 'sendGastos' && currentPage != 'pageUserPane') {
+                            window.localStorage.setItem("lastPageUser", currentPage);
+                            window.localStorage.setItem("lastAction", url);
+                        }
+                    }
+                }
+                //alert(JSON.stringify(jqXHR) + " " + textStatus + " " + errorThrown);
+                httpErrorHandler(jqXHR, textStatus, errorThrown);
+                if (errorHandler != null) {
+                    errorHandler(jqXHR, textStatus, errorThrown);
+                }
+            }
+        }).always(function () {
+            hideLoading();
+        });
+    }
+}
+
+/** 
+ * Funcion para mostrar un spinner centrado en la pantalla
+ */
+function showLoading() {
+    $.mobile.loading("show");
+}
+
+/**
+ * Funcion para ocultar el spinner centrado de la pantalla
+ */
+function hideLoading() {
+    $.mobile.loading("hide");
+}
+
+/**
+ * Funcion para atrapar los errores que pueden surgir y notificar al usuario
+ * @param {Object} jqXHR 
+ * @param {string} textStatus 
+ * @param {string} errorThrown 
+ */
+function httpErrorHandler(jqXHR, textStatus, errorThrown) {
+    //showNotice(jqXHR.status);
+    if (jqXHR.status === 401) {
+        if (errorThrown === 'No such user') {
+            showError("Credenciales no válidas"); 
+        } else {
+            showError("La sesión ha expirado");
+            fn.load('login.html');
+        }
+    } else if (jqXHR.status === 403) {
+        showError(jqXHR.status + " No está autorizado para ejecutar esta acción.");
+    } else if (jqXHR.status === 0) {
+        showNotice(jqXHR.status + " Se sugiere revisar su conexión a internet.");
+    } else if (jqXHR.status != 200 && jqXHR.status != 404) {
+        showError(jqXHR.status + " Ocurrió un error inesperado.");
+    }
+}
+
+/**
+ * Muestra una notificacion tipo "toast" de error
+ * @param {string} message 
+ */
+function showError(message) {
+    showMessage(message, 'error', 'img/error-icon.png');
+}
+
+/**
+ * Muestra una notificacion tipo "toast" de exito
+ * @param {string} message 
+ */
+function showSuccess(message) {
+    showMessage(message, 'success', 'img/success-icon.png');
+}
+
+/**
+ * Muestra una notificacion tipo "toast"
+ * @param {string} message 
+ */
+function showNotice(message) {
+    showMessage(message, 'info', 'img/info-icon.png');
+}
+
+/**
+ * Crear notificaciones tipo "toast"
+ * @param {string} message 
+ * @param {string} type 
+ * @param {string} icon direccion de la imagen
+ */
+function showMessage(message, type, icon) {
+    VanillaToasts.create({
+        title: 'R&G Espinosa',
+        text: message,
+        type: type,
+        icon: icon,
+        timeout: 3000
+    });
+}
+
+/**
+ * Funcion para cargar pagina inicial
+ */
+document.addEventListener('show', function (event) {
+    $(document).off('keypress');
+    var page = event.target;
+    currentPage = page.id;
+    if (page.id === 'index-page') {  // Pagina princiapal
+        document.addEventListener("databaseready", verificarSesion, false);
+    } else if (page.id == 'login-page') { //Página login
+        document.addEventListener("databaseready", function () {
+            createDatabase();
+            fn.onEnterPress(revisarLogin);
+        }, false)
+    } else if (page.id == 'buscar') { //Buscar siniestro
+        fn.onEnterPress(initRefSin);
+    } else if (page.id == 'inspeccionSin') {
+        fn.onEnterPress(validarInspeccionSinSiniestro);
+    } else if (page.id === 'ref') {
+        var titleApp = window.localStorage.getItem("titleApp");
+        if (titleApp != null && titleApp != undefined) {
+            $('#titleApp').html(titleApp);
+        }
+        var numeroSiniestro = window.localStorage.getItem("numeroSiniestro");
+        if (numeroSiniestro != null && numeroSiniestro != undefined) {
+            $('#numeroSiniestro').html(numeroSiniestro);
+        }
+        var estatusSiniestro = window.localStorage.getItem("estatusSiniestro");
+        if (estatusSiniestro != null && estatusSiniestro != undefined) {
+            $('#estatusSiniestro').html(estatusSiniestro);
+        }
+        hideLoading();
+    } else if (page.id == 'carga_page') {
+        progressBar();
+    } else if (page.id == 'sendGastos') {
+        var title = window.localStorage.getItem("tituloGasto");
+        $('#titlePage').html(title);
+        validateGastosReport();
+    } else if (page.id == 'enviarIns') {
+        validateEnviarIns();
+    } else if (page.id == 'cargaFotografias_page') {
+        progressBarFotografias();
+    }
+});
+
+/**
+ * @function jQuery.validator
+ * funcion para configurar los mensajes del validador
+ */
+jQuery.extend(jQuery.validator.messages, {
+    required: "Campo Obligatorio",
+    number: "Favor de ingresar un n\u00FAmero valido",
+    digits: "Favor de ingresar solo n\u00FAmeros",
+    date: "Favor de ingresar una fecha v\u00E1lida",
+    email: "Favor de ingresar un e-mail válido",
+    maxlength: jQuery.validator.format("Favor de ingresar no m\u00E1s de {0} car\u00E1cteres"),
+    minlength: jQuery.validator.format("Favor de ingresar almenos {0} car\u00E1cteres"),
+    rangelength: jQuery.validator.format("Favor de ingresar un valor de longitud entre {0} y {1} car\u00E1cteres"),
+    range: jQuery.validator.format("Favor de ingresar un valor entre {0} y {1}"),
+    max: jQuery.validator.format("Favor de ingresar un valor menor o igual a {0}"),
+    min: jQuery.validator.format("Favor de ingresar un valor mayor o igual a {0}"),
+    step: jQuery.validator.format("Favor de ingresar un valor que sea múltiplo de .25")
+});
+
+function backButton() {
+    document.addEventListener("backbutton", onBackKeyDown, true);
+}
+
+function onBackKeyDown() {
+    navigator.app.exitApp();
+}
+
+function verificarConexion() {
+    return window.navigator.onLine;
+}
+
+document.addEventListener("online", onDeviceOnline, false);
+
+document.addEventListener("offline", onDeviceOffline, false);
+
+var sincronizando = false;
+
+function onDeviceOnline() {
+    internetStatus = true;
+}
+
+function descargarInfoCaso() {
+    var idSiniestro = window.localStorage.getItem("idSiniestroServidor");
+    var siniestroLoaded = window.localStorage.getItem("siniestroLoaded");
+    if (siniestroLoaded == "false" && syncData == false) {
+        syncData = true;
+        verifySiniestroData(idSiniestro);
+    }
+}
+
+function onDeviceOffline() {
+    internetStatus = false;
+}

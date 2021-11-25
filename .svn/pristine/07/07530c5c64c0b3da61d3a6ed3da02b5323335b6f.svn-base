@@ -1,0 +1,28 @@
+/**
+ * Dialogo que se muestra cuando se inicia con otro usuario y el usuario
+ * anterior tenia datos pendientes de subir
+ * @class
+ */
+const DialogoNuevoUsuario = {
+    mostrar() {
+        createAlertDialog('deleteLastUserData', 'deleteLastUserData.html');
+    },
+
+    regresar() {
+        hideAlertDialog('deleteLastUserData');
+    },
+    
+    borrarDatosYContinuar() {
+        showLoading();
+        return dropDatabasePromise()
+            .then(createDatabase)
+            .then(() => {
+                window.localStorage.clear();
+                window.localStorage.setItem("synced", true);
+                hideAlertDialog('deleteLastUserData');
+                console.error('DATOS LIMPIADOS')
+            })
+            .then(iniciarSesion)
+            .finally(hideLoading)
+    }    
+};

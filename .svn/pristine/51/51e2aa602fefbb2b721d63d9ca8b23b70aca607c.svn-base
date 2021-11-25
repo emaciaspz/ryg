@@ -1,0 +1,2225 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <!--Onsen UI-->
+    <link rel="stylesheet" type="text/css" href="css/onsenui.css" />
+    <link rel="stylesheet" type="text/css" href="css/onsen-css-components.min.css" />
+    <script type="text/javascript" src="js/onsenui.min.js"></script>
+    <!--Jquery-->
+    <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.toastmessage.css" />
+    <!--Bootstrap-->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <!--ToastR-->
+    <link rel="stylesheet" type="text/css" href="css/toastr.min.css" />
+    <!--Estilos Personalizados-->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+    <!--Jquery-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/jquery.validate.js"></script>
+    <!--Jquery Mobile-->
+    <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"></script>
+    <!-- Toast-->
+    <script type="text/javascript" src="js/vanillatoasts.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/vanillatoasts.css"></script>
+    <!--Moment Js-->
+    <script type="text/javascript" src="js/moment.js"></script>
+    <!-- Numeral Js -->
+    <script type="text/javascript" src="js/numeral.min.js"></script>
+    <!--Funciones-->
+    <script type="text/javascript" src="js/applog.js"></script>
+    <script type="text/javascript" src="js/login/login.js"></script>
+    <script type="text/javascript" src="js/login/DialogoCerrarSesion.js"></script>
+    <script type="text/javascript" src="js/login/DialogoNuevoUsuario.js"></script>
+    <script type="text/javascript" src="js/login/DialogoRestablecer.js"></script>
+    <script type="text/javascript" src="js/buscar.js"></script>
+    <script type="text/javascript" src="js/datos.js"></script>
+    <script type="text/javascript" src="js/datosUsuario.js"></script>
+    <script type="text/javascript" src="js/bitacora/bitacora.js"></script>
+    <script type="text/javascript" src="js/gasto/GastosService.js"></script>
+    <script type="text/javascript" src="js/gasto/TablaDetalleGasto.js"></script>
+    <script type="text/javascript" src="js/gasto/gastos.js"></script>
+    <script type="text/javascript" src="js/inspeccion/inspeccion.js"></script>
+    <script type="text/javascript" src="js/inspeccion/InspeccionFotografia.js"></script>
+    <script type="text/javascript" src="js/inspeccion/InspeccionService.js"></script>
+    <script type="text/javascript" src="js/inspeccion/InspeccionSubirDocumento.js"></script>
+    <script type="text/javascript" src="js/inspeccion/InspeccionSubirPDF.js"></script>
+    <script type="text/javascript" src="js/inspeccion/InspeccionTablaFotografias.js"></script>
+    <script type="text/javascript" src="js/catalogos.js"></script> 
+    <script type="text/javascript" src="js/CatalogosService.js"></script>    
+    <script type="text/javascript" src="js/peticiones/PeticionesService.js"></script>
+    <script type="text/javascript" src="js/peticiones/peticiones.js"></script>
+    <script type="text/javascript" src="js/peticiones/DescripcionPeticion.js"></script>
+    <script type="text/javascript" src="js/peticiones/FormatearPeticion.js"></script>
+    <script type="text/javascript" src="js/peticiones/ListadoPeticiones.js"></script>
+    <script type="text/javascript" src="js/ref.js"></script>
+    <script type="text/javascript" src="js/documento.js"></script>
+    <script type="text/javascript" src="js/pdf.js"></script>
+    <script type="text/javascript" src="js/pdfTemplate.js"></script>
+    <script type="text/javascript" src="js/fotografias.js"></script>
+    <script type="text/javascript" src="js/bitacora/BitacoraService.js"></script>
+    <!--Utilerías-->
+    <script type="text/javascript" src="js/baseDatos.js"></script>
+    <script type="text/javascript" src="js/uploadFile.js"></script>
+    <script type="text/javascript" src="js/utils.js"></script>
+    <script type="text/javascript" src="js/"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <title>Kronos Móvil</title>
+</head>
+
+<body>
+    <!--User Panel-->
+    <ons-splitter id="panelUsuario">
+        <ons-splitter-side id="menu" side="right" width="220px" collapse modifier="longdivider">
+            <ons-page id="pageUserPane">
+                <div id="paneContent"></div>
+            </ons-page>
+        </ons-splitter-side>
+        <ons-splitter-content id="content" page="index.html"></ons-splitter-content>
+    </ons-splitter><!--/User panel-->
+
+    <!--Pantalla Index-->
+    <ons-template id="index.html">
+        <ons-page id="index-page">
+        </ons-page>
+    </ons-template><!--Pantalla index-->
+
+    <!--Login-->
+    <ons-template id="login.html">
+        <ons-page id="login-page">
+            <div style="text-align: center; margin-top: 30px;">
+                <ons-toolbar style="background-color: #008BFB;">
+                        <a href="http://rygespinosa.com/" class="left" target="_blank">
+                            <ons-toolbar-button class="button--quiet left btnLoginTb">
+                                <label style="color: #fff;font-size: 14px;">PÁGINA WEB</label>
+                            </ons-toolbar-button>
+                        </a>
+                        <a href="mailto:contacto@rygespinosa.com" class="right">
+                            <ons-toolbar-button class="button--quiet right">
+                                <label style="color: #fff;font-size: 14px;">CONTACTO</label>        
+                            </ons-toolbar-button>
+                        </a>
+                    
+                </ons-toolbar>
+                <br />
+                <br />
+                <img src="img/Logo_RG_V1.png" width="215px" class="shadow-sm rounded">
+            </div>
+            <br>
+            <br>
+            <br>
+            <div style="text-align: center; margin-top: 30px;">
+                <ons-card class="center card-op" style="background:#002955;width:325px;height:310px;">
+                    <div class="center icon-login">
+                        <img class="center" src="img/users.png" width="125px">
+                    </div>
+                    <div id="divRut" class="input-group shadow-sm center" style="width: 260px;">
+                        <div id="divRut2" class="input-group-prepend">
+                            <span id="divRut3" class="input-group-text border-0 text-white" style="background-color: #008BFB;">
+                                <ons-icon icon="md-account-circle"></ons-icon>
+                            </span>
+                        </div>
+                        <input style="width: 220px;" id="rut" name="rut" 
+                            placeholder="Nombre De Usuario" class="form-control border-0 focus-none"/>
+                    </div>
+                    <div id="divClave" class="input-group shadow-sm center" style="width: 260px;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text border-0 lock text-white" style="background-color: #008BFB;">
+                                <ons-icon icon="lock"></ons-icon>
+                            </span>
+                        </div>
+                        <input style="width: 220px;" id="clave" name="clave" 
+                            type="password" placeholder="Clave" float class="form-control border-0 focus-none"/>
+                    </div>
+                        <button class="button center" onclick="revisarLogin();" id="btnLogin" style="vertical-align:middle;background-color: #008BFB;">
+                                Ingresar
+                        </button>
+                    <br>
+                </ons-card>
+            </div>
+            <!-- Footer -->
+            <ons-bottom-toolbar>
+                <center>
+                    <strong>Versi&oacute;n 1.29</strong>
+                </center>   
+            </ons-bottom-toolbar>
+        </ons-page>
+    </ons-template><!-- Login -->
+
+    <!--Buscar siniestro-->
+    <ons-template id="buscar.html">
+        <ons-page id="buscar">
+            <!-- Header -->
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material:md-menu" class="menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center rounded">
+                    <img src="img/image001.png" width="100px" class="rounded" vspace="15" hspace="15" onclick="cambiarSiniestro();">
+                </div>
+            </ons-toolbar><!-- /Header -->
+
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h3>
+                        <center>
+                            Búsqueda de Siniestro
+                        </center>
+                    </h3>
+                </div>
+            </ons-card>
+
+            <!-- Content -->
+            <ons-card class="diamond" style="height: 495px;">
+                <center>
+                    <br/>
+                    <input type="search" value="" id="buscarInput" placeholder="Buscar" class="search-input center"
+                        style="width: 300px; height: 50px;background-color: #fff;">
+                    <br/><br/>
+                    <div>
+                        <ons-card style="box-shadow: none;border: none;background-color: #fff;width: 300px;">
+                            <ons-button modifier="quiet" style="font-size: 18px;width: 150px;"
+                                onclick="initResultadosSiniestro(1);" class="center">
+                                <ons-icon icon="md-search" style="width: 25px; color: #FE8416;"></ons-icon>
+                                Buscar
+                            </ons-button>
+                            <ons-button modifier="quiet" onclick="initRefSin();"
+                                style="font-size: 18px;width: auto;" class="center">
+                                <ons-icon icon="md-sign-in" style="color: #FE8416;"></ons-icon>
+                                Ir a Ref. R&G
+                            </ons-button>
+                        </ons-card>
+                        <br/><br/>
+                    </div>
+                </center>
+            </ons-card><!-- /Content -->
+        </ons-page>
+    </ons-template>
+    <!--/Buscar Siniestro-->
+
+    <!--Referencia R&G-->
+    <ons-template id="ref.html">
+        <ons-page id="ref">
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material:md-menu" class="menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center" id="titleApp"></div>
+            </ons-toolbar>
+
+            <div style="min-height: 120px; padding: 1px 0 0 0;">
+                <div class="card card--material" style="background-color: #0081BD; border: 15px;">
+                    <center>
+                        <h2 class="card__title" style="color: #FFFFFF;" id="numeroSiniestro"></h2>
+                        <p class="card-text" style="color: #FFFFFF" id="estatusSiniestro"></p>
+                    </center>
+                </div>
+            </div>
+            <ons-card>
+                <center>
+                    <ons-button modifier="quiet" id="btnDatos" onclick="datos();"
+                        style="font-size: 22px;width: 280px;color: #0081BD;" class="center">
+                        <ons-icon icon="md-folder-outline" style="color: #FE8416;"></ons-icon>
+                        Datos
+                    </ons-button>
+                    <br>
+                    <ons-button modifier="quiet" id="btnGastos" onclick="consultarGastos(1);"
+                        style="font-size: 22px;width: 280px;color: #0081BD;" class="center">
+                        <ons-icon icon="md-money" style="color: #FE8416;"></ons-icon>
+                        Gastos
+                    </ons-button>
+                    <br>
+                    <ons-button modifier="quiet" id="btnBitacora" onclick="bitacora();"
+                        style="font-size: 22px;width: 280px;color: #0081BD;" class="center">
+                        <ons-icon icon="md-time-restore" style="color: #FE8416;"></ons-icon>
+                        Bitácora
+                    </ons-button>
+                    <br>
+                    <ons-button modifier="quiet" id="btnInspeccion" onclick="inspeccion(1);"
+                        style="font-size: 22px;width: 280px;color: #0081BD;" class="center">
+                        <ons-icon icon="md-calendar" style="color: #FE8416;"></ons-icon>
+                        Inspección
+                    </ons-button>
+                </center>
+            </ons-card>
+            <ons-card class="diamond-sm" style="height: 200px;"></ons-card>
+        </ons-page>
+    </ons-template>
+
+    <!--Datos del siniestro-->
+    <ons-template id="datos.html">
+        <ons-page id="datos">
+            <!-- Header -->
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material:md-menu" class="menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center" id="titleApp">
+                    
+                </div>
+            </ons-toolbar><!-- /Header -->
+
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2 class="center">
+                        <ons-icon icon="md-folder-outline"></ons-icon>
+                        Datos
+                    </h2>
+                </div>
+            </ons-card>
+            <ons-card>
+                <div id="datosSiniestro"></div>
+            </ons-card>
+            <ons-card class="diamond-sm" style="height:140px;"></ons-card>
+        </ons-page>
+    </ons-template>
+    <!--Datos del siniestro-->
+
+    <!--Resultados de Siniestro-->
+    <ons-template id="resultadosSiniestro.html">
+        <ons-page id="resultadosSiniestro">
+            <!--Header-->
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open();">
+                        <ons-icon icon="ion-navicon, material:md-menu" class="menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center rounded">
+                    <img src="img/image001.png" width="100px" class="rounded" vspace="15" hspace="15" onclick="cambiarSiniestro();">
+                </div>
+            </ons-toolbar>
+            <!--/header-->
+
+            <center>
+                <ons-card style="background-color: #0081BD;">
+                    <div class="tituloKronos">
+                        <h3 class="center">
+                            <center>
+                                Resultados de Búsqueda
+                            </center>
+                        </h3>
+                    </div>
+                </ons-card>
+
+                <ons-card>
+                    <div id="siniestrosContent"></div>
+                </ons-card>
+            </center>
+        </ons-page>
+    </ons-template><!--Resultados del siniestro-->
+
+    <!--Gastos-->
+    <ons-template id="gastos.html">
+        <ons-page id="gastos">
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center" id="titleApp"></div>
+            </ons-toolbar>
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2 class="center">
+                        <ons-icon icon="md-money"></ons-icon>
+                        &nbsp;Gastos
+                    </h2>
+                </div>
+            </ons-card>
+            <ons-card style="padding: 0;">
+                <div class="content">  
+                    <div style="padding-top: 1rem; padding-bottom: 1rem; text-align: center;">
+                        <ons-button id="btnNuevoReporteGasto" disabled modifier="quiet" class="center" onclick="initNuevoGasto();"
+                            style="color: #0081BD;font-size: 1rem;">
+                                <ons-icon icon="plus-square" style="color: #FE8416;"></ons-icon>
+                                Nuevo Reporte 
+                        </ons-button>
+                        <ons-button id="btnNuevoReporteGasto" modifier="quiet" class="center" onclick="actualizarListadoGasto();"
+                            style="color: #0081BD;font-size: 1rem;">
+                            <ons-icon icon="refresh" style="color: #FE8416;"></ons-icon>
+                            Actualizar
+                        </ons-button>
+                    </div>
+                    <div id="gastosContent">
+                    </div>
+                </div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--Gastos-->
+
+    <!-- Nuevo Reporte Gasto -->
+    <ons-template id="nuevoReporteGasto.html">
+        <ons-page id="nuevoReporteGasto">
+            <!-- Header -->
+            <ons-toolbar>
+                <div class="left">
+                    <strong>
+                        <ons-toolbar-button onclick="consultarGastos(1);">
+                            <ons-icon icon="md-long-arrow-left" 
+                                    style="color: #FE8416;"></ons-icon>
+                        </ons-toolbar-button>
+                    </strong>
+                </div>
+                <div class="center" id="titleApp" style="text-align: center;"></div>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar><!-- Header -->
+
+            <!-- Titulo de pantalla -->
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h3 class="center">
+                        &nbsp;Reporte de Gastos
+                    </h3>
+                </div>
+            </ons-card><!-- /titulo de pantalla -->
+            
+            <!-- Contenido -->
+            <ons-card class="table-card">
+                <form id="nuevoRepoGasto">
+                    <!-- Siniestro del gasto -->
+                    <input type="hidden" id="gastos_repor_caso" name="gastos_repor_caso">
+                    <!-- Iniciales del usuario ajustador -->
+                    <input type="hidden" id="user_iniciales" data-ajustador-iniciales name="user_iniciales">
+                    <input type="hidden" id="user_iniciales_defecto" data-ajustador-iniciales-defecto name="user_iniciales_defecto">
+                    <input type="hidden" id="ajustador_id" data-ajustador-id name="ajustador_id">
+                    <input type="hidden" data-ajustador-id-defecto>
+                    <table class="table tableKronos table-striped shadow-sm m-0">
+                        <tr id="siniestroExiste"></tr>
+                        <tr>
+                            <td><strong>Ajustador</strong></td>
+                            <td>
+                                <ons-input id="user_nombre" name="user_nombre" data-ajustador-nombre
+                                    type="text" readonly required></ons-input>
+                                <ons-input id="user_nombre_defecto" name="user_nombre_defecto" data-ajustador-nombre-defecto
+                                    type="hidden"></ons-input>
+                                <ons-button modifier="quiet" data-cambiar-ajustador onclick="ListadoAjustadores();">Cambiar</ons-button>
+                                <ons-button modifier="quiet" data-limpiar-ajustador id="limpiarAjustadorSeleccionado">Limpiar</ons-button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Moneda</strong></td>
+                            <td id="gastos_moneda"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Anticipo</strong></td>
+                            <td><ons-input id="gastos_repor_anticipo" 
+                                            name="gastos_repor_anticipo"
+                                            placeholder="Monto $"
+                                            type="number" required></ons-input></td>
+                        </tr>
+                    </table>
+                </form>
+                <div class="table-card-item">
+                    <ons-button id="btnCrearReporteGasto" modifier="quiet" onclick="submitRepoGasto(event);" style="font-size:16px;width:200px;background-color:#D8DADB;color:#0081BD;">
+                        <ons-icon icon="plus-square" style="color: #FE8416;"></ons-icon>
+                        Crear Reporte
+                    </ons-button>
+                </div>
+            </ons-card><!-- Contenido -->
+            <div id='seleccionarAjustador' data-seleccionar-ajustador style="display: none;">
+                <div class="d-flex shadow-sm justify-content-center align-items-center bg-light w-100" 
+                    style="height: 3rem; position: fixed; z-index: 1000; ">
+                    <ons-input placeholder="Nombre ajustador"></ons-input>
+                </div>
+                <div style="padding-top: 3rem;">
+                    <ons-list>
+                    </ons-list>
+                </div>
+            </div>
+        </ons-page>
+    </ons-template><!-- Nuevo Reporte Gasto -->
+
+    <!--Reporte de gastos-->
+    <ons-template id="reporteGasto.html">
+        <ons-page id="reporteGasto">
+            <!-- Header -->
+            <ons-toolbar>
+                <div class="left">
+                    <strong>
+                        <ons-toolbar-button onclick="consultarGastos(1);">
+                            <ons-icon icon="md-long-arrow-left" 
+                                    style="color: #FE8416;"></ons-icon>
+                        </ons-toolbar-button>
+                    </strong>
+                </div>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center" id="titleApp" style="text-align:center;"></div>
+            </ons-toolbar>
+            <!-- /Header -->
+
+            <!-- Titulo de pantalla -->
+            <ons-card style="background-color:#0081BD;">
+                <div class="tituloKronos">
+                    <ons-row>
+                        <ons-col id="titlePage" style="font-size:22px;width:80%;"></ons-col>
+                    </ons-row>
+                </div>
+            </ons-card><!-- /titulo de pantalla -->
+            <!-- Contenido -->
+            <!-- Id del detalle gasto -->
+            <input type="hidden" id="gasto_id">
+            <!-- Id local del gasto -->
+            <input type="hidden" id="idGasto">
+            <ons-card class="table-card">
+                <table class="table table-striped m-0">    
+                    <tr>
+                        <td><strong>Ajustador</strong></td>
+                        <td>
+                            <ons-input id="user_nombre" name="user_nombre" data-ajustador-nombre
+                                type="text" readonly required></ons-input>
+                            <ons-input id="user_nombre_defecto" name="user_nombre_defecto" data-ajustador-nombre-defecto
+                                type="hidden"></ons-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Moneda</strong></td>
+                        <td id="gastos_repor_moneda"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Anticipo</strong></td>
+                        <td>
+                            <ons-input style="width: 160px;" type="number"
+                                id="inpAnticipo" name="inpAnticipo"
+                                modifier="underbar" placeholder="Anticipo" class="required">
+                            </ons-input>
+                        </td>
+                    </tr>
+                </table>
+                <ons-list class="center" id="optionButtons"></ons-list>
+            </ons-card>
+
+            <ons-card class="table-card">
+                <div class="table-card-item">
+                    <ons-button id="btnNuevoDetalleGasto" disabled modifier="quiet" class="center" style="width: 250px;color: #0081BD;font-size: 18px;" 
+                            onclick="initNuevoDetalle();">
+                        <ons-icon icon="md-edit" style="width: 25px; color: #FE8416;"></ons-icon>
+                        Nuevo Gasto
+                    </ons-button>
+                </div>
+                <div id="detalleReporteContent"></div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--Reporte de gastos-->
+
+    <!-- Detalle de Gastos -->
+    <ons-template id="detalleReporteGasto.html">
+        <ons-page id="detalleReporteGasto">
+            <!-- Header -->
+            <ons-toolbar>
+                <div class="left">
+                    <strong>
+                        <ons-toolbar-button onclick="backReporteGasto();">
+                            <ons-icon icon="md-long-arrow-left" 
+                                    style="color: #FE8416;"></ons-icon>
+                        </ons-toolbar-button>
+                    </strong>
+                </div>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center" id="titleApp" style="text-align: center;"></div>
+            </ons-toolbar><!-- Header -->
+            <!-- Titulo de pantalla -->
+            <ons-card style="background-color:#0081BD;">
+                <div class="tituloKronos">
+                    <ons-row>
+                        <ons-col id="titlePage" style="font-size:22px;width:80%;"></ons-col>
+                    </ons-row>
+                </div>
+            </ons-card><!-- /titulo de pantalla -->
+            <!-- Contenido -->
+            <ons-card class="table-card">
+                <form id="nuevoDetalleGasto">
+                    <div style="position: absolute;">
+                        <ons-input type="hidden" id="gastos_id"></ons-input>
+                        <ons-input type="hidden" id="idGasto"></ons-input> 
+                        <ons-input type="hidden" id="idDetalleGasto"
+                            name="idDetalleGasto"></ons-input>
+                        <!-- Iniciales del usuario ajustador -->
+                        <ons-input type="hidden" id="user_iniciales" data-ajustador-iniciales=
+                            name="user_iniciales"></ons-input>
+                        <ons-input type="hidden" id="user_iniciales_defecto" data-ajustador-iniciales-defecto
+                            name="user_iniciales"></ons-input>
+                        <ons-input type="hidden" data-ajustador-id=""></ons-input>
+                        <ons-input type="hidden" data-ajustador-id-defecto=""></ons-input>
+                    </div>
+                    <table id="resultadoDatos" class="table table-striped shadow-sm tabla-detalle-gasto m-0">         
+                            <thead id="informacion-extra">
+
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><strong>Ajustador</strong></td>
+                                <td>
+                                    <ons-input id="user_nombre" name="user_nombre" data-ajustador-nombre="" readonly required></ons-input>
+                                    <ons-input type="hidden" id="user_nombre_nombre" name="user_nombre_defecto" data-ajustador-nombre-defecto="" readonly required></ons-input>
+                                    <ons-button modifier="quiet" data-cambiar-ajustador onclick="ListadoAjustadores();">Cambiar</ons-button>
+                                    <ons-button modifier="quiet" data-limpiar-ajustador id="limpiarAjustadorSeleccionado">Limpiar</ons-button>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Fecha de consumo</strong></td>
+                                <td><ons-input type="date" id="gastos_fecha_real" 
+                                        name="gastos_fecha_real" required></ons-input></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Concepto</strong></td>
+                                <td id="gastos_concepto"></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Descripción</strong></td>
+                                <td><ons-input id="gastos_descripcion" 
+                                        name="gastos_descripcion" required placeholder="Descripción"></ons-input></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Razón Social</strong></td>
+                                <td><ons-input id="gastos_razon_social" name="gastos_razon_social" required placeholder="Razón Social"></ons-input></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>N° de Comprobante</strong></td>
+                                <td><ons-input id="gastos_emisor" name="gastos_emisor" required placeholder="N° de Comprobante"></ons-input></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Total c/imp</strong></td>
+                                <td><ons-input type="number" id="gastos_valor" name="gastos_valor" required placeholder="Total c/imp"></ons-input></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Moneda</strong></td>
+                                <td id="gastos_moneda"></td>
+                            </tr>
+
+                            <tr>
+                                <td><strong>Pago T.C.</strong></td>
+                                <td>
+                                    <ons-select id="gastos_amex" name="gastos_amex" required>
+                                        <option value="">Seleccione ...</option>
+                                        <option value="No">No</option>
+                                        <option value="Si">Si</option>
+                                    </ons-select>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <td><strong>Cargar a Cliente</strong></td>
+                                <td>
+                                    <ons-select id="gastos_cargar" name="gastos_cargar" required>
+                                        <option value="">Seleccione ...</option>
+                                        <option value="No">No</option>
+                                        <option value="Si">Si</option>
+                                    </ons-select>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <input type="hidden" id="gastos_archivo" name="gastos_archivo"/>
+                                <input type="file" id="gastos_archivo_file" style="display: none;" accept="image/*" onchange="TablaDetalleGasto.cargarImagenInput(event)"/>
+                                <td id="titleComprob1"><strong>Comprob. 1</strong></td>
+                                <td>
+                                    <center>
+                                        <ons-col>
+                                            <label id="fotoCargadaBtn" class="button btn-archivo">
+                                                <span>Subir</span>
+                                                <input type="button" onclick="TablaDetalleGasto.mostrarOpcionesParaCargarImagen();" id="fotoComprobante" accept="image/*" name="fotoComprobante" class="input-oculto"/>
+                                            </label>
+                                            <ons-button modifier="quiet" id="previoImagen" onclick="TablaDetalleGasto.vistaPreviaImagen()" class="button button--quiet btn-previo">
+                                                <span></span><br>
+                                                Vista previa
+                                                <i class="fas fa-file-image"></i>
+                                            </ons-button>
+                                        </ons-col>
+                                        <div id="fotoCargada" width="50px" style="overflow:auto;">(*.JPG,*.JPEG,*.PNG)</div>
+                                    </center>
+                                </td>
+                            </tr>
+            
+                            <tr>
+                                <input type="hidden" id="gastos_archivo_xml" name="gastos_archivo_xml"/>
+                                <input type="hidden" id="gastos_archivo_xml_previo" name="gastos_archivo_xml_previo"/>
+                                <input type="file" id="file_xml" style="display: none;" onchange="TablaDetalleGasto.cargarDocumentoAndroid(event, 2);"/>
+                                <td id="titleComprob2"><strong>Comprob. 2</strong></td>
+                                <td>
+                                    <center>
+                                        <ons-col>
+                                            <label class="button btn-archivo">
+                                                <span>Subir</span>
+                                                <input type="button" id="xmlCargado" onclick="TablaDetalleGasto.cargarDocumento(2)" accept="text/xml" class="input-oculto"/>
+                                            </label>
+                                            <ons-button modifier="quiet" id="previoXML" onclick="TablaDetalleGasto.vistaPreviaXML()" class="button button--quiet btn-previo">
+                                                <span></span><br>
+                                                Vista previa
+                                                <i class="fas fa-file-alt"></i>
+                                            </ons-button>
+                                        </ons-col>
+                                        <div id="fotoCargada" width="50px" style="overflow:auto;">(*.XML)</div>
+                                    </center>
+                                </td>
+                            </tr>
+                            <tr>
+                                <input type="hidden" id="gastos_archivo_3" name="gastos_archivo_3"/>
+                                <input type="hidden" id="gastos_archivo_pdf_previo" name="gastos_archivo_pdf_previo"/>
+                                <input type="file" id="file_pdf" style="display: none;" onchange="TablaDetalleGasto.cargarDocumentoAndroid(event, 3);"/>
+                                <td id="titleComprob3"><strong>Comprob. 3</strong></td>
+                                <td>
+                                    <center>
+                                        <label class="button btn-archivo">
+                                            <span>Subir</span>
+                                            <input type="button" id="archivoCargado"  onclick="TablaDetalleGasto.cargarDocumento(3)" name="archivoCargado" class="input-oculto"/>
+                                        </label>
+                                        <ons-button modifier="quiet" id="previoPDF" class="button button-quiet btn-previo" onclick="TablaDetalleGasto.abrirDocumentoPrevioPDF();">
+                                            <span></span><br>
+                                            Vista previa
+                                            <i class="fas fa-file-pdf"></i>
+                                        </ons-button>
+                                        <div id="fotoCargada" width="50px" style="overflow:auto;">(*.PDF)</div>
+                                    </center>
+                                </td>
+                            </tr>
+                            </tbody>
+                    </table>
+                </form>
+            </ons-card><!-- Contenido -->
+            <ons-card>
+                <div id="detalleOptions"></div>
+            </ons-card>
+            <div id='seleccionarAjustador' data-seleccionar-ajustador style="display: none;">
+                <div class="d-flex shadow-sm justify-content-center align-items-center bg-light w-100" 
+                    style="height: 3rem; position: fixed; z-index: 1000; ">
+                    <ons-input placeholder="Nombre ajustador"></ons-input>
+                </div>
+                <div style="padding-top: 3rem;">
+                    <ons-list>
+                    </ons-list>
+                </div>
+            </div>
+            <!-- modal xml detalle gasto previo -->
+            <ons-modal id="vistaPreviaXMLGasto" style="display: block;"> 
+                <div style="position: absolute; left: 10px; right: 10px; top: 20px; bottom: 20px;">
+                    <ons-card style="overflow: hidden;">
+                        <div class="content">
+                            <p></p>
+                        </div>
+                    </ons-card>
+                </div>
+                <div style="position: absolute; bottom: 10px; right: 10px; left: 10px; padding: 0; background: none;" modifier="material" class="">
+                    <ons-card style="width: 240px; margin: auto; text-align: center; padding: 0;" > 
+                        <div class="content">
+                            <ons-button class="center sh-none button" modifier="quiet" 
+                                onclick="TablaDetalleGasto.abrirXMLPrevio()"  ripple="">
+                                <span> Abrir </span>
+                            </ons-button>
+                            <ons-button class="center sh-none button" modifier="quiet"  ripple="">
+                                <span> | </span>
+                            </ons-button>
+                            </ons-button><ons-button class="center sh-none button" modifier="quiet" ripple=""
+                                onclick="fn.closeModal('vistaPreviaXMLGasto');">
+                                <span> Cerrar </span> 
+                            </ons-button>
+                        </div>
+                    </ons-card>
+                </div>
+            </ons-modal>
+            <!-- modal imagen detalle gasto previo -->
+            <ons-modal id="vistaPreviaImagenGasto">
+                <img style="max-width: 100%; height: auto; max-height: 100vh;">
+                <div style="position: absolute; bottom: 10px; right: 10px; left: 10px; padding: 0; background: none;" modifier="material" class="">
+                    <ons-card style="width: 240px; margin: auto; text-align: center; padding: 0;">
+                        <div class="content">
+                            <ons-button class="center sh-none button" modifier="quiet" 
+                                onclick="TablaDetalleGasto.abrirImagenPrevio()"  ripple="">
+                                <span> Abrir </span>
+                            </ons-button>
+                            <ons-button class="center sh-none button" modifier="quiet"  ripple="">
+                                <span> | </span>
+                            </ons-button>
+                            </ons-button><ons-button class="center sh-none button" modifier="quiet" ripple=""
+                                onclick="fn.closeModal('vistaPreviaImagenGasto');">
+                                <span> Cerrar </span> 
+                            </ons-button>
+                        </div>
+                    </ons-card>
+                </div>
+            </ons-modal>
+        </ons-page>
+    </ons-template><!-- Detalle de gastos -->
+
+    
+    <!-- Action Sheet: Opciones de carga de fotos -->
+    <template id="imageOptions.html">
+        <ons-action-sheet id="imageOptions" cancelable title="Seleccione una opción" style="text-align: center;">
+            <ons-action-sheet-button icon="md-camera" onclick="TablaDetalleGasto.cargarImagen('CAMARA');">Tomar fotografía</ons-action-sheet-button>
+            <ons-action-sheet-button icon="photo" onclick="TablaDetalleGasto.cargarImagen('GALERIA');">Cargar fotografía</ons-action-sheet-button>
+            <ons-action-sheet-button icon="photo" onclick="TablaDetalleGasto.cargarImagen('OTRO');">Cargar desde otra fuente</ons-action-sheet-button>
+            <ons-action-sheet-button icon="md-close" onclick="fn.hideActionSheet();">Cancelar</ons-action-sheet-button>
+        </ons-action-sheet>
+    </template><!-- Action Sheet: Opciones de carga de fotos -->
+
+    <!-- Action Sheet: Opciones de carga de fotos -->
+    <template id="fotoOptions.html">
+        <ons-action-sheet id="imageOptions" cancelable title="Seleccione una opción" style="text-align: center;">
+            <ons-action-sheet-button icon="md-camera" onclick="InspeccionFotografia.abrirCamara();">Tomar fotografía</ons-action-sheet-button>
+            <ons-action-sheet-button icon="photo" onclick="InspeccionFotografia.abrirGaleria();">Cargar fotografía</ons-action-sheet-button>
+            <ons-action-sheet-button icon="photo" onclick="InspeccionFotografia.abrirArchivos();fn.hideActionSheet();">Cargar desde otra fuente</ons-action-sheet-button>
+            <ons-action-sheet-button icon="md-close" onclick="fn.hideActionSheet();">Cancelar</ons-action-sheet-button>
+        </ons-action-sheet>
+    </template><!-- Action Sheet: Opciones de carga de fotos -->
+
+    <!-- Modal para enviar los gastos -->
+    <ons-template id="sendGastos.html">
+        <ons-page id="sendGastos">
+        <!-- Header -->
+        <ons-toolbar>
+            <div class="left">
+                <strong>
+                    <ons-toolbar-button onclick="backReporteGasto();">
+                        <ons-icon icon="md-long-arrow-left" 
+                                style="color: #FE8416;"></ons-icon>
+                    </ons-toolbar-button>
+                </strong>
+            </div>
+            <div class="center" id="titlePage" style="text-align: center;"></div>
+            <div class="right"></div>
+        </ons-toolbar><!-- Header -->
+        <ons-card style="color: #0081BD;">
+            <ons-card style="background-color: #0081BD;" class="border-0">
+                <div class="tituloKronos">
+                    <h3>
+                        &nbsp;Enviar<br/>Reporte de Gasto
+                    </h3>
+                </div>
+            </ons-card>
+            <br/>
+            <!-- Fecha inicio -->
+            <form id="sendGastosReport" name="sendGastosReport">
+                <label for="fech_ini"><strong>Fecha de Inicio</strong></label>
+                <input class="form-control" id="fech_ini" name="fech_ini" type="date" required/>
+                <!-- Fecha fin -->
+                <label for="fech_fin"><strong>Fecha de Fin</strong></label>
+                <input class="form-control" id="fech_fin" name="fech_fin" type="date" required/>
+                <br/>
+                <!-- Mails -->
+                <label for="emails"><strong>E-Mails</strong></label>
+                <textarea class="form-control" id="emails" name="emails" placeholder="Cada e-mail separado por coma" required></textarea>
+                <!-- Comentario -->
+                <label for="coment"><strong>Comentario</strong></label>
+                <textarea class="form-control" id="coment" name="coment"></textarea>
+            </form>
+            <br/>
+            <!-- Botones -->
+            <ons-row>
+                <!-- Cancelar envio de gasto -->
+                <ons-col>
+                    <center>
+                        <ons-button class="sh-none" style="font-size:16px;background-color: #DE493F;color:white;" onclick="backReporteGasto();">
+                            <ons-icon icon="window-close" style="color: white;"></ons-icon>
+                            Cancelar
+                        </ons-button>
+                    </center>
+                </ons-col>
+                <ons-col>
+                    <!-- Enviar gasto -->
+                    <center>
+                        <ons-button class="sh-none" style="font-size:16px;background-color: #0081BD;color:white;" onclick="submitValidateGastosReport();">
+                            <ons-icon icon="paper-plane" style="color: white;"></ons-icon>
+                            Enviar
+                        </ons-button>
+                    </center>
+                </ons-col>
+            </ons-row>
+        </ons-card>
+        </ons-page>
+    </ons-template><!-- Modal para enviar los gastos -->
+
+    <!-- Modal para enviar inspeccion -->
+    <ons-template id="enviarIns.html">
+        <ons-page id="enviarIns">
+            <ons-card style="color: #0081BD;">
+                <ons-card style="background-color: #0081BD;" class="border-0">
+                    <div class="tituloKronos">
+                        <h3>
+                            &nbsp;Enviar Inspección
+                        </h3>
+                    </div>
+                </ons-card><br>
+                <form id="enviarInsReport" name="enviarInsReport">
+                    <label for="coment"><strong>E-Mails</strong></label>
+                    <textarea class="form-control" id="contacto_mail" name="contacto_mail" required></textarea>
+                </form>
+                <br/>
+                <ons-row>
+                    <ons-col>
+                        <center>
+                            <ons-button class="sh-none" style="font-size:16px;background-color: #DE493F;color:white;" onclick="backVerInspeccion();">
+                                <ons-icon icon="window-close" style="color: white;"></ons-icon>
+                                Cancelar
+                            </ons-button>
+                        </center>
+                    </ons-col>
+                    <ons-col>
+                        <center>
+                            <ons-button class="sh-none" style="font-size:16px;background-color: #0081BD;color:white;" onclick="submitEnviarIns();">
+                                <ons-icon icon="paper-plane" style="color: white;"></ons-icon>
+                                Enviar
+                            </ons-button>
+                        </center>
+                    </ons-col>
+                </ons-row>
+            </ons-card>
+        </ons-page>
+    </ons-template> <!-- Modal para enviar inspeccion -->
+
+    <!--Inspeccion-->
+    <ons-template id="inspeccion.html">
+        <ons-page id="inspeccion">
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center" id="titleApp"></div>
+            </ons-toolbar>
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-calendar"></ons-icon>
+                        &nbsp;Inspección
+                    </h2>
+                </div>
+            </ons-card>
+            <ons-card class="table-card">
+                <div class="content">
+                    <div class="table-card-item">
+                        <ons-button modifier="quiet" style="font-size:1rem"
+                            onclick="FormularioInspeccion.abrirNuevaInspeccion();">
+                            <ons-icon icon="md-edit" style="color: #FE8416;font-size:18px;"></ons-icon>
+                            Nueva Inspección
+                        </ons-button>
+                    </div>
+                    <div id="inspeccionSiniestro"></div>
+                </div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--Inspeccion-->
+
+    <!--Nueva Inspeccion-->
+    <ons-template id="nuevaInspeccion.html">
+        <ons-page id="nuevaInspeccion">
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button onclick="inspeccion(1);">
+                        <ons-icon icon="md-long-arrow-left" style="width: 25px; color: #FE8416;"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center" id="titleApp"></div>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-calendar"></ons-icon>
+                        &nbsp;Inspección
+                    </h2>
+                </div>
+            </ons-card>
+            <ons-card class="p-0">
+                <div id="tablaInspeccion"></div>
+                <input type="hidden" data-ajustador-iniciales>
+                <input type="hidden" data-ajustador-iniciales-defecto>
+                <input type="hidden" data-ajustador-id>
+                <input type="hidden" data-ajustador-id-defecto>
+                <form id="formNuevaInspeccion">
+                    <table class="table table-striped table-sm shadow-sm">
+                        <thead>
+                            <tr>
+                                <th colspan="3" class="text-center" id="encabezado-siniestro">Siniestro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><strong>Siniestro N°</strong></td>
+                            <td>
+                                <ons-input id="numeroSiniestro" readonly />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Cia. de Seguros</strong></td>
+                            <td><ons-input id="ciaSeguros" readonly/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Asegurado</strong></td>
+                            <td><ons-input id="asegurado" readonly/></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha de Siniestro</strong></td>
+                            <td><ons-input type="date" id="fechaSiniestro" readonly/></td>
+                        </tr>    
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th colspan="3" class="text-center">Inspección</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><strong>Inspector</strong></td>
+                            <td>
+                                <input type="hidden" id="idInspectorPorDefecto">
+                                <ons-input id="idInspector" name="idInspector"
+                                    data-form-inspeccion data-ajustador-nombre
+                                    modifier="underbar" float required>
+                                </ons-input>
+                                <input type="hidden" data-ajustador-nombre-defecto>
+                                <ons-button modifier="quiet" data-cambiar-ajustador onclick="ListadoAjustadores();">Cambiar</ons-button>
+                                <ons-button modifier="quiet" data-limpiar-ajustador id="limpiarAjustadorSeleccionado">Limpiar</ons-button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Atendido por</strong></td>
+                            <td>
+                                <ons-input style="height: 50px;" id="idAtendido" name="idAtendido" modifier="underbar"
+                                    data-form-inspeccion
+                                    placeholder="Nombre" required>
+                                </ons-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Datos de Contacto</strong></td>
+                            <td>
+                                <ons-input style="height: 50px;" id="idDatosContacto" name="idDatosContacto"
+                                    data-form-inspeccion placeholder="E-mail, Teléfono" modifier="underbar" float required>
+                                </ons-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Declaración del<br>Asegurado</strong></td>
+                            <td>
+                                <textarea id="idDeclaracion" name="idDeclaracion" class="form-control" 
+                                    rows="5" id="comment" data-form-inspeccion></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Descripcion del<br>Lugar del Siniestro</strong></td>
+                            <td>
+                                <textarea id="idDescripcion" name="idDescripcion" class="form-control" 
+                                    rows="5" id="comment" required data-form-inspeccion></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Alcance de<br>Daños</strong></td>
+                            <td>
+                                <textarea id="idAlcance" name="idAlcance" class="form-control" 
+                                    rows="5" id="comment" required data-form-inspeccion></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Presupuesto</strong></td>
+                            <td>
+                                <textarea id="idPresupuesto" name="idPresupuesto" class="form-control" 
+                                    rows="5" id="comment" data-form-inspeccion></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Notas R&G</strong></td>
+                            <td>
+                                <textarea id="idNotas" name="idNotas" class="form-control" 
+                                    rows="5" id="comment" data-form-inspeccion></textarea>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+                <div class="sh-none" style="text-align: center;">
+                    <ons-button id="btnCrearInspeccion" modifier="quiet" style="width: 250px;background-color: #D8DADB;font-size: 18px;" 
+                            onclick="FormularioInspeccion.dialogoLimpiar.abrir();">
+                        <ons-icon icon="md-card-sd" style="width: 25px; color: #FE8416;"></ons-icon>
+                        Limpiar formulario
+                    </ons-button>
+                    <br><br>
+                    <ons-button id="btnCrearInspeccion" modifier="quiet" style="width: 250px;background-color: #D8DADB;font-size: 18px;" onclick="FormularioInspeccion.crear();">
+                        <ons-icon icon="md-card-sd" style="width: 25px; color: #FE8416;"></ons-icon>
+                        Crear Inspección
+                    </ons-button>
+                    <br><br>
+                </div>
+            </ons-card>
+            <div id='seleccionarAjustador' data-seleccionar-ajustador style="display: none;">
+                <div class="d-flex shadow-sm justify-content-center align-items-center bg-light w-100" 
+                    style="height: 3rem; position: fixed; z-index: 1000; ">
+                    <ons-input placeholder="Nombre ajustador"></ons-input>
+                </div>
+                <div style="padding-top: 3rem;">
+                    <ons-list>
+                    </ons-list>
+                </div>
+            </div>
+        </ons-page>
+    </ons-template><!--Nueva Inspeccion-->
+
+    <!--InspeccionSeleccionada-->
+    <ons-template id="inspeccionSeleccionada.html">
+        <ons-page id="inspeccionSeleccionada">
+            <ons-toolbar>
+                <div class="left">
+                    <ons-toolbar-button onclick="inspeccion(1);">
+                        <ons-icon icon="md-long-arrow-left" style="width: 25px; color: #FE8416;"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center" id="titleApp" style="text-align: center;"></div>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-calendar"></ons-icon>
+                        &nbsp;Inspección
+                    </h2>
+                </div>
+            </ons-card>
+            <input type="hidden" name="idInspeccion">
+            <input type="hidden" id="idDetalleInspeccion" name="idDetalleInspeccion" />
+            <input type="hidden" id="idSiniestro" readonly />
+            <input type="hidden" data-ajustador-iniciales>
+            <input type="hidden" data-ajustador-iniciales-defecto>
+            <input type="hidden" data-ajustador-id>
+            <input type="hidden" data-ajustador-id-defecto>
+            <div id='seleccionarAjustador' data-seleccionar-ajustador style="display: none;">
+                <div class="d-flex shadow-sm justify-content-center align-items-center bg-light w-100"
+                    style="height: 3rem; position: fixed; z-index: 1000; ">
+                    <ons-input placeholder="Nombre ajustador"></ons-input>
+                </div>
+                <div style="padding-top: 3rem;">
+                    <ons-list>
+                    </ons-list>
+                </div>
+            </div>
+            <ons-card class="table-card">
+                <div class="table-card-item">
+                    <div id="contentEnviar">Para enviar el estatus debe ser Realizada</div>
+                </div>
+                <div id="tablaInspeccion"></div>
+                <form id="formSiniestroSeleccionado" data-cambio="" onchange="inspeccionCambioRegistrado(event)"
+                    oninput="inspeccionCambioRegistrado(event)">
+                    <table class="table table-striped table-sm shadow-sm">
+                        <thead>
+                            <tr>
+                                <th colspan="3" data-siniestro id="encabezado-siniestro">
+                                    Siniestro
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong data-siniestro>Siniestro N°</strong></td>
+                                <td>
+                                    <ons-input id="numeroSiniestro" name="numeroSiniestro" readonly data-siniestro />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong data-siniestro>Cia. de Seguros</strong></td>
+                                <td>
+                                    <ons-input id="ciaSeguros" name="ciaSeguros" readonly data-siniestro />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong data-siniestro>Asegurado</strong></td>
+                                <td>
+                                    <ons-input id="asegurado" name="asegurado" readonly data-siniestro />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong data-siniestro>Causa</strong></td>
+                                <td>
+                                    <ons-input id="causas" name="causas" readonly data-siniestro />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong data-siniestro>Fecha de Siniestro</strong></td>
+                                <td>
+                                    <ons-input type="date" id="fechaSiniestro" readonly data-siniestro />
+                                </td>
+                            </tr>
+                        </tbody>
+                        <thead>
+                            <tr>
+                                <th colspan="3">Inspección</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Fecha de Inspección</strong></td>
+                                <td>
+                                    <ons-input type="date" id="dateInspeccion" name="dateInspeccion"></ons-input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Inspector</strong></td>
+                                <td>
+                                    <ons-input id="idInspector" name="idInspector" modifier="underbar" data-ajustador-nombre
+                                        float required>
+                                    </ons-input>
+                                    <input type="hidden" data-ajustador-nombre-defecto>
+                                    <ons-button modifier="quiet" data-cambiar-ajustador class="pl-0"
+                                        onclick="ListadoAjustadores();">Cambiar</ons-button>
+                                    <ons-button modifier="quiet" data-limpiar-ajustador id="limpiarAjustadorSeleccionado">
+                                        Limpiar</ons-button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Atendido por</strong></td>
+                                <td>
+                                    <ons-input style="height: 50px;" id="idAtendido" name="idAtendido" modifier="underbar"
+                                        placeholder="Nombre" required>
+                                    </ons-input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Datos de Contacto</strong></td>
+                                <td>
+                                    <ons-input style="height: 50px;" id="idDatosContacto" name="idDatosContacto"
+                                        placeholder="E-mail, Teléfono" modifier="underbar" float required>
+                                    </ons-input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Declaración del<br>Asegurado</strong></td>
+                                <td>
+                                    <textarea id="idDeclaracion" name="idDeclaracion" class="form-control" rows="5" id="comment" required ></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Descripcion del Lugar del<br>Siniestro</strong></td>
+                                <td>
+                                    <textarea id="idDescripcion" name="idDescripcion" class="form-control" rows="5"
+                                        id="comment"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Alcance de Daños</strong></td>
+                                <td>
+                                    <textarea id="idAlcance" name="idAlcance" class="form-control" rows="5"
+                                        id="comment"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Presupuesto</strong></td>
+                                <td>
+                                    <textarea id="idPresupuesto" name="idPresupuesto" class="form-control" rows="5"
+                                        id="comment"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Notas R&G</strong></td>
+                                <td>
+                                    <textarea id="idNotas" name="idNotas" class="form-control" rows="5" id="comment"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Estado</strong></td>
+                                <td>
+                                    <div class="center sh-none" style="width: 220px;" id="selectEstado"></div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </form>
+                <div class="center sh-none">
+                    <ons-row>
+                        <ons-col>
+                            <ons-button modifier="quiet" onclick="documento();"
+                                style="font-size: 16px;color: #0081BD;background-color: #fff;">
+                                <ons-icon icon="md-file-text" style="color: #FE8416; font-size: 26px;"></ons-icon>
+                            </ons-button>
+                        </ons-col>
+                        <ons-col>
+                            <ons-button modifier="quiet" onclick="openFotografiasCargadas();"
+                                style="font-size: 16px;color: #0081BD;background-color: #fff;">
+                                <ons-icon icon="md-camera" style="color: #FE8416; font-size: 28px;"></ons-icon>
+                            </ons-button>
+                        </ons-col>
+                        <ons-col>
+                            <ons-button modifier="quiet" style="font-size: 16px;color: #0081BD;background-color: #fff;"
+                                onclick="downloadPDF();">
+                                <ons-icon icon="md-collection-pdf" style="font-size: 28px; color: #FE8416;"></ons-icon>
+                            </ons-button>
+                        </ons-col>
+                        <ons-col>
+                            <ons-button modifier="quiet" style="font-size: 16px;color: #0081BD;background-color: #fff;"
+                                onclick="openPDF();">
+                                <ons-icon icon="file-pdf" style="font-size: 24px; color: #FE8416;"></ons-icon>
+                            </ons-button>
+                        </ons-col>
+                    </ons-row>
+                </div>
+                <div class="table-card-item">
+                    <ons-button id="btnGuardarInspeccion" modifier="quiet"
+                        style="font-size: 1.2rem; background: #D8DADB; color: #0081BD;width:220px;" class="center"
+                        onclick="submitInspeccionSeleccionada();">
+                        <ons-icon icon="md-card-sd" style="color: #FE8416;"></ons-icon>
+                        Guardar Cambios
+                    </ons-button>
+                </div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--InspeccionSeleccionada-->
+
+     <!--inspeccionSin-->
+    <ons-template id="inspeccionSin.html">
+        <ons-page id="inspeccionSin">
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center" id="titleApp"></div>
+            </ons-toolbar>
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-time-restore"></ons-icon>
+                        &nbsp;Buscar Inspección
+                    </h2>
+                </div>
+            </ons-card>
+            <ons-card>
+                <div class="center sh-none" style="text-align: center;">
+                    <ons-input type="number" style="height: 50px;" id="insNumSiniestro" name="insNumSiniestro" placeholder="Ref. N° R&G o N° Siniestro"
+                        modifier="underbar" float class="required">
+                    </ons-input>
+
+                     <ons-button modifier="quiet" style="font-size: 16px;background-color:#D8DADB;color: #0081BD;" onclick="validarInspeccionSinSiniestro();">
+                        <ons-icon icon="md-search" style="font-size: 16px; color: #FE8416;"></ons-icon>
+                        Buscar Inspección
+                    </ons-button>
+                </div>
+            </ons-card>
+            <ons-card>
+                <div id="inspeccionSiniestro"></div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--inspeccionSin-->
+
+     <!--Bitacora-->
+    <ons-template id="bitacora.html">
+        <ons-page id="bitacora">
+            <!-- Header -->
+            <ons-toolbar>
+                <div class="center" id="titleApp"></div>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material:md-menu" class="menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar> <!-- Header -->
+            <!-- Titulo de pantalla -->
+            <ons-card style="background-color:#0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-time-restore"></ons-icon>
+                        Bitácora
+                    </h2>
+                </div>
+            </ons-card><!-- Titulo de pantalla -->
+            <!-- Contenido -->
+            <ons-card class="table-card">
+                <div class="table-card-item">
+                    <ons-button modifier="quiet" style="font-size: 1rem; color: #0081BD;font-size: 16px;"
+                        onclick="nuevaBitacoraFacturable();">
+                            <ons-icon icon="md-edit" style="color: #FE8416;"></ons-icon>
+                            Facturable
+                    </ons-button>
+                    <ons-button modifier="quiet" style="font-size:1rem; color: #0081BD;font-size: 16px;"
+                        onclick="nuevaBitacoraNoFacturable();">
+                            <ons-icon icon="md-edit" style="color: #FE8416;"></ons-icon>
+                            No Facturable
+                    </ons-button> 
+                </div>
+                <!-- Tabla de bitácoras -->
+                <div id="resultadoBitacora"></div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--Bitacora-->
+
+    <!--Bitacora Facturable-->
+    <ons-template id="bitFacturable.html">
+        <ons-page id="bitFacturable">
+            <!-- Header -->
+            <ons-toolbar>
+                <div class="left">
+                    <strong>
+                        <ons-toolbar-button onclick="bitacora();">
+                            <ons-icon icon="md-long-arrow-left" 
+                                    style="color: #FE8416;"></ons-icon>
+                        </ons-toolbar-button>
+                    </strong>
+                </div>
+                <div class="center" id="titleApp" style="text-align: center;"></div>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar><!-- Header -->
+            
+            <!-- Contenido -->
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-grid"></ons-icon>
+                        &nbsp;Bitácora Facturable
+                    </h2>
+                </div>
+            </ons-card>
+            <ons-card class="table-card">
+                <form id="nuevaBitacoraFact">
+                    <input type="hidden" id="idBitacora" name="idBitacora"/>
+                    <input type="hidden" id="bitacora_id" name="bitacora_id"/>
+                    <input type="hidden" id="caso_id" name="caso_id"/> <!-- Id del siniestro -->
+                    <table class="table table-striped table-sm shadow-sm m-0">
+                        <tr>
+                            <td><strong>Tarea</strong></td>
+                            <td id="bita_tareas"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Subtarea</strong></td>
+                            <td id="bita_subtarea">
+                                <ons-select id="select_subtareas" required>
+                                    <option value="">Seleccione una opción...</option>
+                                </ons-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ajustador</strong></td>
+                            <td>
+                                <p>
+                                    <ons-input style="height: 50px;" id="usuario_caso" name="usuario_caso" modifier="underbar"
+                                                required>
+                                    </ons-input>
+                                </p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha</strong></td>
+                            <td>
+                                <ons-input id='fecha' name='fecha' type='date' required></ons-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Detalle</strong></td>
+                            <td>
+                                <textarea id="comentario" 
+                                        name="comentario" 
+                                        class="form-control" 
+                                        rows="5">
+                                </textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tiempo Invertido</strong></td>
+                            <td>
+                                <input style="width: 160px; height: 50px;" 
+                                        id="tiempo"
+                                        name="tiempo" 
+                                        modifier="underbar" 
+                                        placeholder="(.25, .5, .75)"
+                                        type="number"
+                                        step="0.25"
+                                        required>
+                                </input>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <div class="table-card-item" id="bitaOptions">
+                    <ons-row>
+                        <ons-col>
+                            <ons-button id="btnCrearYSalirBitacora" modifier="quiet" style="width: 150px;background-color:#D8DADB;color: #0081BD;" 
+                                onclick="guardarBitacoraFacturableYSalir();">
+                                    <ons-icon icon="md-card-sd" style="color: #FE8416;"></ons-icon>
+                                    Crear y Salir
+                            </ons-button>
+                        </ons-col>
+                        <ons-col>
+                            <ons-button id="btnCrearYNuevoBitacora" modifier="quiet" style="width: 150px;background-color:#D8DADB;color: #0081BD;" 
+                                onclick="guardarBitacoraFacturableYNueva();">    
+                                    <ons-icon icon="md-card-sd" style="color: #FE8416;"></ons-icon>
+                                    Crear y Nuevo
+                            </ons-button>
+                        </ons-col>
+                    </ons-row>
+                </div>
+            </ons-card><!-- Contenido -->
+        </ons-page>
+    </ons-template><!--Bitacora Facturable-->
+
+    <!--Bitacora No Facturable-->
+    <ons-template id="bitNoFacturable.html">
+        <ons-page id="bitNoFacturable">
+            <!-- Header -->
+            <ons-toolbar>
+                <div class="left">
+                    <strong>
+                        <ons-toolbar-button onclick="bitacora();">
+                            <ons-icon icon="md-long-arrow-left" 
+                                    style="color: #FE8416;"></ons-icon>
+                        </ons-toolbar-button>
+                    </strong>
+                </div>
+                <div class="center" id="titleApp" style="text-align: center;">Bitácora</div>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar><!-- Header -->
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-grid-off"></ons-icon>
+                        &nbsp;Bitácora No Facturable
+                    </h2>
+                </div>
+            </ons-card>
+            <ons-card class="table-card">
+                <form id="nuevaBitacoraFact">
+                    <input type="hidden" id="caso_id" name="caso_id"/> <!-- Id del siniestro -->
+                    <table class="table table-striped table-sm shadow-sm m-0">
+                        <tr>
+                            <td><strong>Tarea</strong></td>
+                            <td id="bita_tareas"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Subtarea</strong></td>
+                            <td id="bita_subtarea">
+                                <ons-select id="select_subtareas" required>
+                                    <option value="">Seleccione una opción...</option>
+                                </ons-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ajustador</strong></td>
+                            <td>
+                                <ons-input style="height: 50px;" id="usuario_caso" name="usuario_caso" modifier="underbar"
+                                    float required>
+                                </ons-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha</strong></td>
+                            <td>
+                                <ons-input id='fecha' name='fecha' type='date' required></ons-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Detalle</strong></td>
+                            <td>
+                                <textarea id="comentario" 
+                                        name="comentario" 
+                                        class="form-control" 
+                                        rows="5">
+                                </textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tiempo Invertido</strong></td>
+                            <td>
+                                <ons-input style="width: 160px; height: 50px;" 
+                                        id="tiempo"
+                                        name="tiempo" 
+                                        modifier="underbar" 
+                                        placeholder="(.25, .5, .75)"
+                                        type="number" 
+                                        step="0.25"
+                                        required>
+                                </ons-input>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <div class="table-card-item" style="align-content: center;">
+                    <ons-row>
+                        <ons-col>
+                            <ons-button id="btnCrearYSalirBitacora" modifier="quiet" style="width: 150px;background-color:#D8DADB;color: #0081BD;"
+                                onclick="guardarBitacoraNoFacturableYSalir();">
+                                    <ons-icon icon="md-card-sd" 
+                                    style="color: #FE8416;"></ons-icon>
+                                    Crear y Salir
+                            </ons-button>
+                        </ons-col>
+                        <ons-col>
+                            <ons-button id="btnCrearYNuevoBitacora" modifier="quiet" style="width: 150px;background-color:#D8DADB;color: #0081BD;"
+                                onclick="guardarBitacoraNoFacturableYNueva();">
+                                    <ons-icon icon="md-card-sd" style="color: #FE8416;"></ons-icon>
+                                    Crear y Nuevo
+                            </ons-button>
+                        </ons-col>
+                    </ons-row>
+                </div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--Bitacora No Facturable-->
+
+    <!--Documento-->
+    <ons-template id="documento.html">
+        <ons-page id="documento">
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center rounded" style="text-align: center;">
+                    <img src="img/image001.png" width="100px" class="rounded" vspace="15" hspace="15">
+                </div>
+                <div class="left">
+                    <ons-toolbar-button onclick="backVerInspeccion();">
+                        <ons-icon icon="md-long-arrow-left" style="width: 25px; color: #FE8416;"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-file-text"></ons-icon>
+                        &nbsp;Cargar Documento
+                    </h2>
+                </div>
+            </ons-card>
+            <ons-card class="table-card">
+                <form id="formCargaDocumento">
+                    <table class="table table-striped shadow-sm m-0">
+                        <tr>
+                            <td><strong>Grupo</strong></td>
+                            <td id="grupoSel"></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Tipo</strong></td>
+                            <td id="idDocumento">
+                                <ons-select required>
+                                    <option value="">Seleccione una opción...</option>
+                                </ons-select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fecha</strong></td>
+                            <td>
+                                <ons-input type="date" id="idFecha" style="width:120px;text-align: 120px;" class="required"></ons-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Documento</strong></td>
+                            <td>
+                                <ons-col>
+                                    <!-- <ons-button id='idFile' name='idFile' onclick="InspeccionSubirDocumento.abrirArchivos(event)" style="background-color: white;color:#FE8416;">
+                                        Cargar Documento
+                                    </ons-button> -->
+                                    <input type="hidden" id="documento" data-documento name="documentoInspeccion"/>
+                                    <input type="file" id="documentoArchivo" style="display: none;"/>
+                                    <center>
+                                        <label class="button button--material" style="background-color: white;color:#FE8416; display: inline-block; position: relative;">
+                                            <span>Cargar documento</span>
+                                            <input type="button" onclick="InspeccionSubirDocumento.cargarDocumento(event)" style="z-index: 0; overflow: hidden; position: absolute; width: 100%; left: 0; opacity: 0;"/>
+                                        </label>
+                                        <div id="archivoCargado" width="50px" style="overflow:auto;"></div>
+                                        (*.DOC,*.PDF,*.DOCX)
+                                    </center>
+                                    <!-- <input type="file" name="documentoInspeccion" style="width:0;padding:0;margin:0;border:0;pointer-events: none;position:absolute"/> -->
+                                </ons-col>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Comentario</strong></td>
+                            <td>
+                                <textarea id="comentarioDoc" name="comentarioDoc" class="form-control" rows="5" id="comentarioDoc"
+                                    name="text">
+                                </textarea>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <div class="table-card-item">
+                    <ons-button id="btnCrearDocumentoInspeccion" modifier="quiet" style="font-size: 1rem;background-color:#D8DADB;color: #0081BD;" onclick="submitDocumentoCargado();">
+                        <ons-icon icon="file-alt" style="color: #FE8416; font-size: 16px;"></ons-icon>
+                            Crear Documento
+                    </ons--button>
+                </div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--Documento-->
+
+    <!--Fotografias-->
+    <ons-template id="fotografias.html">
+        <ons-page id="fotografias">
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center rounded" style="text-align: center;">
+                    <img src="img/image001.png" width="100px" class="rounded" vspace="15" hspace="15">
+                </div>
+                <div class="left">
+                    <ons-toolbar-button onclick="openFotografiasCargadas();">
+                        <ons-icon icon="md-long-arrow-left" style="width: 25px; color: #FE8416;"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-camera"></ons-icon>
+                        &nbsp; Cargar Fotografías
+                    </h2>
+                </div>
+            </ons-card>
+            <ons-card class="table-card">
+                <div class="content">
+                    <div style="text-align: center;" class="sh-none">
+                        <ons-modal direction="up">
+                            <ons-card>
+                                <div style="text-align: center">
+                                    <label style="color: #282923">Seleccione la cantidad de fotos que desea agregar</label>
+                                    <ons-select id="numberFotos" name="numberFotos" required>
+                                        <option value="1" selected>1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                        <option value="6">6</option>
+                                        <option value="7">7</option>
+                                        <option value="8">8</option>
+                                        <option value="9">9</option>
+                                        <option value="10">10</option>
+                                        <option value="11">11</option>
+                                        <option value="12">12</option>
+                                        <option value="13">13</option>
+                                        <option value="14">14</option>
+                                        <option value="15">15</option>
+                                        <option value="16">16</option>
+                                        <option value="17">17</option>
+                                        <option value="18">18</option>
+                                        <option value="19">19</option>
+                                        <option value="20">20</option>
+                                    </ons-select>
+                                </div>
+                                <div style="text-align: center;" class="sh-none">
+                                    <br>
+                                    <ons-button modifier="quiet" style="font-size: 16px;background-color:#D8DADB;color: #0081BD;"
+                                        onclick="closeModal();">
+                                        <ons-icon icon="window-close" style="color: #FE8416;"></ons-icon>
+                                        Cancelar
+                                    </ons-button>
+                
+                                    <ons-button modifier="quiet" style="font-size: 16px;background-color:#D8DADB;color: #0081BD;"
+                                        onclick="InspeccionTablaFotografias.agregarFotografias();">
+                                        <ons-icon icon="check" style="color: #FE8416;"></ons-icon>
+                                        Agregar
+                                    </ons-button>
+                                </div>
+                            </ons-card>
+                        </ons-modal>
+                    </div>
+                    <div class="center">
+                        <form id="formFotografias">
+                            <div style="text-align: center;" id="tableFotografias"></div>
+                            <div style="text-align: center;" id="tableFotografiasPlus"></div>
+                        </form>
+                    </div>
+                    
+                    <div class="table-card-item">
+                        <ons-button class="center sh-none" modifier="quiet" style="font-size: 16px;color: #0081BD;" onclick="showModal();">
+                            <ons-icon icon="plus-square" 
+                            style="color: #FE8416;"></ons-icon>
+                            Agregar mas fotos
+                        </ons-button>
+                        <ons-button id="btnSubirFotografiasInspeccion" modifier="quiet"
+                            style="font-size: 16px;color: #0081BD;" onclick="submitNuevasFotografias();">
+                            <ons-icon icon="check" style="color: #FE8416;"></ons-icon>
+                            Subir Fotografías
+                        </ons-button>
+                    </div>
+                </div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--Fotografias-->
+
+    <!-- List Fotografías -->
+    <ons-template id="fotografiasCargadas.html">
+        <ons-page id="fotografiasCargadas">
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center rounded" style="text-align: center;">
+                    <img src="img/image001.png" width="100px" class="rounded" vspace="15" hspace="15">
+                </div>
+                <div class="left">
+                    <ons-toolbar-button onclick="backVerInspeccion();">
+                        <ons-icon icon="md-long-arrow-left" style="width: 25px; color: #FE8416;"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-camera"></ons-icon>
+                        &nbsp;Fotografías
+                    </h2>
+                </div>
+            </ons-card>
+            <!-- <ons-card>
+                <div class="table">
+                    <ons-button class="center sh-none" modifier="quiet" style="font-size: 16px;background-color:#D8DADB;color: #0081BD;" onclick="InspeccionTablaFotografias.abrirFormularioFotos();"">
+                        <ons-icon icon="plus-square" 
+                        style="color: #FE8416;"></ons-icon>
+                        Subir fotografías
+                    </ons-button>
+                </div>
+            </ons-card> -->
+            <ons-card class="table-card">
+                <div class="table-card-item" id="botonesFotografias">
+                    <ons-button class="center sh-none" modifier="quiet" style="font-size: 1rem; color: #0081BD;" onclick="InspeccionTablaFotografias.abrirFormularioFotos();"">
+                        <ons-icon icon="plus-square" 
+                        style="color: #FE8416;"></ons-icon>
+                        Subir fotografías
+                    </ons-button>
+                    <ons-button class="center sh-none" modifier="quiet" style="font-size: 1rem; color: #0081BD;" onclick="downloadPhotos();">
+                        <ons-icon icon="md-download" style="color: #FE8416;"></ons-icon>
+                        Descargar fotografías
+                    </ons-button>
+                </div>
+                <div id="fotosUpContent">
+                    
+                </div>
+            </ons-card>
+            <ons-modal id="fotoView">
+                <div id="fotoViewSelected"></div>
+                <ons-button class="center sh-none" modifier="quiet" onclick="fn.closeModal('fotoView');" style="font-size: 22px;background-color:#D8DADB;color: #0081BD;border-radius: 50px;">
+                    <ons-icon icon="close" 
+                    style="color: #FE8416;"></ons-icon>
+                </ons-button>
+            </ons-modal>
+            <ons-modal id="vistaPreviaImagenInspeccion">
+                <img style="max-width: 100%; height: auto; max-height: 100vh;">
+                <div style="position: absolute; bottom: 10px; right: 10px; left: 10px; padding: 0; background: none;" modifier="material" class="">
+                    <ons-card style="width: 240px; margin: auto; text-align: center; padding: 0;">
+                        <div class="content">
+                            <ons-button class="center sh-none button" modifier="quiet" 
+                                data-abrir ripple="">
+                                <span> Abrir </span>
+                            </ons-button>
+                            <ons-button class="center sh-none button" modifier="quiet"  ripple="">
+                                <span> | </span>
+                            </ons-button>
+                            </ons-button><ons-button class="center sh-none button" modifier="quiet" ripple=""
+                                data-cerrar>
+                                <span> Cerrar </span> 
+                            </ons-button>
+                        </div>
+                    </ons-card>
+                </div>
+            </ons-modal>
+        </ons-page>
+    </ons-template><!-- /List Fotografías -->
+
+    <!--PDF Firmado-->
+    <ons-template id="pdf.html">
+        <ons-page id="pdf">
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center rounded" style="text-align: center;">
+                    <img src="img/image001.png" width="100px" class="rounded" vspace="15" hspace="15">
+                </div>
+                <div class="left">
+                    <ons-toolbar-button onclick="backVerInspeccion();">
+                        <ons-icon icon="md-long-arrow-left" style="width: 25px; color: #FE8416;"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+            </ons-toolbar>
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        <ons-icon icon="md-calendar"></ons-icon>
+                        &nbsp;Cargar PDF Firmado
+                    </h>
+                </div>
+            </ons-card>
+            <ons-card class="table-card">
+                <br />
+                <table class="table table-striped m-0">
+                    <tr>
+                        <td>
+                            <strong>Documento</strong>
+                        </td>
+                        <td>
+                            <input type="hidden" id="documento" name="documento" data-documento/>
+                            <input type="file" id="documentoArchivo" style="display: none;"/>        
+                            <ons-col>
+                                <center>
+                                    <label class="button button--material" style="background-color: white;color:#FE8416; display: inline-block; position: relative;">
+                                    <span>Cargar documento</span>
+                                    <input type="button" onclick="InspeccionSubirPDF.cargarDocumento(event)" accept="application/pdf" style="z-index: 0; overflow: hidden; position: absolute; width: 100%; left: 0; opacity: 0;"/>
+                                    </label>
+                                    <div id="archivoCargado" width="50px" style="overflow:auto;"></div>
+                                    (*.PDF,*)
+                                </center>
+                            </ons-col>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Fecha</strong>
+                        </td>
+                        <td>
+                            <ons-input id='fechaIns' name='fechaIns' type='date' placeholder="mm/dd/aaaa" style="width:120px;text-align: 120px;"></ons-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Comentario</strong>
+                        </td>
+                        <td>
+                            <textarea id="idComentario" name="idComentario" class="form-control" rows="5" id="idComentario"
+                                name="text">
+                            </textarea>
+                        </td>
+                    </tr>
+                </table>
+                <div class="table-card-item">
+                    <ons-button id="btnCrearInspeccionPdf" modifier="quiet" style="font-size: 1rem; background-color:#D8DADB; color: #0081BD;" onclick="subirPDF();">
+                        <ons-icon icon="check" style="color: #FE8416;"></ons-icon>
+                            Crear Inspección
+                    </ons-button>
+                </div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--PDF Firmado-->
+
+    <!--Carga-->
+    <ons-template id="carga.html">
+        <ons-page id="carga_page">
+            <ons-card id="cardCenter">
+                <strong>Sincronizando datos, espere un momento.</strong>
+                <div class="container">
+                    <div id="myProgress">
+                        <div id="myBar" style="color: #FFFFFF;">10%</div>
+                    </div>
+                </div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--Carga-->
+
+    <!--Carga Fotografias-->
+    <ons-template id="cargaFotografias.html">
+        <ons-page id="cargaFotografias_page">
+            <ons-card id="cardCenter">
+                <strong>Descargando fotografías, espere un momento.</strong>
+                <div class="container">
+                    <div id="myProgressFotografias">
+                        <div id="myBarFotografias" style="color: #FFFFFF;">10%</div>
+                    </div>
+                </div>
+            </ons-card>
+        </ons-page>
+    </ons-template><!--Carga Fotografias-->
+
+    <!-- Estatus Peticiones -->
+    <ons-template id="estatusPeticiones.html">
+        <ons-page id="estatusPeticiones">
+            <!-- Header -->
+            <ons-toolbar>
+                <div class="right">
+                    <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="ion-navicon, material: md-menu"></ons-icon>
+                    </ons-toolbar-button>
+                </div>
+                <div class="center rounded" style="text-align: center;">
+                    <img src="img/image001.png" width="100px" class="rounded" vspace="15" hspace="15">
+                </div>
+                <div class="left">
+                    <ons-button modifier="quiet" onclick="ListadoPeticiones.mostrarPeticiones();"
+                        style="font-size: 16px; color: #0081BD;">
+                        <ons-icon icon="md-refresh" style="color: #FE8416; font-size: 30px;"></ons-icon>
+                    </ons-button>
+                    <ons-button modifier="quiet" onclick="downloadLogFile();"
+                        style="font-size: 16px; color: #0081BD;">
+                        <ons-icon icon="md-archive" style="color: #FE8416; font-size: 30px;"></ons-icon>
+                    </ons-button>
+                    <!-- <ons-button modifier="quiet" onclick="PeticionesDao.descargarBD();"
+                        style="font-size: 16px; color: #0081BD;">
+                        <ons-icon icon="md-file" style="color: #FE8416; font-size: 30px;"></ons-icon>
+                    </ons-button>
+                    <ons-button modifier="quiet" onclick="PeticionesDao.subirBD();"
+                        style="font-size: 16px; color: #0081BD;">
+                        <ons-icon icon="md-file" style="color: #FE8416; font-size: 30px;"></ons-icon>
+                    </ons-button>
+                    <input type="file" id="bdInput" style="width: 0; height: 0; overflow: hidden;"> -->
+                </div>
+            </ons-toolbar><!-- /Header -->
+            <!-- Titulo de Pagina -->
+            <ons-card style="background-color: #0081BD;">
+                <div class="tituloKronos">
+                    <h2>
+                        &nbsp;Estatus Sincronización
+                    </h2>
+                </div>
+            </ons-card>
+            <!-- Contenido -->
+            <ons-card class="table-card">
+                <div class="content">
+                    <div class="table-card-item"">
+                        <label>Mostrar&nbsp;
+                            <ons-select data-mostrar-selector style="vertical-align: middle;">    
+                                <option value="pendiente">Pendiente</option>
+                                <option value="todos">Todos</option>
+                            </ons-select>
+                            <!-- opcion para descargar y subir bd -->
+                            <!-- <br> -->
+                            <input type="file" onchange="PeticionesDao.subirBD(event)" title="Subir BD">
+                            <ons-button onclick="PeticionesDao.descargarBD()">Descargar BD</ons-button>
+                        </label>
+                    </div>
+                    <hr style="margin: 0;">
+                    <div style="padding: 5px; text-align: center;">                   
+                        <ons-button class="center sh-none" data-sincronizar
+                                style="font-size: 1rem;" onclick="resetAllError();">
+                                <ons-icon data-icono-sincronizar icon="md-refresh-sync"></ons-icon>
+                                <span> Sincronizar pendiente</span>
+                        </ons-button>
+                    </div>
+                    <hr style="margin: 0;">
+                    <div id="listaPeticiones">
+                    </div>
+                </div>
+            </ons-card><!-- /Contenido -->
+        </ons-page>
+    </ons-template><!-- Estatus Peticiones -->
+    <!-- Confirmar borrar datos de usuario anterior -->
+    <template id="deleteLastUserData.html">
+        <ons-alert-dialog id="deleteLastUserData" modifier="material">
+            <div class="alert-dialog-title" style="text-align: center;">Usuario anterior tiene pendientes</div>
+            <div class="alert-dialog-content" data-usuario-anterior>
+                El usuario anterior tiene peticiones pendientes
+            </div>
+            <div class="alert-dialog-footer">
+                <ons-alert-dialog-button onclick="DialogoNuevoUsuario.regresar();"><center>Regresar</center></ons-alert-dialog-button>
+            </div>
+        </ons-alert-dialog>
+    </template>
+    <!-- Confirmar restablecer datos -->
+    <template id="restablecerAplicacion.html">
+        <ons-alert-dialog id="restablecerAplicacion" modifier="material">
+            <div class="alert-dialog-title" style="text-align: center;">Restablecer</div>
+            <div class="alert-dialog-content">
+                Esta accion eliminara todos los datos, incluido los pendientes. ¿Desea continuar?
+            </div>
+            <div class="alert-dialog-footer">
+                <ons-alert-dialog-button onclick="DialogoRestablecer.mostrarConfirmacion()" style="color:#c33613;">Borrar datos</ons-alert-dialog-button>   
+                <ons-alert-dialog-button onclick="DialogoRestablecer.cancelar();"><center>Cancelar</center></ons-alert-dialog-button>
+            </div>
+        </ons-alert-dialog>
+    </template>
+    <!-- Confirmar restablecer datos -->
+    <template id="confirmarRestablecerAplicacion.html">
+        <ons-alert-dialog id="confirmarRestablecerAplicacion" modifier="material">
+            <div class="alert-dialog-title" style="text-align: center;">Restablecer</div>
+            <div class="alert-dialog-content">
+                ¿Esta seguro?
+            </div>
+            <div class="alert-dialog-footer">
+                <ons-alert-dialog-button id="restablecerAplicacionBtn" onclick="DialogoRestablecer.borrarTodosLosDatos(event)" style="color:#c33613;">Confirmar</ons-alert-dialog-button>   
+                <ons-alert-dialog-button onclick="DialogoRestablecer.cancelar();"><center>Cancelar</center></ons-alert-dialog-button>
+            </div>
+        </ons-alert-dialog>
+    </template>
+    <!-- Confirm Logout -->
+    <template id="logoutConfirmDialog.html">
+        <ons-alert-dialog id="logoutConfirmDialog" modifier="material">
+            <div class="alert-dialog-title" style="text-align: center;">Cerrar sesión</div>
+            <div class="alert-dialog-content">
+                No podra volver a iniciar hasta tener internet disponible ¿Desea continuar?
+            </div>
+            <div class="alert-dialog-footer">
+                <ons-alert-dialog-button onclick="salirYMostarLogin();" style="color:#c33613;">Cerrar sesión</ons-alert-dialog-button>   
+                <ons-alert-dialog-button onclick="DialogoCerrarSesion.cancelar();"><center>Cancelar</center></ons-alert-dialog-button>
+            </div>
+        </ons-alert-dialog>
+    </template><!-- Confirm Logout -->
+
+    <!-- Dialogo limpiar formulario nueva inspeccion -->
+    <template id="nuevaInspeccionLimpiar.html">
+        <ons-alert-dialog id="nuevaInspeccionLimpiar" modifier="material">
+            <div class="alert-dialog-title" style="text-align: center;">Cerrar sesión</div>
+            <div class="alert-dialog-content">
+                ¿Desea limpiar el formulario?
+            </div>
+            <div class="alert-dialog-footer">
+                <ons-alert-dialog-button style="color:green" onclick="FormularioInspeccion.dialogoLimpiar.limpiar();">
+                    Limpiar formulario
+                </ons-alert-dialog-button>   
+                <ons-alert-dialog-button onclick="FormularioInspeccion.dialogoLimpiar.cerrar();">
+                    <center>Cancelar</center>
+                </ons-alert-dialog-button>
+            </div>
+        </ons-alert-dialog>
+    </template>
+    <!-- Dialogo descargar siniestro -->
+    <template id="dialogoDescargarInformacionSiniestro.html">
+        <ons-alert-dialog id="dialogoDescargarInformacionSiniestro" modifier="material">
+            <div class="alert-dialog-title" style="text-align: center;">Descargando siniestro</div>
+            <div class="alert-dialog-content">
+                Se esta descargando el siniestro
+            </div>
+            <div class="alert-dialog-footer">   
+                <ons-alert-dialog-button data-cancelar>
+                    <center>Cancelar</center>
+                </ons-alert-dialog-button>
+            </div>
+        </ons-alert-dialog>
+    </template>
+    <!-- Dialogo abrir documento gasto -->
+    <template id="dialogoDescargarDocumentoGasto.html">
+        <ons-alert-dialog id="dialogoDescargarDocumentoGasto" modifier="material">
+            <div class="alert-dialog-title" style="text-align: center;">Descargando documento</div>
+            <div class="alert-dialog-content">
+                Se esta descargando el documento solicitado
+            </div>
+            <div class="alert-dialog-footer">   
+                <ons-alert-dialog-button onclick="GastosService.descargaFileTransfer.abort()">
+                    <center>Cancelar</center>
+                </ons-alert-dialog-button>
+            </div>
+        </ons-alert-dialog>
+    </template>
+    <!--Dialogo cargando documentos-->
+    <template id="dialogoActualizarGastos.html">
+        <ons-alert-dialog id="dialogoActualizarGastos" modifier="material">
+            <div class="alert-dialog-title" style="text-align: center;">Descargando gastos</div>
+            <div class="alert-dialog-content">
+                Se esta actualizando el listado de gastos
+            </div>
+            <div class="alert-dialog-footer">   
+               &nbsp;
+            </div>
+        </ons-alert-dialog>
+    </template>
+    <ons-modal id="sincronizarPendiente" style="display: block;"> 
+        <div style="top: 10px; bottom: 10px; right: 10px; left: 10px; padding: 0; background: none;" modifier="material" class="">
+            <ons-card style="margin: auto; margin-left: 1rem; margin-right: 1rem; padding: 0;" > 
+                <div class="content" style="font-size: 1rem;">       
+                    <div data-titulo style="padding: 10px; text-align: center;">
+                        Pendiente
+                        <ons-icon icon="md-close" style="float: right;" data-cerrar></ons-icon>
+                    </div>
+                    <hr style="margin: 0">
+                    <div data-listado-peticiones style="max-height: 70vh; overflow: scroll;">
+                        <!-- listado de peticiones -->
+                    </div>
+                    <center>                            
+                        <hr style="margin: 0;">
+                        <ons-button class="center sh-none button" data-sincronizar modifier="quiet"
+                            style="font-size: 1rem;">
+                            <ons-icon data-icono-sincronizar icon="md-refresh-sync"></ons-icon>
+                            <span> Sincronizar pendiente</span>
+                        </ons-button>
+                        <hr style="margin: 0;">
+                        <ons-button class="center sh-none button" data-cerrar-sesion modifier="quiet"
+                            style="color: inherit; font-size: 1rem;">
+                            <ons-icon icon="md-refresh-sync-off" ></ons-icon>
+                            <span> Cerrar sin sincronizar</span>
+                        </ons-button>
+                    </center>
+                </div>
+            </ons-card>
+        </div>
+    </ons-modal>
+    <ons-modal id="detallePeticion" style="display: block;"> 
+        <div style="top: 10px; bottom: 10px; right: 10px; left: 10px; padding: 0; background: none;" modifier="material" class="">
+            <ons-card style="margin: auto; margin-left: 1rem; margin-right: 1rem; padding: 0;" > 
+                <div class="content" style="font-size: 1rem;">       
+                    <div style="padding: 10px; text-align: center;">
+                        <span data-titulo></span>
+                        <ons-icon icon="md-close" data-cerrar style="float: right;"></ons-icon>
+                    </div>
+                    <hr style="margin: 0">
+                    <div data-detalle style="padding: 10px;">
+                        <!-- listado de peticiones -->
+                    </div>
+                    <center>                            
+                        <ons-button class="center sh-none button" modifier="quiet" 
+                            style="color:darkgray; font-size: 1rem;" 
+                            data-request>
+                            <span> Request </span>
+                        </ons-button>
+                        <ons-button class="center sh-none button" modifier="quiet" ripple=""
+                            style="color:darkgray; font-size: 1rem;"
+                            data-response>
+                            <span> Response </span> 
+                        </ons-button>
+                        <hr style="margin: 0;">
+                        <ons-button class="center sh-none button" modifier="quiet" style="margin-bottom: 5px; margin-top:5px; display: none;"
+                            style="font-size: 1rem;"
+                            data-sincronizar="">
+                            <ons-icon data-icono-sincronizar icon="md-refresh-sync"></ons-icon>
+                            <span> Sincronizar </span>
+                        </ons-button>
+                        <!-- <ons-button class="center sh-none button" modifier="quiet"
+                            data-eliminar
+                            style="color: red;">
+                            <ons-icon icon="md-delete" ></ons-icon>
+                            <span> Eliminar </span> 
+                        </ons-button>             -->
+                    </center>
+                </div>
+            </ons-card>
+        </div>
+    </ons-modal>
+    <script type="text/javascript" src="cordova.js"></script>
+</body>
+
+</html>

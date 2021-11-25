@@ -1,0 +1,12 @@
+
+
+document.addEventListener('init', function(event) {
+    var page = event.target;
+    if (page.id === 'index-page') {
+      page.querySelector('#btnIndex').onclick = function() {
+        document.querySelector('#myNavigator').pushPage('login.html',{data: {title: 'Inicio de sesión'}});
+      };
+    } else if (page.id === 'login-page') {
+      page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
+    }
+  });

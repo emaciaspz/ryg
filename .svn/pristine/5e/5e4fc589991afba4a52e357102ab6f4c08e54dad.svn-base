@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: login/login.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: login/login.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>var loginLog = getLogger('login');
+
+
+function revisarLogin(){
+    //createDatabase();
+    if(($('#rut').val()).trim() == "" &amp;&amp; ($('#clave').val()).trim() == ""){
+        showError("Debe ingresar los campos correspondientes");
+    }else if(($('#rut').val()).trim() == ""){
+        showError("El campo de usuario no puede estar vacio")
+    }else if(($('#clave').val()).trim() == ""){
+        showError("El campo de contraseña no puede estar vacio")
+    }
+
+    if(($('#rut').val()).trim() != "" &amp;&amp; ($('#clave').val()).trim() != ""){
+        iniciarSesion();
+    }
+}
+
+function iniciarSesion() {
+    var params = {
+        rut: $('#rut').val().toLowerCase(),
+        clave: $('#clave').val()
+    }
+    if (verificarConexion()) {
+        sendPostRequest('login.php', params, function exito(data) {
+            let usernameLocal = localStorage.getItem('username');
+            let esElUsuarioAnterior = usernameLocal != null &amp;&amp; usernameLocal.toLowerCase() === params.rut.toLowerCase();
+            let noHayUsuarioAnterior = usernameLocal == null || usernameLocal == '';
+            console.error('user data', {esElUsuarioAnterior, noHayUsuarioAnterior}, data)
+            console.error('INICIANDO SESION', esElUsuarioAnterior, noHayUsuarioAnterior)
+            if (data.user &amp;&amp; (esElUsuarioAnterior || noHayUsuarioAnterior)) {
+                // Se guarda la información del usuario
+                localStorage.setItem('username', params.rut.toLowerCase());
+                localStorage.setItem('password', params.clave);
+                saveDataUser(data.user); 
+
+                // Identifica la última pagina en la que se ingreso
+                window.localStorage.setItem("tokenLogin", data.token); //Se guarda el token
+                var lastPageUser = window.localStorage.getItem("lastPageUser");
+                
+                // Obtener catalogos
+                getCatalogosVersion().then(() => {
+                    if (lastPageUser == null || lastPageUser == undefined) {
+                        window.localStorage.setItem("idUser", data.user.user_id);
+                        fn.load("buscar.html");
+                    } else {
+                        lastUserAct(lastPageUser);
+                    }
+                }).catch(error => {
+                    showError('No se pudiero obtener los catalogos')
+                    loginLog.error('No se pudieron obtener los catalogos', error)
+                    fn.load('login.html');
+                })
+            } else if (!esElUsuarioAnterior &amp;&amp; !noHayUsuarioAnterior) {
+                PeticionesDao.hayPeticionesPendientes().then(hayPeticionesPendientes => {
+                    // si el usuario anterior tenia peticiones pendientes mostrar el dialogo para borrar datos
+                    if (hayPeticionesPendientes) { 
+                        DialogoNuevoUsuario.mostrar();
+                    } else { // si no borrar datos e iniciar sesion normal
+                        DialogoNuevoUsuario.borrarDatosYContinuar();
+                    }
+                })
+            } else if (data.user == null || data.user == '') {
+                showNotice('No hay conexion');
+            } else {
+                showError('Error inesperado')
+            }
+        }); 
+    } else {
+        showNotice('Conexión a Internet no disponible');
+    }
+}
+
+function verificarSesion() {
+    var token = window.localStorage.getItem("tokenLogin");
+    if (localStorage['password'] == '') {
+        salirYMostarLogin();    
+    }
+    if(token != null &amp;&amp; token != undefined &amp;&amp; $.trim(token) != '') {
+        if(verificarConexion() == true) {
+            getCatalogosVersion()
+                .then(onInitApp)
+                .catch(error => {
+                    loginLog.error('No se pudieron obtener los catalogos', error)
+                    showError('No se pudieron obtener los catalogos')
+                })
+        } else {
+            onInitApp();
+        }
+    } else {
+        fn.load('login.html');
+    }
+}
+
+function onInitApp(){
+    var idSiniestro = window.localStorage.getItem("idSiniestroServidor");
+    if(idSiniestro != null &amp;&amp; idSiniestro != undefined){
+        fn.load('ref.html');
+    }else{  
+        cambiarSiniestro();
+    }
+}
+
+function salirYMostarLogin() {
+    window.localStorage.removeItem("tokenLogin");
+    try {
+        hideAlertDialog('logoutConfirmDialog');
+    } catch (err) {
+        loginLog.error('no se pudo ocultar el dialogo de cerrar sesion', err);
+    }
+    return fn.load('login.html');
+}
+
+/**
+ * Función que identifica la ultima pagina en la que 
+ * estuvo el usuario al expirar el token y 
+ * al volver iniciar sesión lo redirige a dicha página
+ * @param {*} lastPageUser 
+ */
+function lastUserAct(lastPageUser){
+    var idSiniestro = window.localStorage.getItem("idSiniestroServidor");
+    var htmlPage = lastPageUser + '.html';
+    switch(lastPageUser){ // Pantalla para buscar un siniestro
+        case 'buscar':
+            fn.load(htmlPage);
+        break;
+        case 'resultadosSiniestro': //Pantalla lista de resultados
+            fn.load('buscar.html');
+        break;
+        case 'ref': //Pantalla referencia
+            if(idSiniestro != null &amp;&amp; idSiniestro != undefined){
+                fn.load(htmlPage);
+            }else{
+                fn.load('buscar.html');
+            }
+        break;
+        case 'datos': //Pantalla datos del siniestro
+            datos();
+        break;
+        case 'gastos':
+            consultarGastos(1);
+        break;
+        case 'nuevoReporteGasto':
+            initNuevoGasto();
+        break;
+        case 'reporteGasto':
+            var idGasto = window.localStorage.getItem("idGastoLocal");
+            var gastos_repor_id = window.localStorage.getItem("idGastoServidor");
+            verReporteGasto(gastos_repor_id, idGasto);
+        break;
+        case 'detalleReporteGasto':
+            var idDetalleGasto = window.localStorage.getItem("idDetalleGasto");
+            var idGasto = window.localStorage.getItem("idGastoLocal");
+            if(idDetalleGasto != null &amp;&amp; idDetalleGasto != undefined){
+                TablaDetalleGasto.verDetalleGasto(idDetalleGasto, idGasto);
+            }else{
+                initNuevoDetalle();
+            }
+        break;
+        case 'inspeccion':
+            inspeccion(1);
+        break;
+        case 'nuevaInspeccion':
+            abrirNuevaInspeccion();
+        break;
+        case 'inspeccionSeleccionada':
+            var inspeccion_id = window.localStorage.getItem("inspeccion_id_login");
+            var idInspeccion = window.localStorage.getItem("idInspeccion_login");
+            verInspeccion(inspeccion_id?inspeccion_id:null, idInspeccion?idInspeccion:null, idSiniestro);
+        break;
+        case 'documento':
+            documento();
+        break;
+        case 'fotografiasCargadas':
+            openFotografiasCargadas();
+        break;
+        case 'fotografias':
+            openFotografia();
+        break;
+        case 'pdf':
+            openPDF();
+        break;
+        case 'inspeccionSin':
+            inspeccionBuscarSin();
+        break;
+        case 'bitacora':
+            bitacora();
+        break;
+        case 'bitFacturable':
+        var idBitacora = window.localStorage.getItem("idBitacoraLocal"); //Inicio sesión
+            if(idBitacora != null &amp;&amp; idBitacora != undefined){
+                verBitacora(idBitacora);
+            }else{
+                nuevaBitacoraFacturable();
+            }
+        break;
+        case 'bitNoFacturable':
+            nuevaBitacoraNoFacturable();
+        break;
+        default:
+            fn.load('buscar.html');
+        break;
+    }
+    
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-GestureDetector.html">GestureDetector</a></li><li><a href="module-gestures.html">gestures</a></li></ul><h3>Classes</h3><ul><li><a href="-_anonymous_-GestureDetector.Instance.html">Instance</a></li><li><a href="CatalogoService.html">CatalogoService</a></li><li><a href="DialogoCerrarSesion.html">DialogoCerrarSesion</a></li><li><a href="DialogoNuevoUsuario.html">DialogoNuevoUsuario</a></li><li><a href="DialogoRestablecer.html">DialogoRestablecer</a></li><li><a href="GastosService.html">GastosService</a></li><li><a href="InspeccionFotografia.html">InspeccionFotografia</a></li><li><a href="InspeccionSubirDocumento.html">InspeccionSubirDocumento</a></li><li><a href="InspeccionTablaFotografias.html">InspeccionTablaFotografias</a></li><li><a href="ListadoPeticiones.html">ListadoPeticiones</a></li><li><a href="module-GestureDetector.Detection.html">Detection</a></li><li><a href="module-GestureDetector.Event.html">Event</a></li><li><a href="module-GestureDetector.PointerEvent.html">PointerEvent</a></li><li><a href="module-gestures.Drag.html">Drag</a></li><li><a href="module-gestures.Gesture.html">Gesture</a></li><li><a href="module-gestures.Hold.html">Hold</a></li><li><a href="module-gestures.Release.html">Release</a></li><li><a href="module-gestures.Swipe.html">Swipe</a></li><li><a href="module-gestures.Tap.html">Tap</a></li><li><a href="module-gestures.Touch.html">Touch</a></li><li><a href="module-gestures.Transform.html">Transform</a></li><li><a href="PeticionesDao.html">PeticionesDao</a></li><li><a href="TablaDetalleGasto.html">TablaDetalleGasto</a></li><li><a href="Utils.html">Utils</a></li></ul><h3>Events</h3><ul><li><a href="module-gestures.html#~event:change">change</a></li><li><a href="module-gestures.html#~event:changestate">changestate</a></li><li><a href="module-gestures.html#~event:close">close</a></li><li><a href="module-gestures.html#~event:destroy">destroy</a></li><li><a href="module-gestures.html#~event:doubletap">doubletap</a></li><li><a href="module-gestures.html#~event:drag">drag</a></li><li><a href="module-gestures.html#~event:dragdown">dragdown</a></li><li><a href="module-gestures.html#~event:dragend">dragend</a></li><li><a href="module-gestures.html#~event:dragright">dragright</a></li><li><a href="module-gestures.html#~event:dragstart">dragstart</a></li><li><a href="module-gestures.html#~event:dragup">dragup</a></li><li><a href="module-gestures.html#~event:drapleft">drapleft</a></li><li><a href="module-gestures.html#~event:gesture">gesture</a></li><li><a href="module-gestures.html#~event:hide">hide</a></li><li><a href="module-gestures.html#~event:hold">hold</a></li><li><a href="module-gestures.html#~event:init">init</a></li><li><a href="module-gestures.html#~event:modechange">modechange</a></li><li><a href="module-gestures.html#~event:open">open</a></li><li><a href="module-gestures.html#~event:overscroll">overscroll</a></li><li><a href="module-gestures.html#~event:pinchin">pinchin</a></li><li><a href="module-gestures.html#~event:pinchout">pinchout</a></li><li><a href="module-gestures.html#~event:postchange">postchange</a></li><li><a href="module-gestures.html#~event:postclose">postclose</a></li><li><a href="module-gestures.html#~event:posthide">posthide</a></li><li><a href="module-gestures.html#~event:postopen">postopen</a></li><li><a href="module-gestures.html#~event:postpop">postpop</a></li><li><a href="module-gestures.html#~event:postpush">postpush</a></li><li><a href="module-gestures.html#~event:postshow">postshow</a></li><li><a href="module-gestures.html#~event:prechange">prechange</a></li><li><a href="module-gestures.html#~event:preclose">preclose</a></li><li><a href="module-gestures.html#~event:prehide">prehide</a></li><li><a href="module-gestures.html#~event:preopen">preopen</a></li><li><a href="module-gestures.html#~event:prepop">prepop</a></li><li><a href="module-gestures.html#~event:prepush">prepush</a></li><li><a href="module-gestures.html#~event:preshow">preshow</a></li><li><a href="module-gestures.html#~event:reactive">reactive</a></li><li><a href="module-gestures.html#~event:refresh">refresh</a></li><li><a href="module-gestures.html#~event:release">release</a></li><li><a href="module-gestures.html#~event:rotate">rotate</a></li><li><a href="module-gestures.html#~event:show">show</a></li><li><a href="module-gestures.html#~event:swipe">swipe</a></li><li><a href="module-gestures.html#~event:swipedown">swipedown</a></li><li><a href="module-gestures.html#~event:swipeleft">swipeleft</a></li><li><a href="module-gestures.html#~event:swiperight">swiperight</a></li><li><a href="module-gestures.html#~event:swipeup">swipeup</a></li><li><a href="module-gestures.html#~event:tap">tap</a></li><li><a href="module-gestures.html#~event:touch">touch</a></li><li><a href="module-gestures.html#~event:transform">transform</a></li><li><a href="module-gestures.html#~event:transformend">transformend</a></li><li><a href="module-gestures.html#~event:transformstart">transformstart</a></li></ul><h3>Global</h3><ul><li><a href="global.html#abrirDocumentoConAplicacionDeTerceros">abrirDocumentoConAplicacionDeTerceros</a></li><li><a href="global.html#abrirNuevaInspeccion">abrirNuevaInspeccion</a></li><li><a href="global.html#actualizarEstatusPeticion">actualizarEstatusPeticion</a></li><li><a href="global.html#actualizarListadoGasto">actualizarListadoGasto</a></li><li><a href="global.html#appLog">appLog</a></li><li><a href="global.html#b64toBlob">b64toBlob</a></li><li><a href="global.html#backReporteGasto">backReporteGasto</a></li><li><a href="global.html#backVerInspeccion">backVerInspeccion</a></li><li><a href="global.html#baseDatosLog">baseDatosLog</a></li><li><a href="global.html#bitacora">bitacora</a></li><li><a href="global.html#buscarInspeccionSinSiniestro">buscarInspeccionSinSiniestro</a></li><li><a href="global.html#buscarReferencia">buscarReferencia</a></li><li><a href="global.html#buscarSiniestro">buscarSiniestro</a></li><li><a href="global.html#cambiarSiniestro">cambiarSiniestro</a></li><li><a href="global.html#cambiarTareaNoFact">cambiarTareaNoFact</a></li><li><a href="global.html#cargarSelect">cargarSelect</a></li><li><a href="global.html#clearPeticiones">clearPeticiones</a></li><li><a href="global.html#closeModal">closeModal</a></li><li><a href="global.html#CONFIGURACION_LOGGER">CONFIGURACION_LOGGER</a></li><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#consultarGastos">consultarGastos</a></li><li><a href="global.html#contentLoadedFotografias">contentLoadedFotografias</a></li><li><a href="global.html#crearDocumento">crearDocumento</a></li><li><a href="global.html#crearInspeccion">crearInspeccion</a></li><li><a href="global.html#createDatabase">createDatabase</a></li><li><a href="global.html#datos">datos</a></li><li><a href="global.html#deleteBitacora">deleteBitacora</a></li><li><a href="global.html#deleteDatabase">deleteDatabase</a></li><li><a href="global.html#deletePeticion">deletePeticion</a></li><li><a href="global.html#DescripcionPeticion">DescripcionPeticion</a></li><li><a href="global.html#dialogoComfirmarCambiosInspeccion">dialogoComfirmarCambiosInspeccion</a></li><li><a href="global.html#dialogoEditarInspeccion">dialogoEditarInspeccion</a></li><li><a href="global.html#docFotoToJson">docFotoToJson</a></li><li><a href="global.html#documento">documento</a></li><li><a href="global.html#downloadLogFile">downloadLogFile</a></li><li><a href="global.html#downloadPDF">downloadPDF</a></li><li><a href="global.html#downloadPhoto">downloadPhoto</a></li><li><a href="global.html#downloadPhotos">downloadPhotos</a></li><li><a href="global.html#dropDatabasePromise">dropDatabasePromise</a></li><li><a href="global.html#enviarPeticionesPendientes">enviarPeticionesPendientes</a></li><li><a href="global.html#faltanDatosSiniestro">faltanDatosSiniestro</a></li><li><a href="global.html#FormatearPeticion">FormatearPeticion</a></li><li><a href="global.html#FormularioInspeccion">FormularioInspeccion</a></li><li><a href="global.html#fotoInspeccionToJson">fotoInspeccionToJson</a></li><li><a href="global.html#getBitacoraData">getBitacoraData</a></li><li><a href="global.html#getBitacoraParams">getBitacoraParams</a></li><li><a href="global.html#getDataReporteGasto">getDataReporteGasto</a></li><li><a href="global.html#getGastoData">getGastoData</a></li><li><a href="global.html#getGastoParams">getGastoParams</a></li><li><a href="global.html#getLogger">getLogger</a></li><li><a href="global.html#getUUID">getUUID</a></li><li><a href="global.html#guardarBitacora">guardarBitacora</a></li><li><a href="global.html#guardarBitacoraFacturableYNueva">guardarBitacoraFacturableYNueva</a></li><li><a href="global.html#guardarBitacoraFacturableYSalir">guardarBitacoraFacturableYSalir</a></li><li><a href="global.html#guardarBitacoraNoFacturableYNueva">guardarBitacoraNoFacturableYNueva</a></li><li><a href="global.html#guardarBitacoraNoFacturableYSalir">guardarBitacoraNoFacturableYSalir</a></li><li><a href="global.html#guardarBitacoras">guardarBitacoras</a></li><li><a href="global.html#guardarCambioBitacora">guardarCambioBitacora</a></li><li><a href="global.html#guardarCambios">guardarCambios</a></li><li><a href="global.html#guardarConceptos">guardarConceptos</a></li><li><a href="global.html#guardarEstadoInspeccion">guardarEstadoInspeccion</a></li><li><a href="global.html#guardarGrupoDocumento">guardarGrupoDocumento</a></li><li><a href="global.html#guardarMonedas">guardarMonedas</a></li><li><a href="global.html#guardarNuevoGasto">guardarNuevoGasto</a></li><li><a href="global.html#guardarPeticion">guardarPeticion</a></li><li><a href="global.html#guardarPeticionPromise">guardarPeticionPromise</a></li><li><a href="global.html#guardarSiniestro">guardarSiniestro</a></li><li><a href="global.html#guardarSubtarea">guardarSubtarea</a></li><li><a href="global.html#guardarTarea">guardarTarea</a></li><li><a href="global.html#guardarTipoAnexo">guardarTipoAnexo</a></li><li><a href="global.html#guardarTipoFoto">guardarTipoFoto</a></li><li><a href="global.html#initBitacora">initBitacora</a></li><li><a href="global.html#initNuevoDetalle">initNuevoDetalle</a></li><li><a href="global.html#initNuevoGasto">initNuevoGasto</a></li><li><a href="global.html#initRefSin">initRefSin</a></li><li><a href="global.html#initResultadosSiniestro">initResultadosSiniestro</a></li><li><a href="global.html#initSendGastos">initSendGastos</a></li><li><a href="global.html#inspeccion">inspeccion</a></li><li><a href="global.html#inspeccionBuscarSin">inspeccionBuscarSin</a></li><li><a href="global.html#inspeccionCambioRegistrado">inspeccionCambioRegistrado</a></li><li><a href="global.html#inspeccionHabilitarEditarSiniestro">inspeccionHabilitarEditarSiniestro</a></li><li><a href="global.html#InspeccionService">InspeccionService</a></li><li><a href="global.html#isSynced">isSynced</a></li><li><a href="global.html#lastUserAct">lastUserAct</a></li><li><a href="global.html#limpiarCampos">limpiarCampos</a></li><li><a href="global.html#loadBitacora">loadBitacora</a></li><li><a href="global.html#loadSubtareas">loadSubtareas</a></li><li><a href="global.html#Migraciones">Migraciones</a></li><li><a href="global.html#mostrarGastos">mostrarGastos</a></li><li><a href="global.html#mostrarInspeccion">mostrarInspeccion</a></li><li><a href="global.html#mostrarNuevaInspeccion">mostrarNuevaInspeccion</a></li><li><a href="global.html#mostrarReporteGasto">mostrarReporteGasto</a></li><li><a href="global.html#nuevaBitacoraNoFacturable">nuevaBitacoraNoFacturable</a></li><li><a href="global.html#obtenerFecha">obtenerFecha</a></li><li><a href="global.html#obtenerFechaHHMMSS">obtenerFechaHHMMSS</a></li><li><a href="global.html#openEnviarIns">openEnviarIns</a></li><li><a href="global.html#openFotografiasCargadas">openFotografiasCargadas</a></li><li><a href="global.html#openPhotoCamera">openPhotoCamera</a></li><li><a href="global.html#openPhotoLibrary">openPhotoLibrary</a></li><li><a href="global.html#optionBitaFact">optionBitaFact</a></li><li><a href="global.html#paginasTotales">paginasTotales</a></li><li><a href="global.html#panelUsuario">panelUsuario</a></li><li><a href="global.html#progressBar">progressBar</a></li><li><a href="global.html#reducePictureSize">reducePictureSize</a></li><li><a href="global.html#refLog">refLog</a></li><li><a href="global.html#resetAllError">resetAllError</a></li><li><a href="global.html#resolveLocalDevicePath">resolveLocalDevicePath</a></li><li><a href="global.html#resultadosBitacora">resultadosBitacora</a></li><li><a href="global.html#resultadosDatos">resultadosDatos</a></li><li><a href="global.html#resultadosInspeccion">resultadosInspeccion</a></li><li><a href="global.html#resultadosInspeccionSin">resultadosInspeccionSin</a></li><li><a href="global.html#rowsAsList">rowsAsList</a></li><li><a href="global.html#savebase64AsPDF">savebase64AsPDF</a></li><li><a href="global.html#saveDataUser">saveDataUser</a></li><li><a href="global.html#saveEmail">saveEmail</a></li><li><a href="global.html#savePhotoFile">savePhotoFile</a></li><li><a href="global.html#saveRequest">saveRequest</a></li><li><a href="global.html#saveResponse">saveResponse</a></li><li><a href="global.html#select">select</a></li><li><a href="global.html#sendCambiosBitacora">sendCambiosBitacora</a></li><li><a href="global.html#sendMail">sendMail</a></li><li><a href="global.html#sendPeticiones">sendPeticiones</a></li><li><a href="global.html#setDataSiniestro">setDataSiniestro</a></li><li><a href="global.html#setOptions">setOptions</a></li><li><a href="global.html#showFotosCargadas">showFotosCargadas</a></li><li><a href="global.html#showModal">showModal</a></li><li><a href="global.html#sqlError">sqlError</a></li><li><a href="global.html#sqlPromise">sqlPromise</a></li><li><a href="global.html#sqlQuery">sqlQuery</a></li><li><a href="global.html#stringToBlob">stringToBlob</a></li><li><a href="global.html#submitDocumentoCargado">submitDocumentoCargado</a></li><li><a href="global.html#submitInspeccionSeleccionada">submitInspeccionSeleccionada</a></li><li><a href="global.html#submitNuevasFotografias">submitNuevasFotografias</a></li><li><a href="global.html#submitRepoGasto">submitRepoGasto</a></li><li><a href="global.html#submitValidateGastosReport">submitValidateGastosReport</a></li><li><a href="global.html#syncLocalData">syncLocalData</a></li><li><a href="global.html#takePhoto">takePhoto</a></li><li><a href="global.html#updateAnticipo">updateAnticipo</a></li><li><a href="global.html#updateBitacora">updateBitacora</a></li><li><a href="global.html#updateBitaNoFact">updateBitaNoFact</a></li><li><a href="global.html#updateEstado">updateEstado</a></li><li><a href="global.html#updateLocalData">updateLocalData</a></li><li><a href="global.html#updateNombreFoto">updateNombreFoto</a></li><li><a href="global.html#updatePagesGasto">updatePagesGasto</a></li><li><a href="global.html#uploadFile">uploadFile</a></li><li><a href="global.html#validacionNuevaBitacora">validacionNuevaBitacora</a></li><li><a href="global.html#validarInspeccionSinSiniestro">validarInspeccionSinSiniestro</a></li><li><a href="global.html#validateDocumentoCargado">validateDocumentoCargado</a></li><li><a href="global.html#validateEnviarIns">validateEnviarIns</a></li><li><a href="global.html#validateGastosReport">validateGastosReport</a></li><li><a href="global.html#validateNuevasFotografias">validateNuevasFotografias</a></li><li><a href="global.html#validateNuevoDetalleGasto">validateNuevoDetalleGasto</a></li><li><a href="global.html#validateNuevoRepGasto">validateNuevoRepGasto</a></li><li><a href="global.html#value">value</a></li><li><a href="global.html#verBitacora">verBitacora</a></li><li><a href="global.html#verInspeccion">verInspeccion</a></li><li><a href="global.html#verInspeccionSin">verInspeccionSin</a></li><li><a href="global.html#verReporteGasto">verReporteGasto</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.4</a> on Fri Oct 16 2020 08:31:37 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
